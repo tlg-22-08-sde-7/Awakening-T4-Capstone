@@ -1,5 +1,6 @@
 package com.awakening.app;
 
+import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
 
 import java.io.IOException;
@@ -27,6 +28,12 @@ class UI {
         }
 
         infoText += "Your items are: " + player.printInventory() + "\n";
+        for (Item.ItemsSetup camera : player.getInventory()) {
+            if (camera.getName().equalsIgnoreCase("camera")) {
+                infoText += "Your camera's charge is: " + camera.getCharge() + "\n";
+                break;
+            }
+        }
         if (player.getCurrentRoom().getNpcName() != null) {
             infoText+= "There is a ghost here, their name is " + player.getCurrentRoom().getNpcName() + ".\n";
         }

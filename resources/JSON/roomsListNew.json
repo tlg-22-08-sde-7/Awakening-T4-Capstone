@@ -14,6 +14,7 @@
   "morgue": {
     "name": "Morgue",
     "directions": {
+      "north": "Basement",
       "south": "Emergency Room",
       "east": "Filing Cabinet"
     },
