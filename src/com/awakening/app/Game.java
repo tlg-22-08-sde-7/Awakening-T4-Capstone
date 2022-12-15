@@ -7,13 +7,10 @@ import com.awakening.app.game.Player;
 import com.awakening.app.game.Room;
 import com.awakening.app.game.RoomMap;
 import com.google.gson.Gson;
-import com.google.gson.internal.bind.util.ISO8601Utils;
-import org.w3c.dom.Text;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -120,7 +117,7 @@ public class Game {
     }
 
     private void printGameWon() {
-        String endText = null;
+        String endText;
         try{
             endText = Files.readString(Path.of("resources/ASCII/gameEnd.txt"));
             System.out.println(endText);
@@ -169,7 +166,7 @@ public class Game {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
 
         if (noun.equals("ghost")) {
-            String npcName = currentRoom.getNpcName().toString();
+            String npcName = currentRoom.getNpcName();
             if (npcName == null) {
                 System.out.println("There is no ghost in this room");
                 return;
@@ -181,13 +178,13 @@ public class Game {
         } else if (noun.equals("map")) {
             ui.displayMap();
         } else if (approvedItems.contains(noun) && currentRoom.getItems().contains(noun)) {
-            String itemDesc = "";
+            String itemDesc;
             Item.ItemsSetup item = findItem(noun);
             assert item != null;
             itemDesc = item.getDescription();
             System.out.println(itemDesc);
         } else if (approvedItems.contains(noun) && player.printInventory().contains(noun)) {
-            String itemDesc = "";
+            String itemDesc;
             Item.ItemsSetup item = findItem(noun);
             assert item != null;
             itemDesc = item.getDescription();
@@ -199,7 +196,7 @@ public class Game {
 
     private void pickUp(String noun) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
-        List itemList = player.getCurrentRoom().getItems();
+        List<String> itemList = player.getCurrentRoom().getItems();
 
         int index;
         Item.ItemsSetup item = findItem(noun);
@@ -258,9 +255,6 @@ public class Game {
             e.printStackTrace();
         }
 
-    }
-
-    private void startGame() {
     }
 }
 

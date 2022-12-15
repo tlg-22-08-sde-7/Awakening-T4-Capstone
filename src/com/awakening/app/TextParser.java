@@ -18,6 +18,9 @@ public class TextParser {
     public static final String CYAN = "\033[0;36m";    // CYAN
     public static final String WHITE = "\033[0;37m";   // WHITE
 
+    // Allowed Nouns
+    private List<String> allowedNouns = new ArrayList<>(Arrays.asList("map", "north", "south", "east", "west", "ghost", "item", "camera","cellphone","key","journal","batteries","file","bandages","press-pass","paper-clip"));
+
     // Allowed Commands
     private List<String> allowedCommands = new ArrayList<>(Arrays.asList("go", "get", "look", "quit"));
 
@@ -37,9 +40,6 @@ public class TextParser {
     public String displayAllowedCommands() {
         return GREEN+allowedCommands.toString()+RESET;
     }
-
-    private List<String> allowedNouns = new ArrayList<>(Arrays.asList("map", "north", "south", "east", "west", "ghost", "item", "camera","cellphone","key","journal","batteries","file","bandages","press-pass","paper-clip"));
-
 
     public List<String> parseInput(String input) {
         List<String> result = new ArrayList<>(Arrays.asList(input.toLowerCase().trim().split(" ")));

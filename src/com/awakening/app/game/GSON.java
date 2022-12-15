@@ -6,10 +6,8 @@ package com.awakening.app.game;
 // Importing input output classes
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
-import java.util.*;
 
 // Main class
 public class GSON {
@@ -50,7 +48,7 @@ public class GSON {
 //        System.out.println("\n");
 
         //GENERATE ROOMMAP
-        RoomMap roomMap = new RoomMap();
+        RoomMap roomMap;
         try (Reader reader = new FileReader("resources/JSON/roomsListNew.json")) {
             roomMap = new Gson().fromJson(reader, RoomMap.class);
             RoomMap.Morgue morgue = roomMap.getMorgue();
@@ -62,7 +60,7 @@ public class GSON {
         System.out.println("\n");
 
         //GENERATE GAME TEXT
-        GameText gameText = new GameText();
+        GameText gameText;
         try (Reader reader = new FileReader("resources/JSON/GameText.json")) {
             gameText = new Gson().fromJson(reader, GameText.class);
             GameText.BasementText basement = gameText.getBasementText();
@@ -73,7 +71,7 @@ public class GSON {
         System.out.println("\n");
 
         //GENERATE NPC TEXT
-        NPC npc = new NPC();
+        NPC npc;
         try (Reader reader = new FileReader("resources/JSON/NPC.json")) {
             npc = new Gson().fromJson(reader, NPC.class);
             NPC.Ghost1 ghost1 = npc.getGhost1();
@@ -83,7 +81,7 @@ public class GSON {
         }
 
         //GENERATE item
-        Item item = new Item();
+        Item item;
         try (Reader reader = new FileReader("resources/JSON/Items.json")) {
             item = new Gson().fromJson(reader, Item.class);
             Item.CellPhone cellPhone = item.getCellPhone();
