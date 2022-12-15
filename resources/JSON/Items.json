@@ -41,7 +41,7 @@
   },
   "patientFile": {
     "name": "file",
-    "description": "You read the file... Patient is Jessica Smith. Held for mental health examination. Room 103. Door code is ####. The rest is illegible. Maybe her room will have an answer?",
+    "description": "You read the file... Patient is Jessica Smith. Held for mental health examination. Room 103. Door code is 9537. The rest is illegible. Maybe her room will have an answer?",
     "startLocation": "Filing Cabinet",
     "specialItemFlag": "false",
     "charge": "0",

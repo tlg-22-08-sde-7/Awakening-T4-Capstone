@@ -1,10 +1,6 @@
 package com.awakening.app;
 
 import com.awakening.app.game.Player;
-import com.awakening.app.game.Room;
-import com.awakening.app.TextParser;
-import com.awakening.app.game.RoomMap;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,6 +12,7 @@ import java.util.List;
 
 class UI {
     private TextParser textParser = new TextParser();
+
     public void displayGameInfo(Player player) {
         String infoText = "";
         String currentRoom = player.getCurrentRoom().getName();
@@ -44,8 +41,8 @@ class UI {
                 "\nNoun:" + textParser.displayAllowedNouns());
 
     }
-    public static void splashScreen() {
-        String welcome = null;
+    public void splashScreen() {
+        String welcome;
         try {
             welcome = Files.readString(Path.of("resources/ASCII/banner.txt"));
             System.out.println(welcome);
@@ -55,7 +52,7 @@ class UI {
     }
 
     public void displayMap(){
-        String map = null;
+        String map;
         try{
             map = Files.readString(Path.of("resources/ASCII/hospitalLayoutASCII.txt"));
             System.out.println(map);
@@ -75,7 +72,7 @@ class UI {
             }
         }
 
-        String frame = "";
+        String frame;
         String top = "╔";
         String textBody = "";
         String bottom = "╚";
