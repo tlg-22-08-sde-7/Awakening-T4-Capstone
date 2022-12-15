@@ -179,15 +179,26 @@ public class Game {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
 
         if (noun.equals("ghost")) {
+            boolean hasCamera = false;
             String npcName = currentRoom.getNpcName();
             if (npcName == null) {
                 System.out.println("There is no ghost in this room");
                 return;
             }
-            String ghostDesc = "";
-            String npcGhost = npc.getGhost(npcName);
-            ghostDesc += npcGhost + "\n";
-            System.out.println(ui.wrapFrame(ghostDesc));
+            for (Item.ItemsSetup item : player.getInventory()) {
+                if (item.getName().equalsIgnoreCase("camera")) {
+                    hasCamera = true;
+                    String ghostDesc = "";
+                    String npcGhost = npc.getGhost(npcName);
+                    ghostDesc += npcGhost + "\n";
+                    item.setCharge(item.getCharge()-10);
+                    System.out.println(ui.wrapFrame(ghostDesc));
+                    break;
+                }
+            }
+            if (!hasCamera) {
+                System.out.println(ui.wrapFrame("You must have a charged camera to communicate with the ghosts"));
+            }
         } else if (noun.equals("map")) {
             ui.displayMap();
         } else if (approvedItems.contains(noun) && currentRoom.getItems().contains(noun)) {
