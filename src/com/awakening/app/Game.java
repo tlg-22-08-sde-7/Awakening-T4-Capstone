@@ -28,6 +28,7 @@ public class Game {
     public static NPC npc = new NPC();
     private static final Prompter prompter = new Prompter(new Scanner(System.in));
     private List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass"));
+    private List<String> usableItems = new ArrayList<>(List.of("key-pad"));
     private UI ui = new UI();
     private TextParser textParser = new TextParser();
     private List<Room> rooms = new ArrayList<>();
@@ -147,6 +148,13 @@ public class Game {
                     System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
                 }
                 break;
+            case "use":
+                if (usableItems.contains(noun)){
+                    use(noun);
+                } else {
+                    System.out.println(TextParser.RED + "Cannot use that" + TextParser.RESET);
+                }
+                break;
             default:
                 System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
         }
@@ -157,6 +165,8 @@ public class Game {
         RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get(direction));
         if (nextRoom == null) {
             System.out.println(TextParser.RED + "You can't go that way" + TextParser.RESET);
+        } else if (nextRoom.isLocked()) {
+            System.out.println(TextParser.RED + "The door is locked" + TextParser.RESET);
         } else {
             player.setCurrentRoom(nextRoom);
         }
@@ -214,6 +224,27 @@ public class Game {
             }
         } else {
             System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
+        }
+    }
+
+    /**
+     * Provides functionality for use command from player.
+     * noun should be approved outside this method
+     *
+     * Method will need to be refactored if functionality goes beyond key-pad
+     *
+     * @param noun - approved usable noun
+     */
+    private void use(String noun) {
+        // Keypad image
+        String keyEntry = prompter.prompt("Enter PIN:");
+
+        if (keyEntry.equalsIgnoreCase("9537")) {
+            RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
+            RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get("east"));
+
+            nextRoom.setLocked(false);
+            System.out.println("The key-pad chimes and turns green.");
         }
     }
 

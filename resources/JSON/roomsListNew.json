@@ -85,30 +85,20 @@
   "hallway": {
     "name": "Hallway",
     "directions": {
-      "east": "Key Pad",
+      "east": "Patient Room",
       "west": "Emergency Room"
     },
     "description": "This way to the patient room",
     "isLocked": false,
-    "items": []
-  },
-  "keyPad": {
-    "name": "Key Pad",
-    "directions": {
-      "east": "Patient Room",
-      "west": "Hallway"
-    },
-    "description": "You need the PIN to access the Patient Room",
-    "isLocked": true,
-    "items": []
+    "items": ["key-pad"]
   },
   "patientRoom": {
     "name": "Patient Room",
     "directions": {
-      "west": "Key Pad"
+      "west": "Hallway"
     },
     "description": "Patients are treated here",
-    "isLocked": false,
+    "isLocked": true,
     "items": [
       "press-pass",
       "key"
