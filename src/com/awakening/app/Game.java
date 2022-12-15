@@ -103,7 +103,10 @@ public class Game {
                 executeCommand(move);
             }
             gameStateCheck();
-            prompter.prompt("Hit enter to continue...");
+
+            if (!gameOver) {
+                prompter.prompt("Hit enter to continue...");
+            }
         }
     }
 
