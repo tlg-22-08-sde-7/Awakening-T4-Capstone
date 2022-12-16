@@ -45,7 +45,7 @@ public class Game {
 
 
         while (!gameStart) {
-            String playGame = prompter.prompt("Do you want to play Awakening? [Y/N]").toLowerCase().trim();
+            String playGame = prompter.prompt("Do you want to play Awakening? [Y/N]\n > ").toLowerCase().trim();
 
 
             switch (playGame) {
@@ -57,7 +57,7 @@ public class Game {
                     break;
                 case ("n"):
                 case ("no"):
-                    confirmation = prompter.prompt("Are you sure? [Y/N]").toLowerCase().trim();
+                    confirmation = prompter.prompt("Are you sure? [Y/N]\n > ").toLowerCase().trim();
                     if (!"y".equals(confirmation)) {
                         break;
                     }
@@ -78,15 +78,15 @@ public class Game {
             ui.clearConsole();
             ui.displayGameInfo(player);
 
-            String response = prompter.prompt("What do you want to do?\n");
+            String response = prompter.prompt("What do you want to do?\n > ");
             List<String> move = textParser.parseInput(response);
             while ("invalid".equals(move.get(0))) {
-                response = prompter.prompt("What do you want to do?\n");
+                response = prompter.prompt("What do you want to do?\n > ");
                 move = textParser.parseInput(response);
             }
 
             if ("quit".equals(move.get(0))) {
-                confirmation = prompter.prompt("Are you sure? [Y/N]").toLowerCase().trim();
+                confirmation = prompter.prompt("Are you sure? [Y/N]\n > ").toLowerCase().trim();
                 switch (confirmation) {
                     case ("y"):
                     case ("yes"):
@@ -99,14 +99,11 @@ public class Game {
                 }
             } else if ("help".equals(move.get(0))) {
                 ui.displayGamePlayOptions();
+                prompter.prompt("Hit enter to continue...");
             } else {
                 executeCommand(move);
             }
             gameStateCheck();
-
-            if (!gameOver) {
-                prompter.prompt("Hit enter to continue...");
-            }
         }
     }
 
@@ -200,7 +197,7 @@ public class Game {
                 System.out.println(ui.wrapFrame("You must have a charged camera to communicate with the ghosts"));
             }
         } else if (noun.equals("map")) {
-            ui.displayMap();
+            ui.displayMap(player.getCurrentRoom());
         } else if (approvedItems.contains(noun) && currentRoom.getItems().contains(noun)) {
             String itemDesc;
             Item.ItemsSetup item = findItem(noun);
@@ -216,6 +213,8 @@ public class Game {
         } else {
             System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
         }
+
+        prompter.prompt("Hit enter to continue...");
     }
 
     private void pickUp(String noun) {
@@ -234,11 +233,14 @@ public class Game {
                     index = i;
                     //Remove item form room
                     player.getCurrentRoom().getItems().remove(index);
+                    System.out.println("You have picked up " + noun);
                 }
             }
         } else {
             System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
         }
+
+        prompter.prompt("Hit enter to continue...");
     }
 
     /**
@@ -251,7 +253,7 @@ public class Game {
      */
     private void use(String noun) {
         // Keypad image
-        String keyEntry = prompter.prompt("Enter PIN:");
+        String keyEntry = prompter.prompt("Enter PIN\n > ");
 
         if (keyEntry.equalsIgnoreCase("9537")) {
             RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
@@ -259,7 +261,11 @@ public class Game {
 
             nextRoom.setLocked(false);
             System.out.println("The key-pad chimes and turns green.");
+        } else {
+            System.out.println("The key-pad buzzes and flashes red.");
         }
+
+        prompter.prompt("Hit enter to continue...");
     }
 
 
