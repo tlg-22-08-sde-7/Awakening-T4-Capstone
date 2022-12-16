@@ -2,7 +2,11 @@ package com.awakening.app;
 
 import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
+import com.awakening.app.game.RoomMap;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,13 +45,14 @@ class UI {
         infoText += "Exits : " + player.getCurrentRoom().getDirections().keySet() + ".\n";
         System.out.println(wrapFrame(infoText));
     }
+
     public void displayGamePlayOptions() {
         System.out.println("Your gameplay options are:\n" +
                 "A two word command is expected: 'Verb + Noun'\n" +
                 "Verb:" + textParser.displayAllowedCommands() +
                 "\nNoun:" + textParser.displayAllowedNouns());
-
     }
+
     public void splashScreen() {
         String welcome;
         try {
@@ -58,12 +63,24 @@ class UI {
         }
     }
 
-    public void displayMap(){
-        String map;
+    public void displayMap(RoomMap.RoomLayout currentRoom){
+        File loadTxtMap = new File("resources/ASCII/hospitalLayoutASCII.txt");
         try{
-            map = Files.readString(Path.of("resources/ASCII/hospitalLayoutASCII.txt"));
-            System.out.println(map);
-        }catch (IOException e){
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(loadTxtMap));
+            StringBuilder sb_map = new StringBuilder();
+            // String[] roomName = currentRoom.getName().split(" ");
+
+            String scannedSingleLine;
+            while((scannedSingleLine = bufferedReader.readLine()) != null){
+                if (scannedSingleLine.contains(currentRoom.getName().toUpperCase())){
+                    // replace the first word with the same content with different color
+                    scannedSingleLine = scannedSingleLine.replace(currentRoom.getName().toUpperCase(), TextParser.BLUE + currentRoom.getName().toUpperCase() + TextParser.RESET);
+                }
+                sb_map.append(scannedSingleLine).append("\n");
+            }
+            System.out.println(sb_map);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
