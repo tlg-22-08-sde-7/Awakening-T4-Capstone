@@ -27,7 +27,7 @@ public class Game {
     public static Player player = new Player();
     public static NPC npc = new NPC();
     private static final Prompter prompter = new Prompter(new Scanner(System.in));
-    private List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass"));
+    private List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "file-cabinet", "desl"));
     private List<String> usableItems = new ArrayList<>(List.of("key-pad"));
     private UI ui = new UI();
     private TextParser textParser = new TextParser();
@@ -196,7 +196,16 @@ public class Game {
             if (!hasCamera) {
                 System.out.println(ui.wrapFrame("You must have a charged camera to communicate with the ghosts"));
             }
-        } else if (noun.equals("map")) {
+        }
+        else if (noun.equalsIgnoreCase("file-cabinet")) {
+            String fileCabinetItems = "There are patient files stored here. There is an interesting file that you can get";
+            System.out.println(ui.wrapFrame(fileCabinetItems));
+        }
+        else if (noun.equalsIgnoreCase("desk")) {
+            String deskItems = "The desk has batteries and paper-clip. You can get batteries and/or get paper-clip";
+            System.out.println(ui.wrapFrame(deskItems));
+        }
+        else if (noun.equals("map")) {
             ui.displayMap(player.getCurrentRoom());
         } else if (approvedItems.contains(noun) && currentRoom.getItems().contains(noun)) {
             String itemDesc;
@@ -220,13 +229,16 @@ public class Game {
     private void pickUp(String noun) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         List<String> itemList = player.getCurrentRoom().getItems();
+        boolean validItem = false;
 
         int index;
         Item.ItemsSetup item = findItem(noun);
 
         if (item == null) {
+            validItem = true;
             System.out.println(noun + " is not in " + currentRoom);
         } else if (itemList.contains(noun)) {
+            validItem = true;
             player.addToInventory(item);
             for (int i = 0; i < itemList.size(); i++) {
                 if (noun.equals(itemList.get(i))) {
@@ -236,11 +248,26 @@ public class Game {
                     System.out.println("You have picked up " + noun);
                 }
             }
-        } else {
+        }
+        else if (noun.equalsIgnoreCase("file") || noun.equalsIgnoreCase("paper-clip") || noun.equalsIgnoreCase("batteries")) {
+            validItem = true;
+            itemFinder(noun);
+        }
+        if (!validItem){
             System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
         }
 
         prompter.prompt("Hit enter to continue...");
+    }
+
+    private void itemFinder(String noun) {
+        for (Item.ItemsSetup item : roomItems) {
+            if (item.getName().equalsIgnoreCase(noun)) {
+                player.addToInventory(item);
+                System.out.println("You have picked up " + item.getName());
+                break;
+            }
+        }
     }
 
     /**

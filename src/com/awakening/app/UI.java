@@ -28,6 +28,7 @@ public class UI {
         }
         else {
             infoText += "You are in the " + player.getCurrentRoom().getName() + ".\n";
+            infoText += player.getCurrentRoom().getDescription() + "\n";
             infoText += "In this room you see:" + player.getCurrentRoom().getItems() + ".\n";
         }
 
