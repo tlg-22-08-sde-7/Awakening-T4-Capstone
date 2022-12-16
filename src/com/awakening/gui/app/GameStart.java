@@ -1,5 +1,7 @@
 package com.awakening.gui.app;
 
+import com.awakening.app.game.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,6 +15,7 @@ public class GameStart {
     private JButton start_button;
 
     public GameStart(){
+
         window = new JFrame();
         window.setSize(900, 1200);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,11 +38,14 @@ public class GameStart {
         startButtonPanel.setBounds(250, 630, 400, 200);
         startButtonPanel.setBackground(Color.black);
 
-        start_button = new JButton("START");
+        start_button = new JButton("PRESS ENTER TO START");
         start_button.setBackground(Color.black);
         start_button.setForeground(Color.lightGray);
-        start_button.setFont(Awakening_Font.getTitleFont());
+        start_button.setFont(Awakening_Font.getNormalFont());
         start_button.addActionListener(e -> ProgressScreen.startProgressScreen(this));
+
+        // set a default button that will automatically listen to the Enter key
+        window.getRootPane().setDefaultButton(start_button);
 
         panel_title.add(label_title);
         startButtonPanel.add(start_button);

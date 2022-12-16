@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-class UI {
+public class UI {
     private TextParser textParser = new TextParser();
 
     public void displayGameInfo(Player player) {
@@ -53,14 +53,15 @@ class UI {
                 "\nNoun:" + textParser.displayAllowedNouns());
     }
 
-    public void splashScreen() {
-        String welcome;
+    public String splashScreen() {
+        String welcome = "";
         try {
-            welcome = Files.readString(Path.of("resources/ASCII/banner.txt"));
+            welcome = Files.readString(Path.of("resources/ASCII/banner_gui.txt"));
             System.out.println(welcome);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return welcome;
     }
 
     public void displayMap(RoomMap.RoomLayout currentRoom){
