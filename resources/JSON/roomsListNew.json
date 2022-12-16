@@ -15,25 +15,13 @@
     "name": "Morgue",
     "directions": {
       "north": "Basement",
-      "south": "Emergency Room",
-      "east": "Filing Cabinet"
+      "south": "Emergency Room"
     },
-    "description": "Patient Records stored here",
+    "description": "Patient Records stored here. You see a file-cabinet that you may look into",
     "isLocked": false,
     "items": [
     ],
     "npcName": "The Haunted Librarian"
-  },
-  "filingCabinet": {
-    "name": "Filing Cabinet",
-    "directions": {
-      "west": "Morgue"
-    },
-    "description": "Patient Records stored here",
-    "isLocked": true,
-    "items": [
-      "file"
-    ]
   },
   "emergencyRoom": {
     "name": "Emergency Room",
@@ -53,24 +41,11 @@
   "office": {
     "name": "Office",
     "directions": {
-      "east": "Emergency Room",
-      "west": "Desk"
+      "east": "Emergency Room"
     },
-    "description": "Paperwork, etc.",
+    "description": "Off to the right you notice a desk with items of interest. You may look desk",
     "isLocked": false,
     "items": [
-    ]
-  },
-  "desk": {
-    "name": "Desk",
-    "directions": {
-      "east": "Office"
-    },
-    "description": "Stuff stored here",
-    "isLocked": false,
-    "items": [
-      "paper-clip",
-      "batteries"
     ]
   },
   "frontDesk": {
