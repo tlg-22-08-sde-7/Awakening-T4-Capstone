@@ -1,18 +1,15 @@
 package com.awakening.gui.app;
 
-import com.awakening.app.game.Player;
-
 import javax.swing.*;
 import java.awt.*;
 
-
 public class GameStart {
     private JFrame window;
-    private Container container;
-    private JPanel panel_title;
-    private JPanel startButtonPanel;
-    private JLabel label_title;
-    private JButton start_button;
+    private static Container container;
+    private static JPanel splash_panel;
+    private static JPanel pressEnterToStartButton_panel;
+    private JLabel splash_label;
+    private JButton pressEnterToContinueButton;
 
     public GameStart(){
 
@@ -25,55 +22,44 @@ public class GameStart {
         window.setVisible(true);
         container = window.getContentPane();
 
-        panel_title = new JPanel();
-        panel_title.setBounds(50, 0, 800, 600);
-        panel_title.setBackground(Color.black);
+        splash_panel = new JPanel();
+        splash_panel.setBounds(50, 0, 800, 600);
+        splash_panel.setBackground(Color.black);
 
 //         load the game splash/title screen image as a label
         ImageIcon icon = new ImageIcon("resources/images/titleScreen.PNG");
-        label_title = new JLabel(icon);
+        splash_label = new JLabel(icon);
 
-        // start button
-        startButtonPanel = new JPanel();
-        startButtonPanel.setBounds(250, 630, 400, 200);
-        startButtonPanel.setBackground(Color.black);
+        // press enter to start button
+        pressEnterToStartButton_panel = new JPanel();
+        pressEnterToStartButton_panel.setBounds(250, 630, 400, 200);
+        pressEnterToStartButton_panel.setBackground(Color.black);
 
-        start_button = new JButton("PRESS ENTER TO START");
-        start_button.setBackground(Color.black);
-        start_button.setForeground(Color.lightGray);
-        start_button.setFont(Awakening_Font.getNormalFont());
-        start_button.addActionListener(e -> ProgressScreen.startProgressScreen(this));
+        pressEnterToContinueButton = new JButton("PRESS ENTER TO START");
+        pressEnterToContinueButton.setBackground(Color.black);
+        pressEnterToContinueButton.setForeground(Color.lightGray);
+        pressEnterToContinueButton.setFont(Awakening_Font.getNormalFont());
+        pressEnterToContinueButton.setFocusPainted(false);
+        pressEnterToContinueButton.addActionListener(e -> GameHomePage.createHomePage());
 
         // set a default button that will automatically listen to the Enter key
-        window.getRootPane().setDefaultButton(start_button);
+        window.getRootPane().setDefaultButton(pressEnterToContinueButton);
 
-        panel_title.add(label_title);
-        startButtonPanel.add(start_button);
-        container.add(panel_title);
-        container.add(startButtonPanel);
+        splash_panel.add(splash_label);
+        pressEnterToStartButton_panel.add(pressEnterToContinueButton);
+        container.add(splash_panel);
+        container.add(pressEnterToStartButton_panel);
     }
 
-    public JPanel getPanel_title() {
-        return panel_title;
+    public static JPanel getSplash_panel() {
+        return splash_panel;
     }
 
-    public void setPanel_title(JPanel panel_title) {
-        this.panel_title = panel_title;
-    }
-
-    public Container getContainer() {
+    public static Container getContainer() {
         return container;
     }
 
-    public void setContainer(Container container) {
-        this.container = container;
-    }
-
-    public JPanel getStartButtonPanel() {
-        return startButtonPanel;
-    }
-
-    public void setStartButtonPanel(JPanel startButtonPanel) {
-        this.startButtonPanel = startButtonPanel;
+    public static JPanel getStartButtonPanel() {
+        return pressEnterToStartButton_panel;
     }
 }

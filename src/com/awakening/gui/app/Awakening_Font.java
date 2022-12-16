@@ -10,4 +10,8 @@ public class Awakening_Font {
     public static Font getTitleFont(){
         return new Font("Times New Roman", Font.BOLD, 40);
     }
+
+    public static Font buttonSelectionFont(){
+        return new Font("Courier", Font.PLAIN, 25);
+    }
 }
