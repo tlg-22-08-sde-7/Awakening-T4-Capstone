@@ -25,7 +25,7 @@ public class Game {
     public static NPC npc = new NPC();
     private static final Prompter prompter = new Prompter(new Scanner(System.in));
     private List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "file-cabinet", "desk"));
-    private List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries"));
+    private List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries", "paper-clip"));
     private UI ui = new UI();
     private TextParser textParser = new TextParser();
     private List<Room> rooms = new ArrayList<>();
@@ -301,6 +301,22 @@ public class Game {
             }
             if (!isBatteriesInInventory) {
                 System.out.println("You do not have batteries in your inventory");
+            }
+        }
+        else if (noun.equalsIgnoreCase("paper-clip")) {
+            boolean isPaperClipInInventory = false;
+            for (Item.ItemsSetup paperClip : player.getInventory()) {
+                if (paperClip.getName().equalsIgnoreCase("paper-clip")) {
+                    isPaperClipInInventory = true;
+                    RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
+                    RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get("south"));
+
+                    nextRoom.setLocked(false);
+                    System.out.println("You have picked the lock");
+                }
+            }
+            if (!isPaperClipInInventory) {
+                System.out.println("You do not have paper-clip in your inventory");
             }
         }
 
