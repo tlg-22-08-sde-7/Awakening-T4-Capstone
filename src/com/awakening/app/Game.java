@@ -148,7 +148,7 @@ public class Game {
         }
     }
 
-    private void generateWorld() {
+    public void generateWorld() {
         try (Reader reader = new FileReader("resources/JSON/roomsListNew.json")) {
             world = new Gson().fromJson(reader, RoomMap.class);
             player.setCurrentRoom(world.getBasement());
