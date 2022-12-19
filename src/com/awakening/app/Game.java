@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 //Class that will control gameplay
@@ -28,7 +25,7 @@ public class Game {
     public static NPC npc = new NPC();
     private static final Prompter prompter = new Prompter(new Scanner(System.in));
     private List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "file-cabinet", "desk"));
-    private List<String> usableItems = new ArrayList<>(List.of("key-pad"));
+    private List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries"));
     private UI ui = new UI();
     private TextParser textParser = new TextParser();
     private List<Room> rooms = new ArrayList<>();
@@ -274,27 +271,60 @@ public class Game {
      * Provides functionality for use command from player.
      * noun should be approved outside this method
      *
-     * Method will need to be refactored if functionality goes beyond key-pad
-     *
      * @param noun - approved usable noun
      */
     private void use(String noun) {
-        // Keypad image
-        String keyEntry = prompter.prompt("Enter PIN\n > ");
 
-        if (keyEntry.equalsIgnoreCase("9537")) {
-            RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
-            RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get("east"));
+        if (noun.equalsIgnoreCase("key-pad")) {
+            // Keypad image
+            String keyEntry = prompter.prompt("Enter PIN\n > ");
 
-            nextRoom.setLocked(false);
-            System.out.println("The key-pad chimes and turns green.");
-        } else {
-            System.out.println("The key-pad buzzes and flashes red.");
+            if (keyEntry.equalsIgnoreCase("9537")) {
+                RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
+                RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get("east"));
+
+                nextRoom.setLocked(false);
+                System.out.println("The key-pad chimes and turns green.");
+            } else {
+                System.out.println("The key-pad buzzes and flashes red.");
+            }
+        }
+        else if (noun.equalsIgnoreCase("batteries")) {
+            boolean isBatteriesInInventory = false;
+            for (Item.ItemsSetup batteries : player.getInventory()) {
+                if (batteries.getName().equalsIgnoreCase("batteries")) {
+                    isBatteriesInInventory= true;
+                    String itemToCharge = prompter.prompt("What item do you want to charge?\n > ").toLowerCase();
+                    itemCharge(batteries, itemToCharge);
+                    break;
+                }
+            }
+            if (!isBatteriesInInventory) {
+                System.out.println("You do not have batteries in your inventory");
+            }
         }
 
         prompter.prompt("Hit enter to continue...");
     }
 
+    private void itemCharge(Item.ItemsSetup batteries, String itemToCharge) {
+        boolean isItemInInventory = false;
+
+        for (Item.ItemsSetup item : player.getInventory()) {
+            if (item.getName().equalsIgnoreCase(itemToCharge)) {
+                isItemInInventory = true;
+                item.setCharge(item.getCharge()+20);
+                batteries.setCharge(batteries.getCharge()-20);
+                if (batteries.getCharge()<20) {
+                    player.getInventory().remove(batteries);
+                }
+                break;
+            }
+        }
+        if (!isItemInInventory) {
+            System.out.println("That item is not in your inventory");
+        }
+    }
 
     private Item.ItemsSetup findItem(String noun) {
         for (Item.ItemsSetup roomItem : roomItems) {
