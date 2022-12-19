@@ -33,18 +33,45 @@ public class UI {
         }
 
         infoText += "Your items are: " + player.printInventory() + "\n";
-        for (Item.ItemsSetup camera : player.getInventory()) {
-            if (camera.getName().equalsIgnoreCase("camera")) {
-                infoText += "Your camera's charge is: " + camera.getCharge() + "\n";
-                break;
-            }
+
+        /*
+         * Will check if items with charge are in player's inventory.
+         * If in inventory, it will print the charge of each item.
+         */
+        Item.ItemsSetup camera = playerInventory(player, "camera");
+        if (player.getInventory().contains(camera)) {
+            infoText += "Your camera's charge is: " + camera.getCharge() + "\n";
         }
+        Item.ItemsSetup cellphone = playerInventory(player, "cellphone");
+        if (player.getInventory().contains(cellphone)) {
+            infoText += "Your cellphone's charge is: " + cellphone.getCharge() + "\n";
+        }
+        Item.ItemsSetup batteries = playerInventory(player, "batteries");
+        if (player.getInventory().contains(batteries)) {
+            infoText += "Your batteries' charge is: " + batteries.getCharge() + "\n";
+        }
+
         if (player.getCurrentRoom().getNpcName() != null) {
             infoText+= "There is a ghost here, their name is " + player.getCurrentRoom().getNpcName() + ".\n";
         }
         // display exits with room names
         infoText += "Exits : " + player.getCurrentRoom().getDirections().keySet() + ".\n";
         System.out.println(wrapFrame(infoText));
+    }
+
+    /**
+     * This method returns the item in inventory found, so it can be printed
+     * in displayGameInfo()
+     */
+    private Item.ItemsSetup playerInventory(Player player, String itemToPrint) {
+        Item.ItemsSetup result = null;
+
+        for (Item.ItemsSetup item : player.getInventory()) {
+            if (item.getName().equalsIgnoreCase(itemToPrint)) {
+                result = item;
+            }
+        }
+        return result;
     }
 
     public void displayGamePlayOptions() {
