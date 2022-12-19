@@ -274,10 +274,8 @@ public class Game {
      * @param noun - approved usable noun
      */
     private void use(String noun) {
-        boolean isBatteriesInInventory = false;
 
         if (noun.equalsIgnoreCase("key-pad")) {
-            isBatteriesInInventory = true;
             // Keypad image
             String keyEntry = prompter.prompt("Enter PIN\n > ");
 
@@ -292,6 +290,7 @@ public class Game {
             }
         }
         else if (noun.equalsIgnoreCase("batteries")) {
+            boolean isBatteriesInInventory = false;
             for (Item.ItemsSetup batteries : player.getInventory()) {
                 if (batteries.getName().equalsIgnoreCase("batteries")) {
                     isBatteriesInInventory= true;
@@ -300,10 +299,9 @@ public class Game {
                     break;
                 }
             }
-        }
-
-        if (!isBatteriesInInventory) {
-            System.out.println("You do not have batteries in your inventory");
+            if (!isBatteriesInInventory) {
+                System.out.println("You do not have batteries in your inventory");
+            }
         }
 
         prompter.prompt("Hit enter to continue...");
