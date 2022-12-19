@@ -194,6 +194,22 @@ public class CommandValidation {
                     commandResult = "You do not have batteries in your inventory";
                 }
             }
+            else if (noun.equalsIgnoreCase("paper-clip")) {
+                boolean isPaperClipInInventory = false;
+                for (Item.ItemsSetup paperClip : player.getInventory()) {
+                    if (paperClip.getName().equalsIgnoreCase("paper-clip")) {
+                        isPaperClipInInventory = true;
+                        RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
+                        RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get("south"));
+
+                        nextRoom.setLocked(false);
+                        commandResult = "You have picked the lock";
+                    }
+                }
+                if (!isPaperClipInInventory) {
+                    commandResult = "You do not have paper-clip in your inventory";
+                }
+            }
         }
         else {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
