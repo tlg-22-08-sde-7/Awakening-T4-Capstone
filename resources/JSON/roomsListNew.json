@@ -4,7 +4,7 @@
     "directions": {
       "south": "Morgue"
     },
-    "description": "Place where the player spawns",
+    "description": "You wake up on the floor in a dark place. You feel disoriented  and  cannot recall how you got here. As you look around, you see a few rays light filtering through an opening.",
     "isLocked": false,
     "items": [
       "camera",
@@ -17,7 +17,7 @@
       "north": "Basement",
       "south": "Emergency Room"
     },
-    "description": "Patient Records stored here. You see a file-cabinet that you may look into",
+    "description": "The room is pitch dark, except for a ray of light that filters through some opening. It is difficult to tell where the light is coming from, but it allows you to see  outlines of shapes.",
     "isLocked": false,
     "items": [
     ],
@@ -31,7 +31,7 @@
       "east": "Hallway",
       "west": "Office"
     },
-    "description": "Emergencies happen here",
+    "description": "You enter the emergency room. Everything is mostly stripped away besides a couple of supplies on the floor.",
     "isLocked": false,
     "items": [
       "bandages"
@@ -53,7 +53,7 @@
     "directions": {
       "north": "Emergency Room"
     },
-    "description": "Entrance and Exit this way, but its locked... A paper-clip will help you pick the lock",
+    "description": "Entrance and Exit this way, but its locked...",
     "isLocked": true,
     "items": [],
     "npcName": "The Angry Specter"
@@ -64,7 +64,7 @@
       "east": "Patient Room",
       "west": "Emergency Room"
     },
-    "description": "This way to the patient room",
+    "description": "You are in a hallway, there are several doors, one that is locked, however you notice that one of the doors is different. This door has a mechanical keypad; you need a combination in order to open this door.",
     "isLocked": false,
     "items": ["key-pad"]
   },
@@ -73,7 +73,7 @@
     "directions": {
       "west": "Hallway"
     },
-    "description": "Patients are treated here",
+    "description": "You enter a medium size room, it contains a bed, some health monitoring equipment and a side table.",
     "isLocked": true,
     "items": [
       "press-pass",

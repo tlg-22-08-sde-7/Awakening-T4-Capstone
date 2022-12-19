@@ -1,13 +1,13 @@
 {
     "ghost1":{
         "name":"The Haunted Librarian",
-        "description":"Once a kind and studious librarian, the Haunted Librarian was killed in a tragic accident and now haunts the library, seeking to protect its books and knowledge from those who would do them harm.",
+        "description":"I was once a kind and studious librarian, but was the monster's first victim. As your eyes adjust to the darkness, you will notice a file-cabinet. It contains files that may aid you in your escape. Don't become another victim like me.",
         "health":10,
         "attack":5
     },
     "ghost2":{
         "name":"The Wandering Spirit",
-        "description":"This ghostly figure wanders the earth, never staying in one place for long. It is said that it is searching for something, or someone, but no one knows for sure.",
+        "description":"I can not leave this hospital and wander through each room. There is locked door that I have not been able to go through. I hope you are able to pick the lock so I can try to leave this horrendous place.",
         "health":12,
         "attack":6
     },
@@ -19,7 +19,7 @@
     },
     "ghost4":{
         "name":"The Lost Soul",
-        "description":"A sad and lonely figure, the Lost Soul wanders the earth, unable to find its way to the afterlife. It is said to be the ghost of a child who died before its time, and is in need of guidance to move on.",
+        "description":"I am lonely and unable to find my way to the afterlife. You will find my press-pass and a key to the front door. The key will aid you in your escape. I beg you to take the press-pass which has my picture. Hopefully this will let continue my journey to the afterlife.",
         "health":8,
         "attack":3
     }
