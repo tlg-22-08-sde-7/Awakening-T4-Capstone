@@ -33,7 +33,7 @@
   },
   "batteries": {
     "name": "batteries",
-    "description": "Old batteries... Hope they have some juice left.",
+    "description": "These batteries can help me recharge my camera and cellphone",
     "startLocation": "Desk",
     "specialItemFlag": "false",
     "charge": "100",
@@ -41,8 +41,8 @@
   },
   "patientFile": {
     "name": "file",
-    "description": "You read the file... Patient is Jessica Smith. Held for mental health examination. Room 103. Door code is ####. The rest is illegible. Maybe her room will have an answer?",
-    "startLocation": "Filing Cabinet",
+    "description": "You read the file... Patient is Jessica Smith. Held for mental health examination. Room 103. Door code is 9537. The rest is illegible. Maybe her room will have an answer?",
+    "startLocation": "",
     "specialItemFlag": "false",
     "charge": "0",
     "attackPoints": "0"
@@ -65,7 +65,7 @@
   },
   "paperClip": {
     "name": "paper-clip",
-    "description": "Paper clip. All I need to open simple locks... How do I know this?",
+    "description": "This paper-clip will come in handy if I need to pick a locked door",
     "startLocation": "Desk",
     "specialItemFlag": "true",
     "charge": "0",

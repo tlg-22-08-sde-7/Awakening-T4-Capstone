@@ -1,11 +1,12 @@
 package com.awakening.app;
 
+import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
-import com.awakening.app.game.Room;
-import com.awakening.app.TextParser;
 import com.awakening.app.game.RoomMap;
-import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,9 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 
-class UI {
+public class UI {
     private TextParser textParser = new TextParser();
-    public void displayGameInfo(Player player) {
+
+    public String displayGameInfo(Player player) {
         String infoText = "";
         String currentRoom = player.getCurrentRoom().getName();
         List<String> containers = new ArrayList<>(Arrays.asList("Desk", "Filing Cabinet", "Key Pad"));
@@ -26,40 +28,91 @@ class UI {
         }
         else {
             infoText += "You are in the " + player.getCurrentRoom().getName() + ".\n";
+            infoText += player.getCurrentRoom().getDescription() + "\n";
             infoText += "In this room you see:" + player.getCurrentRoom().getItems() + ".\n";
         }
 
         infoText += "Your items are: " + player.printInventory() + "\n";
+
+        /*
+         * Will check if items with charge are in player's inventory.
+         * If in inventory, it will print the charge of each item.
+         */
+        Item.ItemsSetup camera = playerInventory(player, "camera");
+        if (player.getInventory().contains(camera)) {
+            infoText += "Your camera's charge is: " + camera.getCharge() + "\n";
+        }
+        Item.ItemsSetup cellphone = playerInventory(player, "cellphone");
+        if (player.getInventory().contains(cellphone)) {
+            infoText += "Your cellphone's charge is: " + cellphone.getCharge() + "\n";
+        }
+        Item.ItemsSetup batteries = playerInventory(player, "batteries");
+        if (player.getInventory().contains(batteries)) {
+            infoText += "Your batteries' charge is: " + batteries.getCharge() + "\n";
+        }
+
         if (player.getCurrentRoom().getNpcName() != null) {
             infoText+= "There is a ghost here, their name is " + player.getCurrentRoom().getNpcName() + ".\n";
         }
         // display exits with room names
         infoText += "Exits : " + player.getCurrentRoom().getDirections().keySet() + ".\n";
         System.out.println(wrapFrame(infoText));
+
+        return infoText;
+
     }
+
+    /**
+     * This method returns the item in inventory found, so it can be printed
+     * in displayGameInfo()
+     */
+    private Item.ItemsSetup playerInventory(Player player, String itemToPrint) {
+        Item.ItemsSetup result = null;
+
+        for (Item.ItemsSetup item : player.getInventory()) {
+            if (item.getName().equalsIgnoreCase(itemToPrint)) {
+                result = item;
+            }
+        }
+        return result;
+    }
+
     public void displayGamePlayOptions() {
         System.out.println("Your gameplay options are:\n" +
                 "A two word command is expected: 'Verb + Noun'\n" +
                 "Verb:" + textParser.displayAllowedCommands() +
                 "\nNoun:" + textParser.displayAllowedNouns());
-
     }
-    public static void splashScreen() {
-        String welcome = null;
+
+    public String splashScreen() {
+        String welcome = "";
         try {
-            welcome = Files.readString(Path.of("resources/ASCII/banner.txt"));
+            welcome = Files.readString(Path.of("resources/ASCII/banner_gui.txt"));
             System.out.println(welcome);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return welcome;
     }
 
-    public void displayMap(){
-        String map = null;
+    public void displayMap(RoomMap.RoomLayout currentRoom){
+        File loadTxtMap = new File("resources/ASCII/hospitalLayoutASCII.txt");
         try{
-            map = Files.readString(Path.of("resources/ASCII/hospitalLayoutASCII.txt"));
-            System.out.println(map);
-        }catch (IOException e){
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(loadTxtMap));
+            StringBuilder sb_map = new StringBuilder();
+            // String[] roomName = currentRoom.getName().split(" ");
+
+            String scannedSingleLine;
+            while((scannedSingleLine = bufferedReader.readLine()) != null){
+                if (scannedSingleLine.contains(currentRoom.getName().toUpperCase())){
+                    // replace the first word with the same content with different color
+                    scannedSingleLine = scannedSingleLine.replace(currentRoom.getName().toUpperCase(), TextParser.BLUE + currentRoom.getName().toUpperCase() + TextParser.RESET);
+                }
+                sb_map.append(scannedSingleLine).append("\n");
+            }
+            System.out.println(sb_map);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -75,7 +128,7 @@ class UI {
             }
         }
 
-        String frame = "";
+        String frame;
         String top = "╔";
         String textBody = "";
         String bottom = "╚";

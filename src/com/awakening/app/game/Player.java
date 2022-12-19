@@ -6,7 +6,7 @@ import java.util.List;
 public class Player {
     private String name = "";
     private RoomMap.RoomLayout currentRoom;
-    private List<Item.ItemsSetup> inventory = new ArrayList<Item.ItemsSetup>();
+    private List<Item.ItemsSetup> inventory = new ArrayList<>();
 
 
     public void addToInventory(Item.ItemsSetup item) {
@@ -34,7 +34,7 @@ public class Player {
         String inventory = "";
 
         for(Item.ItemsSetup item : getInventory() ){
-            inventory += item.getName() + " ";
+            inventory += item.getName() + ", ";
         }
 
         return inventory;
