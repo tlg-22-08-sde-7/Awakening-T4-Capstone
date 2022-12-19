@@ -1,5 +1,7 @@
 package com.awakening.gui.app;
 
+import com.awakening.app.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,9 +11,13 @@ public class GameStart {
     private static JPanel splash_panel;
     private static JPanel pressEnterToStartButton_panel;
     private JLabel splash_label;
+
     private JButton pressEnterToContinueButton;
 
     public GameStart(){
+
+        Game game = new Game();
+        game.generateWorld();
 
         window = new JFrame();
         window.setSize(900, 1200);
