@@ -18,7 +18,7 @@ import java.util.List;
 public class UI {
     private TextParser textParser = new TextParser();
 
-    public void displayGameInfo(Player player) {
+    public String displayGameInfo(Player player) {
         String infoText = "";
         String currentRoom = player.getCurrentRoom().getName();
         List<String> containers = new ArrayList<>(Arrays.asList("Desk", "Filing Cabinet", "Key Pad"));
@@ -57,6 +57,9 @@ public class UI {
         // display exits with room names
         infoText += "Exits : " + player.getCurrentRoom().getDirections().keySet() + ".\n";
         System.out.println(wrapFrame(infoText));
+
+        return infoText;
+
     }
 
     /**
