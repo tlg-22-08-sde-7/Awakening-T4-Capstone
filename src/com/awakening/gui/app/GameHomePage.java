@@ -18,6 +18,7 @@ public class GameHomePage {
     private static UI ui = new UI();
     private static JButton gameStartButton;
 
+
     public static void createHomePage(){
         GameStart.getSplash_panel().setVisible(false);
         GameStart.getStartButtonPanel().setVisible(false);
@@ -32,10 +33,9 @@ public class GameHomePage {
         homePageTextArea.setForeground(Color.green);
         homePageTextArea.setFont(Awakening_Font.getNormalFont());
         homePageTextArea.setLineWrap(true);
-
         homePageTextPanel.add(homePageTextArea);
-        GameStart.getContainer().add(homePageTextPanel);
 
+        GameStart.getContainer().add(homePageTextPanel);
         // button
         gameStartButtonPanel = new JPanel();
         gameStartButtonPanel.setBounds(250, 500, 400, 200);
@@ -59,5 +59,13 @@ public class GameHomePage {
 
     public static JButton getGameStartButton() {
         return gameStartButton;
+    }
+
+    public static JPanel getGameStartButtonPanel() {
+        return gameStartButtonPanel;
+    }
+
+    public static JPanel getHomePageTextPanel() {
+        return homePageTextPanel;
     }
 }
