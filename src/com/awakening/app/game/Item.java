@@ -15,6 +15,8 @@ public class Item {
     private Item.CellPhone cellPhone;
     private Item.PaperClip paperClip;
     private Item.Camera camera;
+    private Item.Table table;
+    private Item.Desk desk;
 
 
 
@@ -29,6 +31,8 @@ public class Item {
         itemList.add(cellPhone);
         itemList.add(paperClip);
         itemList.add(camera);
+        itemList.add(table);
+        itemList.add(desk);
         return itemList;
     }
 
@@ -64,6 +68,12 @@ public class Item {
         }
         if(itemName.equals(camera.getName())){
             return camera;
+        }
+        if(itemName.equals(table.getName())) {
+            return table;
+        }
+        if(itemName.equals(desk.getName())) {
+            return desk;
         }
         else
             return null;
@@ -139,6 +149,22 @@ public class Item {
 
     public void setCamera(Item.Camera camera) {
         this.camera = camera;
+    }
+
+    public Item.Table getTable() {
+        return table;
+    }
+
+    public void setTable (Item.Table table) {
+        this.table = table;
+    }
+
+    public void setDesk (Item.Desk desk) {
+        this.desk = desk;
+    }
+
+    public Item.Desk getDesk() {
+        return desk;
     }
 
     public static class ItemsSetup{
@@ -249,6 +275,16 @@ public class Item {
 
     public  static class Camera extends Item.ItemsSetup {
         public Camera() {
+        }
+    }
+
+    public static class Table extends Item.ItemsSetup {
+        public Table() {
+        }
+    }
+
+    public static class Desk extends Item.ItemsSetup {
+        public Desk() {
         }
     }
 

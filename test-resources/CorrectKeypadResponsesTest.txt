@@ -1,6 +1,1 @@
-y
-go south
-go south
-go east
-use key-pad
 9537
