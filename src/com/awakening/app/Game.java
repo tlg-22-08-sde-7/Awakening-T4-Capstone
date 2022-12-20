@@ -6,8 +6,6 @@ import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
 import com.awakening.app.game.Room;
 import com.awakening.app.game.RoomMap;
-import com.awakening.gui.app.GameStart;
-import com.awakening.gui.app.GameStartButtonHandler;
 import com.google.gson.Gson;
 
 import java.io.*;

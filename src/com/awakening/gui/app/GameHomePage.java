@@ -47,7 +47,7 @@ public class GameHomePage {
         gameStartButton.setForeground(Color.lightGray);
         gameStartButton.setFont(Awakening_Font.buttonSelectionFont());
         gameStartButton.setFocusPainted(false);
-        gameStartButton.addActionListener(e -> GameStartButtonHandler.showTextPage());
+        gameStartButton.addActionListener(e -> GameManager.beginGameManager());
 
         gameStartButtonPanel.add(gameStartButton);
         GameStart.getContainer().add(gameStartButtonPanel);
