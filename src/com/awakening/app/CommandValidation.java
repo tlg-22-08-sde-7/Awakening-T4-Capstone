@@ -308,19 +308,7 @@ public class CommandValidation {
         }
     }
 
-
-    private static String itemFinder(String noun, Player player) {
-        for (Item.ItemsSetup item : roomItems) {
-            if (item.getName().equalsIgnoreCase(noun)) {
-                player.addToInventory(item);
-                return "You have picked up " + item.getName();
-            }
-        }
-
-        return noun + " is not in room.";
-    }
-
-    public static Item.ItemsSetup findItem(String noun) {
+    private static Item.ItemsSetup findItem(String noun) {
         for (Item.ItemsSetup roomItem : roomItems) {
             if (noun.equals(roomItem.getName())) {
                 return roomItem;
