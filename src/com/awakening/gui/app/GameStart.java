@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameStart {
-    private JFrame window;
+    private static JFrame window;
     private static Container container;
     private static JPanel splash_panel;
     private static JPanel pressEnterToStartButton_panel;
@@ -63,5 +63,9 @@ public class GameStart {
 
     public static JPanel getStartButtonPanel() {
         return pressEnterToStartButton_panel;
+    }
+
+    public static JFrame getWindow() {
+        return window;
     }
 }
