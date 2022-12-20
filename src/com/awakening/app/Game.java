@@ -6,6 +6,8 @@ import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
 import com.awakening.app.game.Room;
 import com.awakening.app.game.RoomMap;
+import com.awakening.gui.app.GameStart;
+import com.awakening.gui.app.GameStartButtonHandler;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -34,12 +36,10 @@ public class Game {
         boolean gameStart = false;
         String confirmation;
 
-        ui.splashScreen();
-
+         ui.splashScreen();
 
         while (!gameStart) {
             String playGame = prompter.prompt("Do you want to play Awakening? [Y/N]\n > ").toLowerCase().trim();
-
 
             switch (playGame) {
                 case ("y"):
@@ -68,35 +68,41 @@ public class Game {
         generateWorld();
 
         while (!gameOver) {
-            ui.clearConsole();
-            ui.displayGameInfo(player);
+             ui.clearConsole();
+             ui.displayGameInfo(player);
 
-            String response = prompter.prompt("What do you want to do?\n > ");
-            List<String> move = textParser.parseInput(response);
-            while ("invalid".equals(move.get(0))) {
-                response = prompter.prompt("What do you want to do?\n > ");
-                move = textParser.parseInput(response);
-            }
-
-            if ("quit".equals(move.get(0))) {
-                confirmation = prompter.prompt("Are you sure? [Y/N]\n > ").toLowerCase().trim();
-                switch (confirmation) {
-                    case ("y"):
-                    case ("yes"):
-                        gameOver = true;
-                        break;
-
-                    case ("n"):
-                    case ("no"):
-                        break;
-                }
-            } else if ("help".equals(move.get(0))) {
-                ui.displayGamePlayOptions();
-                prompter.prompt("Hit enter to continue...");
-            } else {
-                executeCommand(move);
-            }
+            commandHandler();
             gameStateCheck();
+        }
+    }
+
+    private void commandHandler() {
+        String confirmation;
+        String response = prompter.prompt("What do you want to do?\n > ");
+
+        List<String> move = textParser.parseInput(response);
+        while ("invalid".equals(move.get(0))) {
+            response = prompter.prompt("What do you want to do?\n > ");
+            move = textParser.parseInput(response);
+        }
+
+        if ("quit".equals(move.get(0))) {
+            confirmation = prompter.prompt("Are you sure? [Y/N]\n > ").toLowerCase().trim();
+            switch (confirmation) {
+                case ("y"):
+                case ("yes"):
+                    gameOver = true;
+                    break;
+
+                case ("n"):
+                case ("no"):
+                    break;
+            }
+        } else if ("help".equals(move.get(0))) {
+            ui.displayGamePlayOptions();
+            prompter.prompt("Hit enter to continue...");
+        } else {
+            executeCommand(move);
         }
     }
 
@@ -120,16 +126,13 @@ public class Game {
         }
     }
 
-    private void executeCommand(List<String> move) {
+    public void executeCommand(List<String> move) {
         // execute command based on verb
         String verb = move.get(0);
         String noun = move.get(1);
         switch (verb) {
             case "go":
                 System.out.println(CommandValidation.move(noun, player, world));
-                break;
-            case "quit":
-                System.out.println("Thanks for playing!");
                 break;
             case "look":
                 System.out.println(CommandValidation.look(noun, player, ui, npc, world));

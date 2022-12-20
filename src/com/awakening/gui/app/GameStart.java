@@ -15,10 +15,6 @@ public class GameStart {
     private JButton pressEnterToContinueButton;
 
     public GameStart(){
-
-        Game game = new Game();
-        game.generateWorld();
-
         window = new JFrame();
         window.setSize(900, 1200);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
