@@ -1,7 +1,7 @@
 {
     "ghost1":{
         "name":"The Haunted Librarian",
-        "description":"I was once a kind and studious librarian, but was the monster's first victim. As your eyes adjust to the darkness, you will notice a file-cabinet. It contains files that may aid you in your escape. Don't become another victim like me.",
+        "description":"I was once a kind and studious librarian, but was the monster's first victim. The file holds the key... It will aid you in your escape. Don't become another victim like me.",
         "health":10,
         "attack":5
     },
