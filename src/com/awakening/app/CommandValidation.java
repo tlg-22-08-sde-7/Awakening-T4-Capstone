@@ -5,6 +5,7 @@ import com.awakening.app.game.Item;
 import com.awakening.app.game.NPC;
 import com.awakening.app.game.Player;
 import com.awakening.app.game.RoomMap;
+import com.awakening.gui.app.GameHomePage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,16 +31,20 @@ public class CommandValidation {
     public static String move(String direction, Player player, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get(direction));
+        UI ui = new UI();
         String commandResult;
 
         if (nextRoom == null) {
-            commandResult = TextParser.RED + "You can't go that way" + TextParser.RESET;
+//            commandResult = TextParser.RED + "You can't go that way" + TextParser.RESET;
+            commandResult ="You can't go that way";
         } else if (nextRoom.isLocked()) {
-            commandResult = TextParser.RED + "The door is locked" + TextParser.RESET;
+//            commandResult = TextParser.RED + "The door is locked" + TextParser.RESET;
+            commandResult = "The door is locked";
         } else {
-            player.setCurrentRoom(nextRoom);
             commandResult = "You have moved: " + direction;
+            player.setCurrentRoom(nextRoom);
         }
+        GameHomePage.getHomePageTextArea().setText(commandResult+"\n\n"+ui.displayGameInfo(Game.player));
 
         return commandResult;
     }

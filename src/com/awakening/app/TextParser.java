@@ -1,5 +1,7 @@
 package com.awakening.app;
 
+import com.awakening.gui.app.GameHomePage;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,9 +46,10 @@ public class TextParser {
     public List<String> parseInput(String input) {
         List<String> result = new ArrayList<>(Arrays.asList(input.toLowerCase().trim().split(" ")));
 
-
+        UI ui = new UI();
         String verb = result.get(0);
         String noun;
+        String message = "";
 
         if (result.size() == 1 && "help".equals(verb)) {
             return result;
@@ -57,7 +60,9 @@ public class TextParser {
             System.out.println(RED + "Command not recognized. Only two word commands are recognized.\n" + RESET); //+
 //                    "First word must be a verb from the following list: " + displayAllowedCommands() +
 //                    "\nSecond word must be a noun from the following list: " + displayAllowedNouns());
+            message = "Command not recognized. Only two word commands are recognized.\n";
             result.set(0, "invalid");
+            GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Game.player));
             return result;
         }
         if (!allowedCommands.contains(verb) || !allowedNouns.contains(result.get(1))) {
@@ -66,13 +71,18 @@ public class TextParser {
         }
         if (!allowedCommands.contains(verb)) {
             System.out.println(RED + "First word in command not recognized" + RESET);
+            message = "First word in command not recognized";
             result.set(0, "invalid");
 
         }
         if (!allowedNouns.contains(result.get(1))) {
             System.out.println(RED + "Second word in command not recognized" + RESET);
+            message = "Second word in command not recognized";
             result.set(0, "invalid");
         }
+
+        GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Game.player));
+
         return result;
     }
 }
