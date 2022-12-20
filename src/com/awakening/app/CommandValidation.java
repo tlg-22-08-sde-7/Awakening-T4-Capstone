@@ -14,7 +14,7 @@ import java.util.List;
  * Class provides validation checks to player commands and actions valid commands
  */
 public class CommandValidation {
-    private static List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "file-cabinet", "desk"));
+    private static List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "desk", "table"));
     private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries"));
     public static List<Item.ItemsSetup> roomItems;
 
@@ -51,10 +51,11 @@ public class CommandValidation {
      * @param player - Player object for game data
      * @param ui - UI object for specific UI visible adjustments
      * @param npc - NPC object for ghost objects
+     * @param world - RoomMap object for game world data
      *
      * @return String - result of command
      */
-    public static String look(String noun, Player player, UI ui, NPC npc) {
+    public static String look(String noun, Player player, UI ui, NPC npc, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         String commandResult = "";
 
@@ -82,23 +83,92 @@ public class CommandValidation {
                 }
             }
         }
-        else if (noun.equalsIgnoreCase("file-cabinet")) {
-            String fileCabinetItems = "There are patient files stored here. There is an interesting file that you can get";
-            commandResult = ui.wrapFrame(fileCabinetItems);
-        }
-        else if (noun.equalsIgnoreCase("desk")) {
-            String deskItems = "The desk has batteries and paper-clip. You can get batteries and/or get paper-clip";
-            commandResult = ui.wrapFrame(deskItems);
-        }
         else if (noun.equals("map")) {
             commandResult = ui.displayMap(player.getCurrentRoom());
-        } else if (approvedItems.contains(noun) && currentRoom.getItems().contains(noun)) {
+        }
+        else if (approvedItems.contains(noun) && currentRoom.getItems().contains(noun)) {
             String itemDesc;
             Item.ItemsSetup item = findItem(noun);
             assert item != null;
             itemDesc = item.getDescription();
-            commandResult = itemDesc;
-        } else if (approvedItems.contains(noun) && player.printInventory().contains(noun)) {
+
+            if(noun.equalsIgnoreCase("table")) {
+                // Validate player hasn't already spawned hidden items
+                List<String> currentRoomItems = world.getPatientRoom().getItems();
+                boolean itemSpawned = false;
+
+                if (!currentRoomItems.contains("key")) {
+                    for (Item.ItemsSetup playerItem : player.getInventory()) {
+                        if (playerItem.getName().equalsIgnoreCase("key")) {
+                            itemSpawned = true;
+                            break;
+                        }
+                    }
+                    if (!itemSpawned) {
+                        world.getPatientRoom().addItem("key");
+                    }
+                }
+
+                itemSpawned = false; //reset for next check
+                if (!currentRoomItems.contains("press-pass")) {
+                    for (Item.ItemsSetup playerItem : player.getInventory()) {
+                        if (playerItem.getName().equalsIgnoreCase("press-pass")) {
+                            itemSpawned = true;
+                            break;
+                        }
+                    }
+                    if (!itemSpawned) {
+                        world.getPatientRoom().addItem("press-pass");
+                    }
+                }
+            }
+            else if (noun.equalsIgnoreCase("desk")) {
+                // Validate player hasn't already spawned hidden items
+                List<String> currentRoomItems = world.getPatientRoom().getItems();
+                boolean itemSpawned = false;
+
+                if (!currentRoomItems.contains("batteries")) {
+                    for (Item.ItemsSetup playerItem : player.getInventory()) {
+                        if (playerItem.getName().equalsIgnoreCase("batteries")) {
+                            itemSpawned = true;
+                            break;
+                        }
+                    }
+                    if (!itemSpawned) {
+                        world.getOffice().addItem("batteries");
+                    }
+                }
+
+                itemSpawned = false; //reset for next check
+                if (!currentRoomItems.contains("paper-clip")) {
+                    for (Item.ItemsSetup playerItem : player.getInventory()) {
+                        if (playerItem.getName().equalsIgnoreCase("paper-clip")) {
+                            itemSpawned = true;
+                            break;
+                        }
+                    }
+                    if (!itemSpawned) {
+                        world.getOffice().addItem("paper-clip");
+                    }
+                }
+
+                itemSpawned = false; //reset for next check
+                if (!currentRoomItems.contains("file")) {
+                    for (Item.ItemsSetup playerItem : player.getInventory()) {
+                        if (playerItem.getName().equalsIgnoreCase("file")) {
+                            itemSpawned = true;
+                            break;
+                        }
+                    }
+                    if (!itemSpawned) {
+                        world.getOffice().addItem("file");
+                    }
+                }
+            }
+
+            commandResult = ui.wrapFrame(itemDesc);
+        }
+        else if (approvedItems.contains(noun) && player.printInventory().contains(noun)) {
             String itemDesc;
             Item.ItemsSetup item = findItem(noun);
             assert item != null;
@@ -130,7 +200,7 @@ public class CommandValidation {
             Item.ItemsSetup item = findItem(noun);
 
             if (item == null) {
-                commandResult = noun + " is not in " + currentRoom;
+                commandResult = noun + " is not in " + currentRoom.getName();
             } else if (itemList.contains(noun)) {
                 player.addToInventory(item);
                 for (int i = 0; i < itemList.size(); i++) {
@@ -141,8 +211,9 @@ public class CommandValidation {
                         commandResult = "You have picked up " + noun;
                     }
                 }
-            } else if (noun.equalsIgnoreCase("file") || noun.equalsIgnoreCase("paper-clip") || noun.equalsIgnoreCase("batteries")) {
-                commandResult = itemFinder(noun, player);
+            }
+            else {
+                commandResult = noun + " is not in " + currentRoom.getName();
             }
         }
         else {
@@ -235,18 +306,6 @@ public class CommandValidation {
         if (!isItemInInventory) {
             System.out.println("That item is not in your inventory");
         }
-    }
-
-
-    private static String itemFinder(String noun, Player player) {
-        for (Item.ItemsSetup item : roomItems) {
-            if (item.getName().equalsIgnoreCase(noun)) {
-                player.addToInventory(item);
-                return "You have picked up " + item.getName();
-            }
-        }
-
-        return noun + " is not in room.";
     }
 
     private static Item.ItemsSetup findItem(String noun) {

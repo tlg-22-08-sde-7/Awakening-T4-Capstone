@@ -180,6 +180,10 @@ public class RoomMap {
         public void setNpcName(String npcName) {
             this.npcName = npcName;
         }
+
+        public void addItem(String item) {
+            items.add(item);
+        }
     }
 
     public static class Basement extends RoomLayout {

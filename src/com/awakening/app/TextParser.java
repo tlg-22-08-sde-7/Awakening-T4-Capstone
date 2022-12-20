@@ -19,7 +19,7 @@ public class TextParser {
     public static final String WHITE = "\033[0;37m";   // WHITE
 
     // Allowed Nouns
-    private List<String> allowedNouns = new ArrayList<>(Arrays.asList("map", "north", "south", "east", "west", "ghost", "item", "camera","cellphone","key","journal","batteries","file","bandages","press-pass","paper-clip", "key-pad", "file-cabinet", "desk"));
+    private List<String> allowedNouns = new ArrayList<>(Arrays.asList("map", "north", "south", "east", "west", "ghost", "item", "camera","cellphone","key","journal","batteries","file","bandages","press-pass","paper-clip", "key-pad", "desk", "table"));
 
     // Allowed Commands
     private List<String> allowedCommands = new ArrayList<>(Arrays.asList("go", "get", "look", "quit", "use"));

@@ -4,7 +4,7 @@
     "directions": {
       "south": "Morgue"
     },
-    "description": "You wake up on the floor in a dark place. You feel disoriented  and  cannot recall how you got here. As you look around, you see a few rays light filtering through an opening.",
+    "description": "You wake up on the floor in a dark place. You feel disoriented and cannot recall how you got here. As you look around, you see a few rays light filtering through an opening.",
     "isLocked": false,
     "items": [
       "camera",
@@ -17,7 +17,7 @@
       "north": "Basement",
       "south": "Emergency Room"
     },
-    "description": "The room is pitch dark, except for a ray of light that filters through some opening. It is difficult to tell where the light is coming from, but it allows you to see  outlines of shapes.",
+    "description": "The room is pitch dark, except for a ray of light that filters through some opening. It is difficult to tell where the light is coming from, but it allows you to see outlines of shapes.",
     "isLocked": false,
     "items": [
     ],
@@ -43,9 +43,10 @@
     "directions": {
       "east": "Emergency Room"
     },
-    "description": "Off to the right you notice a desk with items of interest. You may look desk",
+    "description": "A supervisor's office, off to the right you notice a desk with items of interest.",
     "isLocked": false,
     "items": [
+      "desk"
     ]
   },
   "frontDesk": {
@@ -76,8 +77,7 @@
     "description": "You enter a medium size room, it contains a bed, some health monitoring equipment and a side table.",
     "isLocked": true,
     "items": [
-      "press-pass",
-      "key"
+      "table"
     ],
     "npcName": "The Lost Soul"
   }

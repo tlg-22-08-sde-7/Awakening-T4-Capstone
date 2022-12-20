@@ -132,7 +132,7 @@ public class Game {
                 System.out.println("Thanks for playing!");
                 break;
             case "look":
-                System.out.println(CommandValidation.look(noun, player, ui, npc));
+                System.out.println(CommandValidation.look(noun, player, ui, npc, world));
                 prompter.prompt("Hit enter to continue...");
                 break;
             case "get":
@@ -177,6 +177,24 @@ public class Game {
         }
 
         CommandValidation.roomItems = roomItems;
+    }
+
+    /**
+     * Used for testing purposes, no usage in normal dev
+     *
+     * @return - RoomMap for world data
+     */
+    public RoomMap getWorld() {
+        return world;
+    }
+
+    /**
+     * Used for testing purposes, no usage in normal dev
+     *
+     * @return - NPC for npc data
+     */
+    public NPC getNpc() {
+        return npc;
     }
 }
 
