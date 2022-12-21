@@ -28,7 +28,7 @@ public class GameHomePage {
         homePageTextPanel.setBackground(Color.black);
 
         homePageTextArea = new JTextArea(ui.splashScreen());
-        homePageTextArea.setBounds(50,0,600,250);
+        homePageTextArea.setBounds(50,0,800,350);
         homePageTextArea.setBackground(Color.black);
         homePageTextArea.setForeground(Color.green);
         homePageTextArea.setFont(Awakening_Font.getNormalFont());

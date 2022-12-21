@@ -40,24 +40,23 @@ public class Game {
             String playGame = prompter.prompt("Do you want to play Awakening? [Y/N]\n > ").toLowerCase().trim();
 
             switch (playGame) {
-                case ("y"):
-                case ("yes"):
+                case ("y"), ("yes") -> {
                     System.out.println();
                     ui.displayGamePlayOptions();
                     gameStart = true;
-                    break;
-                case ("n"):
-                case ("no"):
+                }
+                case ("n"), ("no") -> {
                     confirmation = prompter.prompt("Are you sure? [Y/N]\n > ").toLowerCase().trim();
                     if (!"y".equals(confirmation)) {
                         break;
                     }
                     gameOver = true;
                     gameStart = true;
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println(TextParser.RED + "Invalid input, please provide [Y] for Yes, [N] for No." + TextParser.RESET);
                     System.out.println();
+                }
             }
             //This is to add a line, with the intention of spacing out the text fields of U/I and game text
             System.out.println();
@@ -129,23 +128,17 @@ public class Game {
         String verb = move.get(0);
         String noun = move.get(1);
         switch (verb) {
-            case "go":
-                System.out.println(CommandValidation.move(noun, player, world));
-                break;
-            case "look":
-                System.out.println(CommandValidation.look(noun, player, ui, npc, world));
-                prompter.prompt("Hit enter to continue...");
-                break;
-            case "get":
-                System.out.println(CommandValidation.pickUp(noun, player));
-                prompter.prompt("Hit enter to continue...");
-                break;
-            case "use":
-                System.out.println(CommandValidation.use(noun, player, prompter, world));
-                prompter.prompt("Hit enter to continue...");
-                break;
-            default:
-                System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
+            case "go" -> System.out.println(CommandValidation.move(noun, player, world));
+            case "look" -> System.out.println(CommandValidation.look(noun, player, ui, npc, world));
+
+            // prompter.prompt("Hit enter to continue...");
+            case "get" -> System.out.println(CommandValidation.pickUp(noun, player));
+
+            // prompter.prompt("Hit enter to continue...");
+            case "use" -> System.out.println(CommandValidation.use(noun, player, prompter, world));
+
+            // prompter.prompt("Hit enter to continue...");
+            default -> System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);
         }
     }
 

@@ -5,8 +5,7 @@ import com.awakening.app.TextParser;
 import com.awakening.app.UI;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +60,10 @@ public class GameManager {
 
         String displayGameInfo = ui.displayGameInfo(Game.player);
         GameHomePage.getHomePageTextArea().setText(displayGameInfo);
-        GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getNormalFont());
-        GameHomePage.getHomePageTextArea().setForeground(Color.RED);
+        GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
+        GameHomePage.getHomePageTextArea().setForeground(Color.green);
 
-        layoutManager.addGB(GameStart.getContainer(), 0, 4, 3, 4, .7, .5);
+        layoutManager.addGB(GameStart.getContainer(), 0, 3, 3, 4, 0.1, .1);
     }
 
     public static void populateDirectionalGrid() {
@@ -129,6 +128,27 @@ public class GameManager {
         inputTextField.setPreferredSize(new Dimension(150, 40));
         inputTextField.setFont(Awakening_Font.getNormalFont());
 
+        // the player can press enter to submit the commands given in the text field
+        inputTextField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                    inputTextSubmitButton.doClick();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                    inputTextSubmitButton.doClick();
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+
         // when the player clicks on the text field, clear the existing entry
         inputTextField.addFocusListener(new FocusListener() {
             @Override
@@ -163,6 +183,8 @@ public class GameManager {
                     gameClassLoad.executeCommand(command);
                 }
             }
+            // resets the player's input
+            inputTextField.setText("");
         });
 
         inputTextPanel.add(inputTextField);
@@ -173,7 +195,7 @@ public class GameManager {
         constraints.gridwidth = 3;
         directionalPanel.add(inputTextPanel, constraints);
 
-        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, .8, .3);
+        layoutManager.addGB(directionalPanel, 4, 4, 3, 2, .8, .3);
     }
 
     public static void populateMapButtonsGrid() {
