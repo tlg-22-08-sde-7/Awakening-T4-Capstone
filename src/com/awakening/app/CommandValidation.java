@@ -6,7 +6,9 @@ import com.awakening.app.game.NPC;
 import com.awakening.app.game.Player;
 import com.awakening.app.game.RoomMap;
 import com.awakening.gui.app.GameHomePage;
+import com.awakening.gui.app.GameManager;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +48,9 @@ public class CommandValidation {
             player.setCurrentRoom(nextRoom);
         }
         GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+
+        ImageIcon icon = new ImageIcon("resources/images/"+player.getCurrentRoom().getName()+".PNG");
+        GameManager.getImageLabel().setIcon(icon);
 
         return commandResult;
     }
@@ -185,6 +190,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
+        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
         return commandResult;
     }
 
