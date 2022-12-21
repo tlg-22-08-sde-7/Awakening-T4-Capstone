@@ -7,20 +7,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class GameManager {
 
-    private static JPanel inputTextPanel, helpPanel;
+    private static JPanel inputTextPanel, helpPanel, directionalPanel;
     private static JTextField inputTextField;
     private static JButton inputTextSubmitButton, helpToMainButton;
     private static JLabel helpLabel;
     private static JFrame sharedWindow;
     private static LayoutManager layoutManager;
+    private static Game gameClassLoad;
 
     public static void beginGameManager() {
-        Game gameClassLoad = new Game();
+        gameClassLoad = new Game();
         layoutManager = new LayoutManager();
 
         gameClassLoad.generateWorld();
@@ -50,21 +52,77 @@ public class GameManager {
         ImageIcon icon = new ImageIcon("resources/images/titleScreen.PNG");
         imageLabel = new JLabel(icon);
 
-        layoutManager.addGB(imageLabel, 0, 0, 2, 4, .4, .1);
+        layoutManager.addGB(imageLabel, 0, 0, 2, 4, .2, .1);
     }
 
     public static void populateTextGrid() {
         UI ui = new UI();
         Game gameClassLoad = new Game();
-        TextParser textParser = new TextParser();
 
         String displayGameInfo = ui.displayGameInfo(Game.player);
         GameHomePage.getHomePageTextArea().setText(displayGameInfo);
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getNormalFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.RED);
 
+        layoutManager.addGB(GameStart.getContainer(), 0, 4, 3, 4, .7, .5);
+    }
+
+    public static void populateDirectionalGrid() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        TextParser textParser = new TextParser();
+        constraints.fill = GridBagConstraints.BOTH;
+
+        // Create JPanel for Directionals with LayoutManager
+        directionalPanel = new JPanel();
+        directionalPanel.setBackground(Color.black);
+        directionalPanel.setLayout(new GridBagLayout());
+
+        // Create Buttons with appropriate placement
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        JButton north = new JButton("N");
+        north.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("north");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(north, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        JButton south = new JButton("S");
+        south.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("south");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(south, constraints);
+
+        constraints.gridx = 2;
+        constraints.gridy = 1;
+        JButton east = new JButton("E");
+        east.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("east");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(east, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        JButton west = new JButton("W");
+        west.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("west");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(west, constraints);
+
         inputTextPanel = new JPanel();
-        inputTextPanel.setBounds(250, 500, 400, 200);
         inputTextPanel.setBackground(Color.black);
 
         inputTextField = new JTextField();
@@ -110,16 +168,16 @@ public class GameManager {
         inputTextPanel.add(inputTextField);
         inputTextPanel.add(inputTextSubmitButton);
 
-        GameStart.getContainer().add(inputTextPanel);
-        layoutManager.addGB(GameStart.getContainer(), 0, 4, 3, 4, .7, .5);
-    }
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        constraints.gridwidth = 3;
+        directionalPanel.add(inputTextPanel, constraints);
 
-    public static void populateDirectionalGrid() {
-        layoutManager.addGB(new JButton("Directionals"), 4, 4, 2, 2, .8, .3);
+        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, .8, .3);
     }
 
     public static void populateMapButtonsGrid() {
-        layoutManager.addGB(new JButton("Map w/ Game Option Buttons"), 4, 0, 3, 2, .3, .1);
+        layoutManager.addGB(new JButton("Map w/ Game Option Buttons"), 4, 0, 2, 2, .3, .1);
     }
 
 //    public static void showImagePage(String imagePath, String buttonName) {
