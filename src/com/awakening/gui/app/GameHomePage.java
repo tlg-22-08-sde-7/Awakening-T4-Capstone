@@ -51,6 +51,7 @@ public class GameHomePage {
 
         gameStartButtonPanel.add(gameStartButton);
         GameStart.getContainer().add(gameStartButtonPanel);
+
     }
 
     public static JTextArea getHomePageTextArea() {

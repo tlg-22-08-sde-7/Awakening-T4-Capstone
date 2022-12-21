@@ -15,12 +15,13 @@ public class GameManager {
     private static JPanel inputTextPanel, helpPanel, directionalPanel;
     private static JTextField inputTextField;
     private static JButton inputTextSubmitButton, helpToMainButton;
-    private static JLabel helpLabel;
+    private static JLabel helpLabel, imageLabel;
     private static JFrame sharedWindow;
     private static LayoutManager layoutManager;
     private static Game gameClassLoad;
 
     public static void beginGameManager() {
+
         gameClassLoad = new Game();
         layoutManager = new LayoutManager();
 
@@ -41,12 +42,13 @@ public class GameManager {
         //create map w/ game option buttons
         populateMapButtonsGrid();
 
+        ImageIcon icon = new ImageIcon("resources/images/Basement.PNG");
+        GameManager.getImageLabel().setIcon(icon);
+
         sharedWindow.setVisible(true);
     }
 
     public static void populateImageGrid() {
-        JLabel imageLabel;
-
         // Refactor needed to make dynamic with current room image
         ImageIcon icon = new ImageIcon("resources/images/titleScreen.PNG");
         imageLabel = new JLabel(icon);
@@ -234,5 +236,9 @@ public class GameManager {
 
     public static JTextField getInputTextField() {
         return inputTextField;
+    }
+
+    public static JLabel getImageLabel() {
+        return imageLabel;
     }
 }
