@@ -7,20 +7,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class GameManager {
 
-    private static JPanel inputTextPanel, helpPanel;
+    private static JPanel inputTextPanel, helpPanel, directionalPanel;
     private static JTextField inputTextField;
     private static JButton inputTextSubmitButton, helpToMainButton;
     private static JLabel helpLabel;
     private static JFrame sharedWindow;
     private static LayoutManager layoutManager;
+    private static Game gameClassLoad;
 
     public static void beginGameManager() {
-        Game gameClassLoad = new Game();
+        gameClassLoad = new Game();
         layoutManager = new LayoutManager();
 
         gameClassLoad.generateWorld();
@@ -115,7 +117,62 @@ public class GameManager {
     }
 
     public static void populateDirectionalGrid() {
-        layoutManager.addGB(new JButton("Directionals"), 4, 4, 2, 2, .8, .3);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+
+        // Create JPanel for Directionals with LayoutManager
+        directionalPanel = new JPanel();
+        directionalPanel.setBackground(Color.black);
+        directionalPanel.setLayout(new GridBagLayout());
+
+        // Create Buttons with appropriate placement
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        JButton north = new JButton("N");
+        north.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("north");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(north, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        JButton south = new JButton("S");
+        south.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("south");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(south, constraints);
+
+        constraints.gridx = 2;
+        constraints.gridy = 1;
+        JButton east = new JButton("E");
+        east.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("east");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(east, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        JButton west = new JButton("W");
+        west.addActionListener(e -> {
+            List<String> command = new ArrayList<>();
+            command.add("go");
+            command.add("west");
+            gameClassLoad.executeCommand(command);
+        });
+        directionalPanel.add(west, constraints);
+
+
+
+        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, .8, .3);
     }
 
     public static void populateMapButtonsGrid() {
