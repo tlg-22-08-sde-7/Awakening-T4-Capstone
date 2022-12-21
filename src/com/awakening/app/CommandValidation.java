@@ -18,6 +18,7 @@ public class CommandValidation {
     private static List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "desk", "table"));
     private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries"));
     public static List<Item.ItemsSetup> roomItems;
+    private static UI ui = new UI();
 
     /**
      * Move command, validates and actions player's commands
@@ -31,7 +32,7 @@ public class CommandValidation {
     public static String move(String direction, Player player, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get(direction));
-        UI ui = new UI();
+
         String commandResult;
 
         if (nextRoom == null) {
@@ -44,7 +45,7 @@ public class CommandValidation {
             commandResult = "You have moved: " + direction;
             player.setCurrentRoom(nextRoom);
         }
-        GameHomePage.getHomePageTextArea().setText(commandResult+"\n\n"+ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
 
         return commandResult;
     }
@@ -80,6 +81,7 @@ public class CommandValidation {
                         ghostDesc += npcGhost + "\n";
                         item.setCharge(item.getCharge() - 10);
                         commandResult = ui.wrapFrame(ghostDesc);
+                        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
                         break;
                     }
                 }
@@ -225,6 +227,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
+        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
         return commandResult;
     }
 

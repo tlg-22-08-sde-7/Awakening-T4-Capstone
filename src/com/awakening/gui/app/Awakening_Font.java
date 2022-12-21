@@ -14,4 +14,7 @@ public class Awakening_Font {
     public static Font buttonSelectionFont(){
         return new Font("Courier", Font.PLAIN, 25);
     }
+    public static Font getSmallTextFont(){
+        return new Font("Courier", Font.PLAIN, 14);
+    }
 }
