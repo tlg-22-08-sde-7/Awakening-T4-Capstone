@@ -42,8 +42,8 @@ public class GameManager {
         //create map w/ game option buttons
         populateMapButtonsGrid();
 
-        ImageIcon icon = new ImageIcon("resources/images/Basement.PNG");
-        GameManager.getImageLabel().setIcon(icon);
+        String basementFilePath = "resources/images/Basement.PNG";
+        scaleImageAndInsertToLabel(basementFilePath, imageLabel);
 
         sharedWindow.setVisible(true);
     }
@@ -233,6 +233,14 @@ public class GameManager {
 //        GameStart.getContainer().add(helpPanel);
 //        inputTextField.setText("  ");
 //    }
+
+    public static void scaleImageAndInsertToLabel(String imageLocation, JLabel label){
+        ImageIcon icon = new ImageIcon(imageLocation);
+        Image img = icon.getImage();
+        Image imgScale = img.getScaledInstance(900, 600, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        label.setIcon(scaledIcon);
+    }
 
     public static JTextField getInputTextField() {
         return inputTextField;

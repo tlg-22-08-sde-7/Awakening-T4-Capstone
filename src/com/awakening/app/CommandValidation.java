@@ -9,6 +9,7 @@ import com.awakening.gui.app.GameHomePage;
 import com.awakening.gui.app.GameManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,8 +50,8 @@ public class CommandValidation {
         }
         GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
 
-        ImageIcon icon = new ImageIcon("resources/images/"+player.getCurrentRoom().getName()+".PNG");
-        GameManager.getImageLabel().setIcon(icon);
+        String imageLocation = "resources/images/"+player.getCurrentRoom().getName()+".PNG";
+        GameManager.scaleImageAndInsertToLabel(imageLocation, GameManager.getImageLabel());
 
         return commandResult;
     }
