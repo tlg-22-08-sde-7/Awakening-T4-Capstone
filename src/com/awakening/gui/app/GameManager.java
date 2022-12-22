@@ -4,6 +4,7 @@ import com.awakening.app.Game;
 import com.awakening.app.TextParser;
 import com.awakening.app.UI;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -48,7 +49,7 @@ public class GameManager {
         String basementFilePath = "resources/images/Basement.PNG";
         scaleImageAndInsertToLabel(basementFilePath, imageLabel);
 
-        String startingMap = "resources/images/Map_Start.png";
+        String startingMap = "resources/images/Map_Basement.png";
         scaleImageAndInsertToMap(startingMap, mapLabel);
 
         sharedWindow.setVisible(true);
@@ -76,6 +77,8 @@ public class GameManager {
     public static void populateDirectionalGrid() {
         GridBagConstraints constraints = new GridBagConstraints();
         TextParser textParser = new TextParser();
+        ImageIcon baseIcon, scaledIcon;
+        Image img;
         constraints.fill = GridBagConstraints.BOTH;
 
         // Create JPanel for Directionals with LayoutManager
@@ -84,48 +87,84 @@ public class GameManager {
         directionalPanel.setLayout(new GridBagLayout());
 
         // Create Buttons with appropriate placement
-        constraints.gridx = 1;
+        constraints.gridx = 2;
         constraints.gridy = 0;
-        JButton north = new JButton("N");
+        JButton north = new JButton();
+
+        baseIcon = new ImageIcon("resources/images/North.png");
+        img = baseIcon.getImage();
+        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        scaledIcon = new ImageIcon(img);
+
+        north.setIcon(scaledIcon);
         north.addActionListener(e -> {
             List<String> command = new ArrayList<>();
             command.add("go");
             command.add("north");
             gameClassLoad.executeCommand(command);
         });
+        north.setBackground(Color.black);
+        north.setForeground(Color.black);
         directionalPanel.add(north, constraints);
 
-        constraints.gridx = 1;
+        constraints.gridx = 2;
         constraints.gridy = 2;
-        JButton south = new JButton("S");
+        JButton south = new JButton();
+
+        baseIcon = new ImageIcon("resources/images/South.png");
+        img = baseIcon.getImage();
+        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        scaledIcon = new ImageIcon(img);
+
+        south.setIcon(scaledIcon);
         south.addActionListener(e -> {
             List<String> command = new ArrayList<>();
             command.add("go");
             command.add("south");
             gameClassLoad.executeCommand(command);
         });
+        south.setBackground(Color.black);
+        south.setForeground(Color.black);
         directionalPanel.add(south, constraints);
 
-        constraints.gridx = 2;
+        constraints.gridx = 3;
         constraints.gridy = 1;
-        JButton east = new JButton("E");
+        JButton east = new JButton();
+
+        baseIcon = new ImageIcon("resources/images/East.png");
+        img = baseIcon.getImage();
+        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        scaledIcon = new ImageIcon(img);
+
+        east.setIcon(scaledIcon);
         east.addActionListener(e -> {
             List<String> command = new ArrayList<>();
             command.add("go");
             command.add("east");
             gameClassLoad.executeCommand(command);
         });
+        east.setBackground(Color.black);
+        east.setForeground(Color.black);
         directionalPanel.add(east, constraints);
 
-        constraints.gridx = 0;
+        constraints.gridx = 1;
         constraints.gridy = 1;
-        JButton west = new JButton("W");
+        JButton west = new JButton();
+
+        baseIcon = new ImageIcon("resources/images/West.png");
+        img = baseIcon.getImage();
+        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        scaledIcon = new ImageIcon(img);
+
+        west.setIcon(scaledIcon);
         west.addActionListener(e -> {
             List<String> command = new ArrayList<>();
             command.add("go");
             command.add("west");
             gameClassLoad.executeCommand(command);
         });
+        west.setBackground(Color.black);
+        west.setForeground(Color.black);
         directionalPanel.add(west, constraints);
 
         inputTextPanel = new JPanel();
@@ -169,7 +208,14 @@ public class GameManager {
             }
         });
 
-        inputTextSubmitButton = new JButton("Submit");
+        inputTextSubmitButton = new JButton();
+
+        baseIcon = new ImageIcon("resources/images/Enter.png");
+        img = baseIcon.getImage();
+        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        scaledIcon = new ImageIcon(img);
+
+        inputTextSubmitButton.setIcon(scaledIcon);
         inputTextSubmitButton.setBackground(Color.black);
         inputTextSubmitButton.setForeground(Color.lightGray);
         inputTextSubmitButton.setFocusPainted(false);
@@ -197,19 +243,15 @@ public class GameManager {
         inputTextPanel.add(inputTextField);
         inputTextPanel.add(inputTextSubmitButton);
 
-        constraints.gridx = 0;
-        constraints.gridy = 3;
-        constraints.gridwidth = 3;
-        directionalPanel.add(inputTextPanel, constraints);
-
-        layoutManager.addGB(directionalPanel, 4, 4, 3, 2, .8, .3);
+        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, .8, .3);
+        layoutManager.addGB(inputTextPanel, 4, 6, 1, 2, .5, .5);
     }
 
     public static void populateMapButtonsGrid() {
         GridBagConstraints constraints = new GridBagConstraints();
         JPanel mapPanel = new JPanel();
 
-        ImageIcon icon = new ImageIcon("resources/images/Map_Start.png");
+        ImageIcon icon = new ImageIcon("resources/images/Map_Basement.png");
         mapLabel = new JLabel(icon);
 
         constraints.fill = GridBagConstraints.BOTH;
