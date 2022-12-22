@@ -31,6 +31,7 @@ public class GameManager {
 
         sharedWindow = GameStart.getWindow();
         sharedWindow.setContentPane(layoutManager);
+        sharedWindow.setSize(1400, 850);
 
         //create image
         populateImageGrid();
