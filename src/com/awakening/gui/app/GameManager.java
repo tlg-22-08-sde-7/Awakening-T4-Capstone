@@ -20,6 +20,7 @@ public class GameManager {
     private static JFrame sharedWindow;
     private static LayoutManager layoutManager;
     private static Game gameClassLoad;
+    private static boolean helpActive = false;
 
     public static void beginGameManager() {
 
@@ -265,17 +266,48 @@ public class GameManager {
         mapPanel.add(mapLabel, constraints);
 
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
-        JButton help = new JButton("Help");
-        help.addActionListener(e -> {
+        JButton help = new JButton();
 
+        help.setIcon(getHelpOffIcon());
+
+        help.addActionListener(e -> {
+            if (helpActive) {
+                String currentRoom = "resources/images/"+gameClassLoad.getPlayer().getCurrentRoom().getName()+".PNG";
+                scaleImageAndInsertToLabel(currentRoom, imageLabel);
+                helpActive = false;
+
+                help.setIcon(getHelpOffIcon());
+            } else {
+                String helpImage = "resources/images/help.PNG";
+                scaleImageAndInsertToLabel(helpImage, imageLabel);
+                helpActive = true;
+
+                help.setIcon(getHelpOnIcon());
+            }
         });
 
         mapPanel.add(help, constraints);
 
         layoutManager.addGB(mapPanel, 4, 0, 2, 2, .3, .1);
+    }
+
+    public static ImageIcon getHelpOffIcon() {
+        ImageIcon baseIcon = new ImageIcon("resources/images/HelpOff.png");
+        Image img = baseIcon.getImage();
+        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+
+        return new ImageIcon(img);
+    }
+
+    public static ImageIcon getHelpOnIcon() {
+        ImageIcon baseIcon = new ImageIcon("resources/images/HelpOn.png");
+        Image img = baseIcon.getImage();
+        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+
+        return new ImageIcon(img);
     }
 
 //    public static void showImagePage(String imagePath, String buttonName) {
