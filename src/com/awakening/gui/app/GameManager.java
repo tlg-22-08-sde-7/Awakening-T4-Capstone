@@ -73,7 +73,7 @@ public class GameManager {
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);
 
-        layoutManager.addGB(GameStart.getContainer(), 0, 3, 3, 4, 0.1, .1);
+        layoutManager.addGB(GameStart.getContainer(), 0, 3, 4, 4, 0.1, .1);
     }
 
     public static void populateDirectionalGrid() {
@@ -291,6 +291,7 @@ public class GameManager {
             }
         });
 
+        help.setBackground(Color.black);
         mapPanel.add(help, constraints);
 
         layoutManager.addGB(mapPanel, 4, 0, 2, 2, .3, .1);
@@ -312,40 +313,10 @@ public class GameManager {
         return new ImageIcon(img);
     }
 
-//    public static void showImagePage(String imagePath, String buttonName) {
-//        GameHomePage.getHomePageTextPanel().setVisible(false);
-//        inputTextPanel.setVisible(false);
-//
-//        helpPanel = new JPanel();
-//        helpPanel.setBounds(50, 0, 800, 600);
-//        helpPanel.setBackground(Color.black);
-//
-//        helpLabel = new JLabel();
-//        ImageIcon helpIcon = new ImageIcon(imagePath);
-//        helpLabel.setIcon(helpIcon);
-//
-//        helpToMainButton = new JButton(buttonName);
-//        helpToMainButton.setBackground(Color.black);
-//        helpToMainButton.setForeground(Color.lightGray);
-//        helpToMainButton.setFocusPainted(false);
-//        helpToMainButton.setFont(Awakening_Font.buttonSelectionFont());
-//        helpToMainButton.addActionListener(e1 -> {
-//            helpPanel.setVisible(false);
-//            GameHomePage.getHomePageTextPanel().setVisible(true);
-//            showTextPage();
-//        });
-//
-//        helpPanel.add(helpLabel);
-//        helpPanel.add(helpToMainButton);
-//
-//        GameStart.getContainer().add(helpPanel);
-//        inputTextField.setText("  ");
-//    }
-
     public static void scaleImageAndInsertToLabel(String imageLocation, JLabel label){
         ImageIcon icon = new ImageIcon(imageLocation);
         Image img = icon.getImage();
-        Image imgScale = img.getScaledInstance(900, 600, Image.SCALE_SMOOTH);
+        Image imgScale = img.getScaledInstance(900, 400, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         label.setIcon(scaledIcon);
     }
