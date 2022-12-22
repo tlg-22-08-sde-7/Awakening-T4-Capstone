@@ -3,9 +3,13 @@ package com.awakening.gui.app;
 import com.awakening.app.Game;
 import com.awakening.app.TextParser;
 import com.awakening.app.UI;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +19,7 @@ public class GameManager {
     private static JPanel inputTextPanel, helpPanel, directionalPanel;
     private static JTextField inputTextField;
     private static JButton inputTextSubmitButton, helpToMainButton;
-    private static JLabel helpLabel, imageLabel;
+    private static JLabel helpLabel, imageLabel, mapLabel;
     private static JFrame sharedWindow;
     private static LayoutManager layoutManager;
     private static Game gameClassLoad;
@@ -24,6 +28,7 @@ public class GameManager {
 
         gameClassLoad = new Game();
         layoutManager = new LayoutManager();
+        layoutManager.setBackground(Color.black);
 
         gameClassLoad.generateWorld();
 
@@ -45,6 +50,9 @@ public class GameManager {
         String basementFilePath = "resources/images/Basement.PNG";
         scaleImageAndInsertToLabel(basementFilePath, imageLabel);
 
+        String startingMap = "resources/images/Map_Start.png";
+        scaleImageAndInsertToMap(startingMap, mapLabel);
+
         sharedWindow.setVisible(true);
     }
 
@@ -58,7 +66,6 @@ public class GameManager {
 
     public static void populateTextGrid() {
         UI ui = new UI();
-        Game gameClassLoad = new Game();
 
         String displayGameInfo = ui.displayGameInfo(Game.player);
         GameHomePage.getHomePageTextArea().setText(displayGameInfo);
@@ -201,7 +208,35 @@ public class GameManager {
     }
 
     public static void populateMapButtonsGrid() {
-        layoutManager.addGB(new JButton("Map w/ Game Option Buttons"), 4, 0, 2, 2, .3, .1);
+        GridBagConstraints constraints = new GridBagConstraints();
+        JPanel mapPanel = new JPanel();
+
+        ImageIcon icon = new ImageIcon("resources/images/Map_Start.png");
+        mapLabel = new JLabel(icon);
+
+        constraints.fill = GridBagConstraints.BOTH;
+        mapPanel.setBackground(Color.black);
+        mapPanel.setLayout(new GridBagLayout());
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 3;
+        constraints.gridheight = 3;
+
+        mapPanel.add(mapLabel, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        JButton help = new JButton("Help");
+        help.addActionListener(e -> {
+
+        });
+
+        mapPanel.add(help, constraints);
+
+        layoutManager.addGB(mapPanel, 4, 0, 2, 2, .3, .1);
     }
 
 //    public static void showImagePage(String imagePath, String buttonName) {
@@ -242,11 +277,23 @@ public class GameManager {
         label.setIcon(scaledIcon);
     }
 
+    public static void scaleImageAndInsertToMap(String imageLocation, JLabel label) {
+        ImageIcon icon = new ImageIcon(imageLocation);
+        Image img = icon.getImage();
+        Image imgScale = img.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        label.setIcon(scaledIcon);
+    }
+
     public static JTextField getInputTextField() {
         return inputTextField;
     }
 
     public static JLabel getImageLabel() {
         return imageLabel;
+    }
+
+    public static JLabel getMapLabel() {
+        return mapLabel;
     }
 }
