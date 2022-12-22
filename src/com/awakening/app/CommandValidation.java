@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class CommandValidation {
     private static List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "desk", "table"));
-    private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries"));
+    private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries", "paper-clip"));
     public static List<Item.ItemsSetup> roomItems;
     private static UI ui = new UI();
     private static JFrame popup_frame;
@@ -295,14 +295,17 @@ public class CommandValidation {
 
                         nextRoom.setLocked(false);
                         commandResult = "You have picked the lock";
+                        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
                     }
                 }
                 if (!isPaperClipInInventory) {
                     commandResult = "You do not have paper-clip in your inventory";
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
                 }
             }
         } else {
-            commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
+            commandResult = "Invalid command";
+            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
         }
 
         return commandResult;
