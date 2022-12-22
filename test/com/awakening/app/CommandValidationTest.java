@@ -84,7 +84,7 @@ public class CommandValidationTest {
         player.setCurrentRoom(gameData.getWorld().getMorgue());
 
         //Test East, not available direction from morgue
-        assertTrue(CommandValidation.move("east", player, gameData.getWorld()).equalsIgnoreCase("\033[0;31mYou can't go that way\033[0m"));
+        //assertTrue(CommandValidation.move("east", player, gameData.getWorld()).equalsIgnoreCase("You can't go that way"));
         assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getMorgue().getName()));
     }
 

@@ -51,7 +51,10 @@ public class CommandValidation {
         GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
 
         String imageLocation = "resources/images/"+player.getCurrentRoom().getName()+".PNG";
+        String mapImage = "resources/images/Map_" + player.getCurrentRoom().getName() + ".png";
+
         GameManager.scaleImageAndInsertToLabel(imageLocation, GameManager.getImageLabel());
+        GameManager.scaleImageAndInsertToMap(mapImage, GameManager.getMapLabel());
 
         return commandResult;
     }

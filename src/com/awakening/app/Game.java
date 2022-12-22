@@ -197,5 +197,14 @@ public class Game {
     public NPC getNpc() {
         return npc;
     }
+
+    /**
+     * Get player data
+     *
+     * @return - Player for player data
+     */
+    public Player getPlayer() {
+        return player;
+    }
 }
 
