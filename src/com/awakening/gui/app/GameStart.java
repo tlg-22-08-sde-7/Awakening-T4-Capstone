@@ -16,7 +16,7 @@ public class GameStart {
 
     public GameStart(){
         window = new JFrame();
-        window.setSize(900, 1200);
+        window.setSize(925, 900);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.BLACK);
 
