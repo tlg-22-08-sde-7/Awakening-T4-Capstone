@@ -4,7 +4,6 @@ import com.awakening.app.Game;
 import com.awakening.app.TextParser;
 import com.awakening.app.UI;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
