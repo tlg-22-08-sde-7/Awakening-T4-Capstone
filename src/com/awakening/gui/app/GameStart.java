@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameStart {
-    private JFrame window;
+    private static JFrame window;
     private static Container container;
     private static JPanel splash_panel;
     private static JPanel pressEnterToStartButton_panel;
@@ -15,12 +15,9 @@ public class GameStart {
     private JButton pressEnterToContinueButton;
 
     public GameStart(){
-
-        Game game = new Game();
-        game.generateWorld();
-
         window = new JFrame();
-        window.setSize(900, 1200);
+        window.setSize(925, 900);
+        // window.setSize(1250, 650);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.BLACK);
 
@@ -67,5 +64,9 @@ public class GameStart {
 
     public static JPanel getStartButtonPanel() {
         return pressEnterToStartButton_panel;
+    }
+
+    public static JFrame getWindow() {
+        return window;
     }
 }

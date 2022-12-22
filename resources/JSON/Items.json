@@ -23,6 +23,22 @@
     "charge": "0",
     "attackPoints": "0"
   },
+  "desk" : {
+    "name": "desk",
+    "description": "Desk for some supervisor. Two drawers are open slightly. In one, find batteries and a paper-clip. In the other, a file",
+    "startLocation": "Office",
+    "specialItemFlag": "false",
+    "charge": "0",
+    "attackPoints": "0"
+  },
+  "table": {
+    "name": "table",
+    "description": "Standard table found in patient rooms, drawer is slightly open, peering in you find a key and press-pass",
+    "startLocation": "Patient Room",
+    "specialItemFlag": "false",
+    "charge": "0",
+    "attackPoints": "0"
+  },
   "journal": {
     "name": "journal",
     "description": "This is my journal... I read it and remember going to the hospital to confront the doctor... About what though?",

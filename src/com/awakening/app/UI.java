@@ -4,10 +4,7 @@ import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
 import com.awakening.app.game.RoomMap;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -95,13 +92,18 @@ public class UI {
         return welcome;
     }
 
-    public void displayMap(RoomMap.RoomLayout currentRoom){
+    public String displayMap(RoomMap.RoomLayout currentRoom){
         File loadTxtMap = new File("resources/ASCII/hospitalLayoutASCII.txt");
-        try{
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(loadTxtMap));
-            StringBuilder sb_map = new StringBuilder();
-            // String[] roomName = currentRoom.getName().split(" ");
+        StringBuilder sb_map = new StringBuilder();
+        BufferedReader bufferedReader = null;
 
+        try {
+            bufferedReader = new BufferedReader(new FileReader(loadTxtMap));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try{
             String scannedSingleLine;
             while((scannedSingleLine = bufferedReader.readLine()) != null){
                 if (scannedSingleLine.contains(currentRoom.getName().toUpperCase())){
@@ -110,11 +112,12 @@ public class UI {
                 }
                 sb_map.append(scannedSingleLine).append("\n");
             }
-            System.out.println(sb_map);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        return sb_map.toString();
     }
 
     public String wrapFrame(String text) {
