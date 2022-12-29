@@ -70,8 +70,12 @@ public class Game {
              ui.clearConsole();
              ui.displayGameInfo(player);
 
-            commandHandler();
-            gameStateCheck();
+             if (evilSpiritCheck()) {
+                 ui.wrapFrame(evilSpirit.getName() + " is in the room...");
+                 initiateCombatEngine();
+             }
+             commandHandler();
+             gameStateCheck();
         }
     }
 
@@ -115,6 +119,23 @@ public class Game {
         }
     }
 
+    private boolean evilSpiritCheck() {
+        return (evilSpirit.getCurrentRoom().getName().equalsIgnoreCase(player.getCurrentRoom().getName()));
+    }
+
+    private void initiateCombatEngine() {
+        // Receive player command of either use camera or hide
+        // validate camera has charge
+        // if charge
+        //      send evilSpirit to random room other that current
+        // else
+        //      show error and hide with worse chances
+
+        // hide will utilize a random number between 0 - 100. Will need to establish rules
+        // to determine success probability
+        // if hide is successful, evilSpirit moves to another room, else player dies / game over
+    }
+
     private void printGameWon() {
         String endText;
         try{
@@ -131,7 +152,7 @@ public class Game {
         String noun = move.get(1);
         switch (verb) {
             case "go":
-                System.out.println(CommandValidation.move(noun, player, world));
+                System.out.println(CommandValidation.move(noun, player, evilSpirit, world));
                 break;
             case "look":
                 System.out.println(CommandValidation.look(noun, player, ui, npc, world));
