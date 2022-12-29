@@ -1,5 +1,6 @@
 package com.awakening.app;
 
+import com.awakening.app.game.EvilSpirit;
 import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
 import com.awakening.app.game.RoomMap;
