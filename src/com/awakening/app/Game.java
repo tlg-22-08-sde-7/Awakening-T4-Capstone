@@ -20,6 +20,7 @@ public class Game {
     public static RoomMap world;
     public static List<Item.ItemsSetup> roomItems;
     public static Player player = new Player();
+    public static EvilSpirit evilSpirit = new EvilSpirit();
     public static NPC npc = new NPC();
     private static Prompter prompter = new Prompter(new Scanner(System.in));
     private UI ui = new UI();
@@ -153,6 +154,7 @@ public class Game {
         try (Reader reader = new FileReader("resources/JSON/roomsListNew.json")) {
             world = new Gson().fromJson(reader, RoomMap.class);
             player.setCurrentRoom(world.getBasement());
+            evilSpirit.setCurrentRoom(world.getFrontDesk());
         } catch (IOException e) {
             e.printStackTrace();
         }

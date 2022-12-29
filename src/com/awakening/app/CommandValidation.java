@@ -1,10 +1,7 @@
 package com.awakening.app;
 
 import com.apps.util.Prompter;
-import com.awakening.app.game.Item;
-import com.awakening.app.game.NPC;
-import com.awakening.app.game.Player;
-import com.awakening.app.game.RoomMap;
+import com.awakening.app.game.*;
 import com.awakening.gui.app.GameHomePage;
 import com.awakening.gui.app.GameManager;
 
@@ -34,7 +31,7 @@ public class CommandValidation {
      * @param world     - RoomMap object used for game data
      * @return String - result of player's command
      */
-    public static String move(String direction, Player player, RoomMap world) {
+    public static String move(String direction, Player player, EvilSpirit evilSpirit, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get(direction));
 
@@ -49,6 +46,14 @@ public class CommandValidation {
         } else {
             commandResult = "You have moved: " + direction;
             player.setCurrentRoom(nextRoom);
+
+            // Ensure that spirit only moves after player moves twice.
+            if (evilSpirit.isMoveReady()) {
+                evilSpirit.setRandomRoom(world);
+                evilSpirit.setMoveReady(false);
+            } else {
+                evilSpirit.setMoveReady(true);
+            }
         }
         GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
 
