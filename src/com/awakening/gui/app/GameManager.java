@@ -3,6 +3,7 @@ package com.awakening.gui.app;
 import com.awakening.app.Game;
 import com.awakening.app.TextParser;
 import com.awakening.app.UI;
+import com.awakening.app.game.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,7 +69,7 @@ public class GameManager {
     public static void populateTextGrid() {
         UI ui = new UI();
 
-        String displayGameInfo = ui.displayGameInfo(Game.player);
+        String displayGameInfo = ui.displayGameInfo(Player.getPlayerInstance());
         GameHomePage.getHomePageTextArea().setText(displayGameInfo);
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);

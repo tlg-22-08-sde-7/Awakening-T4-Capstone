@@ -53,7 +53,7 @@ public class CommandValidation {
                 evilSpirit.setMoveReady(true);
             }
         }
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
 
         String imageLocation = "resources/images/" + player.getCurrentRoom().getName() + ".PNG";
         String mapImage = "resources/images/Map_" + player.getCurrentRoom().getName() + ".png";
@@ -93,7 +93,7 @@ public class CommandValidation {
                         ghostDesc += npcGhost + "\n";
                         item.setCharge(item.getCharge() - 10);
                         commandResult = ui.wrapFrame(ghostDesc);
-                        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+                        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
                         break;
                     }
                 }
@@ -193,7 +193,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
         return commandResult;
     }
 
@@ -238,7 +238,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
         return commandResult;
     }
 
@@ -271,12 +271,12 @@ public class CommandValidation {
 
                     nextRoom.setLocked(false);
                     commandResult = "The key-pad chimes and turns green.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
 
                     popup_frame.setVisible(false);
                 } else {
                     commandResult = "The key-pad buzzes and flashes red.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
 
                     popup_frame.setVisible(false);
                 }
@@ -303,17 +303,17 @@ public class CommandValidation {
 
                         nextRoom.setLocked(false);
                         commandResult = "You have picked the lock";
-                        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+                        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                     }
                 }
                 if (!isPaperClipInInventory) {
                     commandResult = "You do not have paper-clip in your inventory";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                 }
             }
         } else {
             commandResult = "Invalid command";
-            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
         }
 
         return commandResult;

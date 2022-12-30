@@ -19,7 +19,6 @@ public class Game {
 
     public static RoomMap world;
     public static List<Item.ItemsSetup> roomItems;
-    public static Player player = new Player();
     public static EvilSpirit evilSpirit = new EvilSpirit();
     public static NPC npc = new NPC();
     private static Prompter prompter = new Prompter(new Scanner(System.in));
@@ -68,7 +67,7 @@ public class Game {
 
         while (!gameOver) {
              ui.clearConsole();
-             ui.displayGameInfo(player);
+             ui.displayGameInfo(Player.getPlayerInstance());
 
              if (evilSpiritCheck()) {
                  ui.wrapFrame(evilSpirit.getName() + " is in the room...");
@@ -110,17 +109,17 @@ public class Game {
     }
 
     private void gameStateCheck() {
-        if (player.getCurrentRoom() != world.getRoom("Front Desk")) {
+        if (Player.getPlayerInstance().getCurrentRoom() != world.getRoom("Front Desk")) {
             return;
         }
-        if (player.printInventory().contains("key")) {
+        if (Player.getPlayerInstance().printInventory().contains("key")) {
             gameOver = true;
             printGameWon();
         }
     }
 
     private boolean evilSpiritCheck() {
-        return (evilSpirit.getCurrentRoom().getName().equalsIgnoreCase(player.getCurrentRoom().getName()));
+        return (evilSpirit.getCurrentRoom().getName().equalsIgnoreCase(Player.getPlayerInstance().getCurrentRoom().getName()));
     }
 
     private void initiateCombatEngine() {
@@ -152,18 +151,18 @@ public class Game {
         String noun = move.get(1);
         switch (verb) {
             case "go":
-                System.out.println(CommandValidation.move(noun, player, evilSpirit, world));
+                System.out.println(CommandValidation.move(noun, Player.getPlayerInstance(), evilSpirit, world));
                 break;
             case "look":
-                System.out.println(CommandValidation.look(noun, player, ui, npc, world));
+                System.out.println(CommandValidation.look(noun, Player.getPlayerInstance(), ui, npc, world));
                 // prompter.prompt("Hit enter to continue...");
                 break;
             case "get":
-                System.out.println(CommandValidation.pickUp(noun, player));
+                System.out.println(CommandValidation.pickUp(noun, Player.getPlayerInstance()));
                 // prompter.prompt("Hit enter to continue...");
                 break;
             case "use":
-                System.out.println(CommandValidation.use(noun, player, prompter, world));
+                System.out.println(CommandValidation.use(noun, Player.getPlayerInstance(), prompter, world));
                 // prompter.prompt("Hit enter to continue...");
                 break;
             default:
@@ -174,7 +173,7 @@ public class Game {
     public void generateWorld() {
         try (Reader reader = new FileReader("resources/JSON/roomsListNew.json")) {
             world = new Gson().fromJson(reader, RoomMap.class);
-            player.setCurrentRoom(world.getBasement());
+            Player.getPlayerInstance().setCurrentRoom(world.getBasement());
             evilSpirit.setCurrentRoom(world.getFrontDesk());
         } catch (IOException e) {
             e.printStackTrace();
@@ -227,7 +226,7 @@ public class Game {
      * @return - Player for player data
      */
     public Player getPlayer() {
-        return player;
+        return Player.getPlayerInstance();
     }
 }
 
