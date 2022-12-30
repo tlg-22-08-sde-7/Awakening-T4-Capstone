@@ -27,14 +27,6 @@ public class TextParser {
     // Allowed Commands
     private List<String> allowedCommands = new ArrayList<>(Arrays.asList("go", "get", "look", "quit", "use"));
 
-    public List<String> getAllowedCommands() {
-        return allowedCommands;
-    }
-
-    public List<String> getAllowedNouns() {
-        return allowedNouns;
-    }
-
     // method to print array of nouns to string and in color
     public String displayAllowedNouns() {
         return BLUE+allowedNouns.toString()+RESET;

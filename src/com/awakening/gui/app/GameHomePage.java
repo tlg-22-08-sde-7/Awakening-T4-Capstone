@@ -57,16 +57,4 @@ public class GameHomePage {
     public static JTextArea getHomePageTextArea() {
         return homePageTextArea;
     }
-
-    public static JButton getGameStartButton() {
-        return gameStartButton;
-    }
-
-    public static JPanel getGameStartButtonPanel() {
-        return gameStartButtonPanel;
-    }
-
-    public static JPanel getHomePageTextPanel() {
-        return homePageTextPanel;
-    }
 }

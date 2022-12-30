@@ -155,15 +155,12 @@ public class Game {
                 break;
             case "look":
                 System.out.println(CommandValidation.look(noun, Player.getPlayerInstance(), ui, npc, world));
-                // prompter.prompt("Hit enter to continue...");
                 break;
             case "get":
                 System.out.println(CommandValidation.pickUp(noun, Player.getPlayerInstance()));
-                // prompter.prompt("Hit enter to continue...");
                 break;
             case "use":
                 System.out.println(CommandValidation.use(noun, Player.getPlayerInstance(), prompter, world));
-                // prompter.prompt("Hit enter to continue...");
                 break;
             default:
                 System.out.println(TextParser.RED + "Invalid command" + TextParser.RESET);

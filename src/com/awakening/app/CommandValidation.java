@@ -36,10 +36,8 @@ public class CommandValidation {
         String commandResult;
 
         if (nextRoom == null) {
-//            commandResult = TextParser.RED + "You can't go that way" + TextParser.RESET;
             commandResult = "You can't go that way";
         } else if (nextRoom.isLocked()) {
-//            commandResult = TextParser.RED + "The door is locked" + TextParser.RESET;
             commandResult = "The door is locked";
         } else {
             commandResult = "You have moved: " + direction;
@@ -262,8 +260,6 @@ public class CommandValidation {
                 GameManager.scaleImageAndInsertToLabel(imageLocation, GameManager.getImageLabel());
 
                 GameHomePage.getHomePageTextArea().setText("Enter PIN\n >");
-                // String keyEntry = GameManager.getInputTextField().getText();
-                // createWindow();
 
                 if (createWindow().equalsIgnoreCase("9537")) {
                     RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
@@ -271,15 +267,13 @@ public class CommandValidation {
 
                     nextRoom.setLocked(false);
                     commandResult = "The key-pad chimes and turns green.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
 
-                    popup_frame.setVisible(false);
                 } else {
                     commandResult = "The key-pad buzzes and flashes red.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
 
-                    popup_frame.setVisible(false);
                 }
+                GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+                popup_frame.setVisible(false);
             } else if (noun.equalsIgnoreCase("batteries")) {
                 boolean isBatteriesInInventory = false;
                 for (Item.ItemsSetup batteries : player.getInventory()) {
