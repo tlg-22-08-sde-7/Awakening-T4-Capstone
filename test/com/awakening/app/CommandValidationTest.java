@@ -1,6 +1,7 @@
 package com.awakening.app;
 
 import com.apps.util.Prompter;
+import com.awakening.app.game.EvilSpirit;
 import com.awakening.app.game.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,23 +58,24 @@ public class CommandValidationTest {
     @Test
     public void correctDirection_moveCommand_movesPlayer() {
         Player player = new Player();
+        EvilSpirit evilSpirit = new EvilSpirit();
 
         player.setCurrentRoom(gameData.getWorld().getEmergencyRoom());
 
         //Test North
-        assertTrue(CommandValidation.move("north", player, gameData.getWorld()).equalsIgnoreCase("You have moved: north"));
+        assertTrue(CommandValidation.move("north", player, evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: north"));
         assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getMorgue().getName()));
 
         //Test South
-        assertTrue(CommandValidation.move("south", player, gameData.getWorld()).equalsIgnoreCase("You have moved: south"));
+        assertTrue(CommandValidation.move("south", player,evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: south"));
         assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getEmergencyRoom().getName()));
 
         //Test East
-        assertTrue(CommandValidation.move("east", player, gameData.getWorld()).equalsIgnoreCase("You have moved: east"));
+        assertTrue(CommandValidation.move("east", player, evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: east"));
         assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getHallway().getName()));
 
         //Test West
-        assertTrue(CommandValidation.move("west", player, gameData.getWorld()).equalsIgnoreCase("You have moved: west"));
+        assertTrue(CommandValidation.move("west", player,evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: west"));
         assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getEmergencyRoom().getName()));
     }
 

@@ -7,8 +7,6 @@ import com.awakening.gui.app.GameManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -219,13 +217,18 @@ public class CommandValidation {
             if (item == null) {
                 commandResult = noun + " is not in " + currentRoom.getName();
             } else if (itemList.contains(noun)) {
-                player.addToInventory(item);
-                for (int i = 0; i < itemList.size(); i++) {
-                    if (noun.equals(itemList.get(i))) {
-                        index = i;
-                        //Remove item from room
-                        player.getCurrentRoom().getItems().remove(index);
-                        commandResult = "You have picked up " + noun;
+                if (noun.equalsIgnoreCase("desk") || noun.equalsIgnoreCase("table")){
+                    commandResult = "You cannot pick up the "+ noun+".";
+                }
+                else{
+                    player.addToInventory(item);
+                    for (int i = 0; i < itemList.size(); i++) {
+                        if (noun.equals(itemList.get(i))) {
+                            index = i;
+                            //Remove item from room
+                            player.getCurrentRoom().getItems().remove(index);
+                            commandResult = "You have picked up " + noun;
+                        }
                     }
                 }
             } else {
