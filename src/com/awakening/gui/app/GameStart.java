@@ -1,5 +1,7 @@
 package com.awakening.gui.app;
 
+import com.awakening.gui.util.Audio;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,15 +9,15 @@ public class GameStart {
     private static JFrame window;
     private static Container container;
     private static JPanel splash_panel;
-    private static JPanel pressEnterToStartButton_panel;
+    private static JPanel buttonPanel_start_screen;
     private JLabel splash_label;
+    private static Audio background_main = new Audio("resources/audio/background-main.wav");
 
-    private JButton pressEnterToContinueButton;
+    private JButton pressEnterToContinueButton, musicSwitchButton;
 
     public GameStart(){
         window = new JFrame();
         window.setSize(925, 900);
-        // window.setSize(1250, 650);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.BLACK);
 
@@ -31,25 +33,35 @@ public class GameStart {
         ImageIcon icon = new ImageIcon("resources/images/titleScreen.PNG");
         splash_label = new JLabel(icon);
 
+        background_main.loopAudio();
+
         // press enter to start button
-        pressEnterToStartButton_panel = new JPanel();
-        pressEnterToStartButton_panel.setBounds(250, 630, 400, 200);
-        pressEnterToStartButton_panel.setBackground(Color.black);
+        buttonPanel_start_screen = new JPanel();
+        buttonPanel_start_screen.setBounds(250, 630, 400, 200);
+        buttonPanel_start_screen.setBackground(Color.black);
 
         pressEnterToContinueButton = new JButton("PRESS ENTER TO START");
         pressEnterToContinueButton.setBackground(Color.black);
         pressEnterToContinueButton.setForeground(Color.lightGray);
-        pressEnterToContinueButton.setFont(Awakening_Font.getNormalFont());
+        pressEnterToContinueButton.setFont(Awakening_Font.getSmallTextFont());
         pressEnterToContinueButton.setFocusPainted(false);
         pressEnterToContinueButton.addActionListener(e -> GameHomePage.createHomePage());
+
+        musicSwitchButton = new JButton("MUSIC OFF");
+        musicSwitchButton.setBackground(Color.black);
+        musicSwitchButton.setForeground(Color.lightGray);
+        musicSwitchButton.setFont(Awakening_Font.getSmallTextFont());
+        musicSwitchButton.setFocusPainted(false);
+        musicSwitchButton.addActionListener(e -> background_main.stopAudio());
 
         // set a default button that will automatically listen to the Enter key
         window.getRootPane().setDefaultButton(pressEnterToContinueButton);
 
         splash_panel.add(splash_label);
-        pressEnterToStartButton_panel.add(pressEnterToContinueButton);
+        buttonPanel_start_screen.add(pressEnterToContinueButton);
+        buttonPanel_start_screen.add(musicSwitchButton);
         container.add(splash_panel);
-        container.add(pressEnterToStartButton_panel);
+        container.add(buttonPanel_start_screen);
     }
 
     public static JPanel getSplash_panel() {
@@ -61,7 +73,7 @@ public class GameStart {
     }
 
     public static JPanel getStartButtonPanel() {
-        return pressEnterToStartButton_panel;
+        return buttonPanel_start_screen;
     }
 
     public static JFrame getWindow() {
