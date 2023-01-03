@@ -4,6 +4,7 @@ import com.apps.util.Prompter;
 import com.awakening.app.game.*;
 import com.awakening.gui.app.GameHomePage;
 import com.awakening.gui.app.GameManager;
+import com.awakening.gui.util.Audio;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,7 @@ public class CommandValidation {
     public static String move(String direction, Player player, EvilSpirit evilSpirit, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get(direction));
+        Audio moveAudio = new Audio("resources/audio/move.wav");
 
         String commandResult;
 
@@ -41,6 +43,7 @@ public class CommandValidation {
             commandResult = "The door is locked";
         } else {
             commandResult = "You have moved: " + direction;
+            moveAudio.playAudio();
             player.setCurrentRoom(nextRoom);
 
             // Ensure that spirit only moves after player moves twice.
