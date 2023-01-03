@@ -1,7 +1,5 @@
 package com.awakening.gui.app;
 
-import com.awakening.app.Game;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,7 +27,7 @@ public class GameStart {
         splash_panel.setBounds(50, 0, 800, 600);
         splash_panel.setBackground(Color.black);
 
-//         load the game splash/title screen image as a label
+        // load the game splash/title screen image as a label
         ImageIcon icon = new ImageIcon("resources/images/titleScreen.PNG");
         splash_label = new JLabel(icon);
 

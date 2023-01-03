@@ -3,6 +3,7 @@ package com.awakening.gui.app;
 import com.awakening.app.Game;
 import com.awakening.app.TextParser;
 import com.awakening.app.UI;
+import com.awakening.app.game.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +14,13 @@ import java.util.List;
 
 public class GameManager {
 
-    private static JPanel inputTextPanel, helpPanel, directionalPanel;
+    private static JPanel inputTextPanel;
+    private static JPanel directionalPanel;
     private static JTextField inputTextField;
-    private static JButton inputTextSubmitButton, helpToMainButton;
-    private static JLabel helpLabel, imageLabel, mapLabel;
+    private static JButton inputTextSubmitButton;
+    private static final JButton helpButton = new JButton();
+    private static JLabel imageLabel;
+    private static JLabel mapLabel;
     private static JFrame sharedWindow;
     private static LayoutManager layoutManager;
     private static Game gameClassLoad;
@@ -68,7 +72,7 @@ public class GameManager {
     public static void populateTextGrid() {
         UI ui = new UI();
 
-        String displayGameInfo = ui.displayGameInfo(Game.player);
+        String displayGameInfo = ui.displayGameInfo(Player.getPlayerInstance());
         GameHomePage.getHomePageTextArea().setText(displayGameInfo);
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);
@@ -227,7 +231,7 @@ public class GameManager {
             List<String> command = textParser.parseInput(input);
             if (!command.get(0).equals("invalid")){
                 if (command.get(0).equalsIgnoreCase("help")) {
-                    //showImagePage("resources/images/help.PNG", "Return");
+                    helpButton.doClick();
                 }
                 // add quit logic
                 else if (command.get(0).equalsIgnoreCase("quit")) {
@@ -271,28 +275,28 @@ public class GameManager {
         constraints.gridy = 4;
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
-        JButton help = new JButton();
 
-        help.setIcon(getHelpOffIcon());
 
-        help.addActionListener(e -> {
+        helpButton.setIcon(getHelpOffIcon());
+
+        helpButton.addActionListener(e -> {
             if (helpActive) {
                 String currentRoom = "resources/images/"+gameClassLoad.getPlayer().getCurrentRoom().getName()+".PNG";
                 scaleImageAndInsertToLabel(currentRoom, imageLabel);
                 helpActive = false;
 
-                help.setIcon(getHelpOffIcon());
+                helpButton.setIcon(getHelpOffIcon());
             } else {
                 String helpImage = "resources/images/help.PNG";
                 scaleImageAndInsertToLabel(helpImage, imageLabel);
                 helpActive = true;
 
-                help.setIcon(getHelpOnIcon());
+                helpButton.setIcon(getHelpOnIcon());
             }
         });
 
-        help.setBackground(Color.black);
-        mapPanel.add(help, constraints);
+        helpButton.setBackground(Color.black);
+        mapPanel.add(helpButton, constraints);
 
         layoutManager.addGB(mapPanel, 4, 0, 2, 2, .3, .1);
     }
@@ -327,10 +331,6 @@ public class GameManager {
         Image imgScale = img.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         label.setIcon(scaledIcon);
-    }
-
-    public static JTextField getInputTextField() {
-        return inputTextField;
     }
 
     public static JLabel getImageLabel() {

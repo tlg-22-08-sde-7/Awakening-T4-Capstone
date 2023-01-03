@@ -1,5 +1,6 @@
 package com.awakening.app;
 
+import com.awakening.app.game.Player;
 import com.awakening.gui.app.GameHomePage;
 
 import java.util.ArrayList;
@@ -25,14 +26,6 @@ public class TextParser {
 
     // Allowed Commands
     private List<String> allowedCommands = new ArrayList<>(Arrays.asList("go", "get", "look", "quit", "use"));
-
-    public List<String> getAllowedCommands() {
-        return allowedCommands;
-    }
-
-    public List<String> getAllowedNouns() {
-        return allowedNouns;
-    }
 
     // method to print array of nouns to string and in color
     public String displayAllowedNouns() {
@@ -62,7 +55,7 @@ public class TextParser {
 //                    "\nSecond word must be a noun from the following list: " + displayAllowedNouns());
             message = "Command not recognized. Only two word commands are recognized.\n";
             result.set(0, "invalid");
-            GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Game.player));
+            GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
             return result;
         }
         if (!allowedCommands.contains(verb) || !allowedNouns.contains(result.get(1))) {
@@ -81,7 +74,7 @@ public class TextParser {
             result.set(0, "invalid");
         }
 
-        GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
 
         return result;
     }

@@ -8,6 +8,15 @@ public class Player {
     private RoomMap.RoomLayout currentRoom;
     private List<Item.ItemsSetup> inventory = new ArrayList<>();
 
+    public static final Player player = new Player();
+
+    Player(){
+
+    }
+
+    public static Player getPlayerInstance(){
+        return player;
+    }
 
     public void addToInventory(Item.ItemsSetup item) {
         inventory.add(item);
@@ -23,10 +32,6 @@ public class Player {
 
     public List<Item.ItemsSetup> getInventory() {
         return inventory;
-    }
-
-    public void setInventory(List<Item> inventory) {
-        inventory = inventory;
     }
 
     // This will allow for the player inventory to be printed to the console/terminal

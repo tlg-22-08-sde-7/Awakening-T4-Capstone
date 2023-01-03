@@ -7,8 +7,6 @@ import com.awakening.gui.app.GameManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,10 +36,8 @@ public class CommandValidation {
         String commandResult;
 
         if (nextRoom == null) {
-//            commandResult = TextParser.RED + "You can't go that way" + TextParser.RESET;
             commandResult = "You can't go that way";
         } else if (nextRoom.isLocked()) {
-//            commandResult = TextParser.RED + "The door is locked" + TextParser.RESET;
             commandResult = "The door is locked";
         } else {
             commandResult = "You have moved: " + direction;
@@ -55,7 +51,7 @@ public class CommandValidation {
                 evilSpirit.setMoveReady(true);
             }
         }
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
 
         String imageLocation = "resources/images/" + player.getCurrentRoom().getName() + ".PNG";
         String mapImage = "resources/images/Map_" + player.getCurrentRoom().getName() + ".png";
@@ -95,7 +91,7 @@ public class CommandValidation {
                         ghostDesc += npcGhost + "\n";
                         item.setCharge(item.getCharge() - 10);
                         commandResult = ui.wrapFrame(ghostDesc);
-                        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+                        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
                         break;
                     }
                 }
@@ -195,7 +191,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
         return commandResult;
     }
 
@@ -219,13 +215,18 @@ public class CommandValidation {
             if (item == null) {
                 commandResult = noun + " is not in " + currentRoom.getName();
             } else if (itemList.contains(noun)) {
-                player.addToInventory(item);
-                for (int i = 0; i < itemList.size(); i++) {
-                    if (noun.equals(itemList.get(i))) {
-                        index = i;
-                        //Remove item from room
-                        player.getCurrentRoom().getItems().remove(index);
-                        commandResult = "You have picked up " + noun;
+                if (noun.equalsIgnoreCase("desk") || noun.equalsIgnoreCase("table")){
+                    commandResult = "You cannot pick up the "+ noun+".";
+                }
+                else{
+                    player.addToInventory(item);
+                    for (int i = 0; i < itemList.size(); i++) {
+                        if (noun.equals(itemList.get(i))) {
+                            index = i;
+                            //Remove item from room
+                            player.getCurrentRoom().getItems().remove(index);
+                            commandResult = "You have picked up " + noun;
+                        }
                     }
                 }
             } else {
@@ -235,7 +236,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
         return commandResult;
     }
 
@@ -259,8 +260,6 @@ public class CommandValidation {
                 GameManager.scaleImageAndInsertToLabel(imageLocation, GameManager.getImageLabel());
 
                 GameHomePage.getHomePageTextArea().setText("Enter PIN\n >");
-                // String keyEntry = GameManager.getInputTextField().getText();
-                // createWindow();
 
                 if (createWindow().equalsIgnoreCase("9537")) {
                     RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
@@ -268,15 +267,13 @@ public class CommandValidation {
 
                     nextRoom.setLocked(false);
                     commandResult = "The key-pad chimes and turns green.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
 
-                    popup_frame.setVisible(false);
                 } else {
                     commandResult = "The key-pad buzzes and flashes red.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
 
-                    popup_frame.setVisible(false);
                 }
+                GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+                popup_frame.setVisible(false);
             } else if (noun.equalsIgnoreCase("batteries")) {
                 boolean isBatteriesInInventory = false;
                 for (Item.ItemsSetup batteries : player.getInventory()) {
@@ -300,17 +297,17 @@ public class CommandValidation {
 
                         nextRoom.setLocked(false);
                         commandResult = "You have picked the lock";
-                        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+                        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                     }
                 }
                 if (!isPaperClipInInventory) {
                     commandResult = "You do not have paper-clip in your inventory";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                 }
             }
         } else {
             commandResult = "Invalid command";
-            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
+            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
         }
 
         return commandResult;

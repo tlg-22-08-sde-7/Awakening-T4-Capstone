@@ -9,6 +9,7 @@ public class EvilSpirit extends Player{
     private boolean moveReady = false;
 
     public EvilSpirit() {
+        super();
         this.setName("Death's Embrace");
     }
 

@@ -20,81 +20,45 @@ public class RoomMap {
         return basement;
     }
 
-    public void setBasement(Basement basement) {
-        this.basement = basement;
-    }
-
     public Morgue getMorgue() {
         return morgue;
-    }
-
-    public void setMorgue(Morgue morgue) {
-        this.morgue = morgue;
     }
 
     public FilingCabinet getFilingCabinet() {
         return filingCabinet;
     }
 
-    public void setFilingCabinet(FilingCabinet filingCabinet) {
-        this.filingCabinet = filingCabinet;
-    }
-
     public EmergencyRoom getEmergencyRoom() {
         return emergencyRoom;
-    }
-
-    public void setEmergencyRoom(EmergencyRoom emergencyRoom) {
-        this.emergencyRoom = emergencyRoom;
     }
 
     public Office getOffice() {
         return office;
     }
 
-    public void setOffice(Office office) {
-        this.office = office;
-    }
-
     public Desk getDesk() {
         return desk;
     }
 
-    public void setDesk(Desk desk) {
-        this.desk = desk;
-    }
 
     public FrontDesk getFrontDesk() {
         return frontDesk;
     }
 
-    public void setFrontDesk(FrontDesk frontDesk) {
-        this.frontDesk = frontDesk;
-    }
 
     public Hallway getHallway() {
         return hallway;
-    }
-
-    public void setHallway(Hallway hallway) {
-        this.hallway = hallway;
     }
 
     public KeyPad getKeypad() {
         return keyPad;
     }
 
-    public void setKeypad(KeyPad keypad) {
-        this.keyPad = keypad;
-    }
 
     public PatientRoom getPatientRoom() {
         return patientRoom;
     }
 
-    public void setPatientRoom(PatientRoom patientRoom) {
-        this.patientRoom = patientRoom;
-    }
 
     public RoomLayout getRoom(String name) {
         if (name == null) {
