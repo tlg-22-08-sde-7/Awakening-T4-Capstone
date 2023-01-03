@@ -60,6 +60,21 @@ public class UI {
 
     }
 
+    public String displayCombatInfo(Player player, EvilSpirit evilSpirit) {
+        String infoText = "";
+        infoText += "You are in the " + player.getCurrentRoom().getName() + ".\n";
+
+        Item.ItemsSetup camera = playerInventory(player, "camera");
+        if (player.getInventory().contains(camera)) {
+            infoText += "Your camera's charge is: " + camera.getCharge() + "\n";
+        }
+
+        System.out.println(wrapFrame(infoText));
+
+        return infoText;
+    }
+
+
     /**
      * This method returns the item in inventory found, so it can be printed
      * in displayGameInfo()

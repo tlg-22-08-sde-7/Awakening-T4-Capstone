@@ -94,14 +94,14 @@ public class CommandValidationTest {
         CommandValidation.pickUp("camera", Player.getPlayerInstance());
 
         Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getEmergencyRoom());
-        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame(gameData.getNpc().getGhost2().getDescription())));
+        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getEvilSpirit(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame(gameData.getNpc().getGhost2().getDescription())));
     }
 
     @Test
     public void ghostPresentCameraNotEquipped_lookCommand_returnCameraNotEquippedError() {
         UI ui = new UI();
         Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getEmergencyRoom());
-        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame("You must have a charged camera to communicate with the ghosts")));
+        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getEvilSpirit(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame("You must have a charged camera to communicate with the ghosts")));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class CommandValidationTest {
         UI ui = new UI();
 
         Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getBasement());
-        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getWorld()).equalsIgnoreCase("There is no ghost in this room"));
+        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getEvilSpirit(), gameData.getWorld()).equalsIgnoreCase("There is no ghost in this room"));
     }
 
     @Test

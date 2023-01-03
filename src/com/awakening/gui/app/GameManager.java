@@ -25,6 +25,7 @@ public class GameManager {
     private static LayoutManager layoutManager;
     private static Game gameClassLoad;
     private static boolean helpActive = false;
+    public static boolean combatActive = false;
 
     public static void beginGameManager() {
 
@@ -71,8 +72,14 @@ public class GameManager {
 
     public static void populateTextGrid() {
         UI ui = new UI();
+        String displayGameInfo;
 
-        String displayGameInfo = ui.displayGameInfo(Player.getPlayerInstance());
+        if (combatActive) {
+            displayGameInfo = ui.displayCombatInfo(Player.getPlayerInstance(), gameClassLoad.getEvilSpirit());
+        } else {
+            displayGameInfo = ui.displayGameInfo(Player.getPlayerInstance());
+        }
+
         GameHomePage.getHomePageTextArea().setText(displayGameInfo);
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);
@@ -228,18 +235,89 @@ public class GameManager {
         inputTextSubmitButton.setFont(Awakening_Font.buttonSelectionFont());
         inputTextSubmitButton.addActionListener(e -> {
             String input = inputTextField.getText();
-            List<String> command = textParser.parseInput(input);
-            if (!command.get(0).equals("invalid")){
-                if (command.get(0).equalsIgnoreCase("help")) {
-                    helpButton.doClick();
+            UI ui = new UI();
+
+            // if in combat utilize combat parser
+            if(combatActive) {
+                List<String> command = textParser.combatParser(input);
+                String text;
+
+                if (!command.get(0).equals("invalid")) {
+                    if (command.get(0).equalsIgnoreCase("help")) {
+                        helpButton.doClick();
+                    }
+                    // add quit logic
+                    else if (command.get(0).equalsIgnoreCase("quit")) {
+                        // TODO: exit page before exiting the program
+                        System.exit(0);
+                    } else if (command.get(0).equalsIgnoreCase("hide")){
+                        if (gameClassLoad.attemptToHide(false)) {
+                            // TODO: Player died, exit game
+                            System.exit(0);
+                        } else {
+                            text = "You successfully hide..." +
+                                    "\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                            updateTextField(text);
+                            combatActive = false;
+                        }
+                    } else {
+                        switch (gameClassLoad.attemptCameraUsage()) {
+                            case 1:
+                                text = "The camera clicks, but you realize the batteries are dead..." +
+                                        "\n" + gameClassLoad.getEvilSpirit().getName() + " begins walking towards you, and you " +
+                                        "instinctively try hiding...";
+                                updateTextField(text);
+                                if (gameClassLoad.attemptToHide(true)) {
+                                    // TODO: Player died, exit game
+                                    System.exit(0);
+                                } else {
+                                    text = "You successfully hide..." +
+                                            "\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                                    updateTextField(text);
+                                    combatActive = false;
+                                }
+                                break;
+                            case 2:
+                                text = "You do not have the camera in your inventory..." + "\n" +
+                                        gameClassLoad.getEvilSpirit().getName() + " begins walking towards you, and you " +
+                                        "instinctively try hiding...";
+                                updateTextField(text);
+                                if (gameClassLoad.attemptToHide(true)) {
+                                    // TODO: Player died, exit game
+                                    System.exit(0);
+                                } else {
+                                    text = "You successfully hide..." +
+                                            "\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                                    updateTextField(text);
+                                    combatActive = false;
+                                }
+                                break;
+                            case 3:
+                                text = "The camera flashes and you hear an unearthly scream and snarl...\n" +
+                                        gameClassLoad.getEvilSpirit().getName() + " vanishes..." +
+                                        "\n\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                                updateTextField(text);
+                                while (Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(
+                                        gameClassLoad.getEvilSpirit().getCurrentRoom().getName())) {
+                                    gameClassLoad.getEvilSpirit().setRandomRoom(gameClassLoad.getWorld());
+                                }
+                                combatActive = false;
+                        }
+                    }
                 }
-                // add quit logic
-                else if (command.get(0).equalsIgnoreCase("quit")) {
-                    // TODO: exit page before exiting the program
-                    System.exit(0);
-                }
-                else{
-                    gameClassLoad.executeCommand(command);
+            } else {
+                List<String> command = textParser.parseInput(input);
+                if (!command.get(0).equals("invalid")) {
+                    if (command.get(0).equalsIgnoreCase("help")) {
+                        helpButton.doClick();
+                    }
+                    // add quit logic
+                    else if (command.get(0).equalsIgnoreCase("quit")) {
+                        // TODO: exit page before exiting the program
+                        System.exit(0);
+                    } else {
+                        gameClassLoad.executeCommand(command);
+                    }
                 }
             }
             // resets the player's input
@@ -339,5 +417,11 @@ public class GameManager {
 
     public static JLabel getMapLabel() {
         return mapLabel;
+    }
+
+    private static void updateTextField(String text) {
+        GameHomePage.getHomePageTextArea().setText(text);
+        GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
+        GameHomePage.getHomePageTextArea().setForeground(Color.green);
     }
 }

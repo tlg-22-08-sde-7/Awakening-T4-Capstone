@@ -62,6 +62,14 @@ public class CommandValidation {
         GameManager.scaleImageAndInsertToLabel(imageLocation, GameManager.getImageLabel());
         GameManager.scaleImageAndInsertToMap(mapImage, GameManager.getMapLabel());
 
+        if (evilSpirit.getCurrentRoom().getName().equalsIgnoreCase(Player.getPlayerInstance().getCurrentRoom().getName())) {
+            GameHomePage.getHomePageTextArea().setText(evilSpirit.getName() + " is in the room..." + "\n" +
+                    ui.displayCombatInfo(player, evilSpirit));
+            GameManager.combatActive = true;
+        } else {
+            GameManager.combatActive = false;
+        }
+
         return commandResult;
     }
 
@@ -75,7 +83,7 @@ public class CommandValidation {
      * @param world  - RoomMap object for game world data
      * @return String - result of command
      */
-    public static String look(String noun, Player player, UI ui, NPC npc, RoomMap world) {
+    public static String look(String noun, Player player, UI ui, NPC npc, EvilSpirit evilSpirit, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         String commandResult = "";
 
@@ -91,7 +99,8 @@ public class CommandValidation {
                         hasCamera = true;
                         String ghostDesc = "";
                         String npcGhost = npc.getGhost(npcName);
-                        ghostDesc += npcGhost + "\n";
+                        ghostDesc += npcGhost + "\n.... " + evilSpirit.getName() + " is at the " +
+                                evilSpirit.getCurrentRoom().getName() + "....";
                         item.setCharge(item.getCharge() - 10);
                         commandResult = ui.wrapFrame(ghostDesc);
                         GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
