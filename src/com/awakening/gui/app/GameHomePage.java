@@ -17,6 +17,7 @@ public class GameHomePage {
     private static JTextArea homePageTextArea;
     private static UI ui = new UI();
     private static JButton gameStartButton;
+    private static JScrollPane scrollableTextArea;
 
 
     public static void createHomePage(){
@@ -28,12 +29,18 @@ public class GameHomePage {
         homePageTextPanel.setBackground(Color.black);
 
         homePageTextArea = new JTextArea(ui.splashScreen());
-        homePageTextArea.setBounds(50,0,800,350);
+        homePageTextArea.setBounds(50,0,750,300);
         homePageTextArea.setBackground(Color.black);
         homePageTextArea.setForeground(Color.green);
         homePageTextArea.setFont(Awakening_Font.getNormalFont());
         homePageTextArea.setLineWrap(true);
-        homePageTextPanel.add(homePageTextArea);
+
+        scrollableTextArea = new JScrollPane(homePageTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        scrollableTextArea.setWheelScrollingEnabled(true);
+        scrollableTextArea.setBorder(BorderFactory.createEmptyBorder());
+        homePageTextPanel.add(scrollableTextArea);
 
         GameStart.getContainer().add(homePageTextPanel);
         // button
@@ -56,5 +63,9 @@ public class GameHomePage {
 
     public static JTextArea getHomePageTextArea() {
         return homePageTextArea;
+    }
+
+    public static JScrollPane getScrollableTextArea() {
+        return scrollableTextArea;
     }
 }

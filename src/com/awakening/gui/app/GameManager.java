@@ -293,9 +293,9 @@ public class GameManager {
                                 }
                                 break;
                             case 3:
-                                text = "The camera flashes and you hear an unearthly scream and snarl.." +
+                                text = "The camera flashes and you hear an unearthly scream and snarl...\n" +
                                         gameClassLoad.getEvilSpirit().getName() + " vanishes..." +
-                                        "\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                                        "\n\n" + ui.displayGameInfo(Player.getPlayerInstance());
                                 updateTextField(text);
                                 while (Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(
                                         gameClassLoad.getEvilSpirit().getCurrentRoom().getName())) {
@@ -420,10 +420,7 @@ public class GameManager {
     }
 
     private static void updateTextField(String text) {
-        String current = GameHomePage.getHomePageTextArea().getText();
-        current += "\n" + text;
-
-        GameHomePage.getHomePageTextArea().setText(current);
+        GameHomePage.getHomePageTextArea().setText(text);
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);
     }
