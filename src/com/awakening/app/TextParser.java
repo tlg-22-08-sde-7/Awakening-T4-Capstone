@@ -41,7 +41,6 @@ public class TextParser {
 
         UI ui = new UI();
         String verb = result.get(0);
-        String noun;
         String message = "";
 
         if (result.size() == 1 && "help".equals(verb)) {
@@ -76,6 +75,42 @@ public class TextParser {
 
         GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
 
+        return result;
+    }
+
+    public List<String> combatParser(String input) {
+        List<String> result = new ArrayList<>(Arrays.asList(input.toLowerCase().trim().split(" ")));
+
+        UI ui = new UI();
+        String verb = result.get(0);
+        String message = "";
+
+        if (result.size() == 1 && "help".equals(verb)) {
+            return result;
+        }
+        if (result.size() == 1 && "quit".equals(verb)) {
+            return result;
+        }
+        if (result.size() == 1 && "hide".equals(verb)) {
+            return result;
+        } else if (result.size() != 2) {
+            System.out.println(RED + "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n" + RESET);
+            message = "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n";
+            result.set(0, "invalid");
+            GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+            return result;
+        }
+        if (!result.get(0).equalsIgnoreCase("use") && !result.get(1).equalsIgnoreCase("camera")) {
+            System.out.println(RED + "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n" + RESET);
+            message = "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n";
+            result.set(0, "invalid");
+        }
+
+        GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
         return result;
     }
 }
