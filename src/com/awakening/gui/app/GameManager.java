@@ -28,7 +28,7 @@ public class GameManager {
     public static boolean combatActive = false;
 
     public static void beginGameManager() {
-
+        GameStart.getContainer().remove(GameHomePage.getGameStartButtonPanel());
         gameClassLoad = new Game();
         layoutManager = new LayoutManager();
         layoutManager.setBackground(Color.black);
@@ -39,7 +39,7 @@ public class GameManager {
         sharedWindow.setContentPane(layoutManager);
         //sharedWindow.setSize(1400, 850);
         //sharedWindow.pack();
-        sharedWindow.setSize(1250, 650);
+        //sharedWindow.setSize(1250, 650);
 
         //create image
         populateImageGrid();
@@ -67,7 +67,7 @@ public class GameManager {
         ImageIcon icon = new ImageIcon("resources/images/titleScreen.PNG");
         imageLabel = new JLabel(icon);
 
-        layoutManager.addGB(imageLabel, 0, 0, 2, 4, .2, .1);
+        layoutManager.addGB(imageLabel, 0, 0, 2, 4, 1, 1);
     }
 
     public static void populateTextGrid() {
@@ -84,7 +84,7 @@ public class GameManager {
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);
 
-        layoutManager.addGB(GameStart.getContainer(), 0, 3, 4, 4, 0.1, .1);
+        layoutManager.addGB(GameStart.getContainer(), 0, 3, 4, 4, 1, 1);
     }
 
     public static void populateDirectionalGrid() {
@@ -327,8 +327,8 @@ public class GameManager {
         inputTextPanel.add(inputTextField);
         inputTextPanel.add(inputTextSubmitButton);
 
-        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, .8, .3);
-        layoutManager.addGB(inputTextPanel, 4, 6, 1, 2, .5, .5);
+        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, 1, 1);
+        layoutManager.addGB(inputTextPanel, 4, 6, 1, 2, 1, 1);
     }
 
     public static void populateMapButtonsGrid() {
@@ -376,7 +376,7 @@ public class GameManager {
         helpButton.setBackground(Color.black);
         mapPanel.add(helpButton, constraints);
 
-        layoutManager.addGB(mapPanel, 4, 0, 2, 2, .3, .1);
+        layoutManager.addGB(mapPanel, 4, 0, 2, 2, 1, 1);
     }
 
     public static ImageIcon getHelpOffIcon() {

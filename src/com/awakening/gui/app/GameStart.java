@@ -16,17 +16,19 @@ public class GameStart {
     private JButton pressEnterToContinueButton, musicSwitchButton;
 
     public GameStart(){
+        GridBagConstraints c = new GridBagConstraints();
         window = new JFrame();
-        window.setSize(925, 900);
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.BLACK);
 
         window.setLayout(null);
         window.setVisible(true);
         container = window.getContentPane();
+        container.setLayout(new GridBagLayout());
 
         splash_panel = new JPanel();
-        splash_panel.setBounds(50, 0, 800, 600);
+        splash_panel.setSize(new Dimension(800, 600));
         splash_panel.setBackground(Color.black);
 
         // load the game splash/title screen image as a label
@@ -37,7 +39,7 @@ public class GameStart {
 
         // press enter to start button
         buttonPanel_start_screen = new JPanel();
-        buttonPanel_start_screen.setBounds(250, 630, 400, 200);
+        buttonPanel_start_screen.setSize(new Dimension(400, 200));
         buttonPanel_start_screen.setBackground(Color.black);
 
         pressEnterToContinueButton = new JButton("PRESS ENTER TO START");
@@ -60,8 +62,14 @@ public class GameStart {
         splash_panel.add(splash_label);
         buttonPanel_start_screen.add(pressEnterToContinueButton);
         buttonPanel_start_screen.add(musicSwitchButton);
-        container.add(splash_panel);
-        container.add(buttonPanel_start_screen);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        container.add(splash_panel, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        container.add(buttonPanel_start_screen, c);
     }
 
     public static JPanel getSplash_panel() {
