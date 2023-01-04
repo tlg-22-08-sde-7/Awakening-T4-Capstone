@@ -164,7 +164,7 @@ public class UI {
             for (int i = 0; i < spaces; i++) {
                 line += " ";
             }
-            textBody += "║ " + line + " ║\n";
+            textBody += "   " + line + "\n";
         }
 
         frame = top + textBody + bottom;
@@ -172,33 +172,20 @@ public class UI {
         return frame;
     }
 
+    /**
+     * This method takes the string read from GSON, breaks the string by period, insert a line break for each complete sentence using string builder, then return a more readable string
+     * @param input
+     * @return sb
+     */
     public static String breakIntoLines(String input) {
-        // check if lines are already broken
-        boolean alreadySplit = true;
-        for (String line : input.split("\n")) {
-            if (line.length() > 90) {
-                alreadySplit = false;
-                break;
-            }
+        String[] lines = input.split("\\.");
+        StringBuilder sb = new StringBuilder();
+
+        for (String line:lines) {
+            sb.append(line).append("\n");
         }
 
-        // If the input is already split, return it as-is.
-        if (alreadySplit) {
-            return input;
-        }
-        // If the input is not already split, split it.
-        StringBuilder sb = new StringBuilder();
-        int startIndex = 0;
-        while (startIndex < input.length()) {
-            int endIndex = startIndex + 90;
-            if (endIndex > input.length()) {
-                endIndex = input.length();
-            }
-            sb.append(input.substring(startIndex, endIndex));
-            sb.append("\n");
-            startIndex = endIndex;
-        }
-        return sb.toString();
+        return String.valueOf(sb);
     }
 
 
