@@ -56,7 +56,7 @@ public class UI {
         infoText += "Exits : " + player.getCurrentRoom().getDirections().keySet() + ".\n";
         System.out.println(wrapFrame(infoText));
 
-        return infoText;
+        return wrapFrame(infoText);
 
     }
 
@@ -71,7 +71,7 @@ public class UI {
 
         System.out.println(wrapFrame(infoText));
 
-        return infoText;
+        return wrapFrame(infoText);
     }
 
 
@@ -176,7 +176,7 @@ public class UI {
         // check if lines are already broken
         boolean alreadySplit = true;
         for (String line : input.split("\n")) {
-            if (line.length() > 80) {
+            if (line.length() > 90) {
                 alreadySplit = false;
                 break;
             }
@@ -190,7 +190,7 @@ public class UI {
         StringBuilder sb = new StringBuilder();
         int startIndex = 0;
         while (startIndex < input.length()) {
-            int endIndex = startIndex + 80;
+            int endIndex = startIndex + 90;
             if (endIndex > input.length()) {
                 endIndex = input.length();
             }
