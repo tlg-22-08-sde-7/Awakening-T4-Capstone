@@ -287,18 +287,19 @@ public class CommandValidation {
                 GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                 popup_frame.setVisible(false);
             } else if (noun.equalsIgnoreCase("batteries")) {
-                boolean isBatteriesInInventory = false;
-                for (Item.ItemsSetup batteries : player.getInventory()) {
-                    if (batteries.getName().equalsIgnoreCase("batteries")) {
-                        isBatteriesInInventory = true;
-                        String itemToCharge = prompter.prompt("What item do you want to charge?\n > ").toLowerCase();
-                        itemCharge(batteries, itemToCharge, player);
-                        break;
-                    }
-                }
-                if (!isBatteriesInInventory) {
+                Item.ItemsSetup batteries = itemInInventory("batteries");
+
+                if (batteries == null) {
                     commandResult = "You do not have batteries in your inventory";
                 }
+                else {
+                    GameHomePage.getHomePageTextArea().setText("What item do you want to charge?\n > ");
+                    String input = createWindow();
+                    itemCharge(batteries, input, player);
+                    popup_frame.setVisible(false);
+                    commandResult = "Your " + input + " has been charged";
+                }
+                GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
             } else if (noun.equalsIgnoreCase("paper-clip")) {
                 boolean isPaperClipInInventory = false;
                 for (Item.ItemsSetup paperClip : player.getInventory()) {
@@ -348,6 +349,15 @@ public class CommandValidation {
         for (Item.ItemsSetup roomItem : roomItems) {
             if (noun.equals(roomItem.getName())) {
                 return roomItem;
+            }
+        }
+        return null;
+    }
+
+    private static Item.ItemsSetup itemInInventory(String noun) {
+        for (Item.ItemsSetup itemInInventory : Player.player.getInventory()) {
+            if (itemInInventory.getName().equalsIgnoreCase(noun)) {
+                return itemInInventory;
             }
         }
         return null;
