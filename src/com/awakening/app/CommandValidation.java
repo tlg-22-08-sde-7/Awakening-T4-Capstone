@@ -43,7 +43,9 @@ public class CommandValidation {
             commandResult = "The door is locked";
         } else {
             commandResult = "You have moved: " + direction;
-            moveAudio.playAudio();
+            if (GameManager.audioActive){
+                moveAudio.playAudio();
+            }
             player.setCurrentRoom(nextRoom);
 
             // Ensure that spirit only moves after player moves twice.
