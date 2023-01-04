@@ -19,6 +19,7 @@ public class GameManager {
     private static JTextField inputTextField;
     private static JButton inputTextSubmitButton;
     private static final JButton helpButton = new JButton();
+    private static JButton audioButton = new JButton();
     private static JLabel imageLabel;
     private static JLabel mapLabel;
     private static JFrame sharedWindow;
@@ -26,6 +27,7 @@ public class GameManager {
     private static Game gameClassLoad;
     private static boolean helpActive = false;
     public static boolean combatActive = false;
+    public static boolean audioActive = true;
 
     public static void beginGameManager() {
         GameStart.getContainer().remove(GameHomePage.getGameStartButtonPanel());
@@ -103,6 +105,7 @@ public class GameManager {
         constraints.gridx = 2;
         constraints.gridy = 0;
         JButton north = new JButton();
+        north.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/North.png");
         img = baseIcon.getImage();
@@ -123,6 +126,7 @@ public class GameManager {
         constraints.gridx = 2;
         constraints.gridy = 2;
         JButton south = new JButton();
+        south.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/South.png");
         img = baseIcon.getImage();
@@ -143,6 +147,7 @@ public class GameManager {
         constraints.gridx = 3;
         constraints.gridy = 1;
         JButton east = new JButton();
+        east.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/East.png");
         img = baseIcon.getImage();
@@ -163,6 +168,7 @@ public class GameManager {
         constraints.gridx = 1;
         constraints.gridy = 1;
         JButton west = new JButton();
+        west.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/West.png");
         img = baseIcon.getImage();
@@ -353,44 +359,78 @@ public class GameManager {
         constraints.gridy = 4;
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
-
-
-        helpButton.setIcon(getHelpOffIcon());
+        helpButton.setBorder(BorderFactory.createEmptyBorder());
+        helpButton.setOpaque(true);
+        helpButton.setBackground(Color.black);
+        helpButton.setForeground(Color.black);
+        helpButton.setIcon(getHelpIcon());
 
         helpButton.addActionListener(e -> {
             if (helpActive) {
                 String currentRoom = "resources/images/"+gameClassLoad.getPlayer().getCurrentRoom().getName()+".PNG";
                 scaleImageAndInsertToLabel(currentRoom, imageLabel);
                 helpActive = false;
-
-                helpButton.setIcon(getHelpOffIcon());
             } else {
                 String helpImage = "resources/images/help.PNG";
                 scaleImageAndInsertToLabel(helpImage, imageLabel);
                 helpActive = true;
-
-                helpButton.setIcon(getHelpOnIcon());
             }
         });
 
-        helpButton.setBackground(Color.black);
         mapPanel.add(helpButton, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        audioButton.setBorder(BorderFactory.createEmptyBorder());
+        audioButton.setOpaque(true);
+        audioButton.setBackground(Color.black);
+        audioButton.setForeground(Color.black);
+        audioButton.setIcon(getAudioIcon());
+
+        audioButton.addActionListener(e -> {
+            if (audioActive) {
+                GameStart.getBackground_main().stopAudio();
+
+                // TODO: Code for disabling FX
+
+
+                audioActive = false;
+            } else {
+                GameStart.getBackground_main().loopAudio();
+
+                // TODO: Code for enabling FX
+
+
+                audioActive = true;
+            }
+        });
+        mapPanel.add(audioButton, constraints);
 
         layoutManager.addGB(mapPanel, 4, 0, 2, 2, 1, 1);
     }
 
-    public static ImageIcon getHelpOffIcon() {
-        ImageIcon baseIcon = new ImageIcon("resources/images/HelpOff.png");
+    public static ImageIcon getAudioOnIcon() {
+        ImageIcon baseIcon = new ImageIcon("resources/images/AudioOn.png");
         Image img = baseIcon.getImage();
         img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
 
         return new ImageIcon(img);
     }
 
-    public static ImageIcon getHelpOnIcon() {
-        ImageIcon baseIcon = new ImageIcon("resources/images/HelpOn.png");
+    public static ImageIcon getAudioIcon() {
+        ImageIcon baseIcon = new ImageIcon("resources/images/AudioButton.png");
         Image img = baseIcon.getImage();
-        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        img.getScaledInstance(150, 50, Image.SCALE_DEFAULT);
+
+        return new ImageIcon(img);
+    }
+
+    public static ImageIcon getHelpIcon() {
+        ImageIcon baseIcon = new ImageIcon("resources/images/HelpButton.png");
+        Image img = baseIcon.getImage();
+        img.getScaledInstance(150, 50, Image.SCALE_DEFAULT);
 
         return new ImageIcon(img);
     }

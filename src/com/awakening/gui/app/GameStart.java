@@ -49,12 +49,20 @@ public class GameStart {
         pressEnterToContinueButton.setFocusPainted(false);
         pressEnterToContinueButton.addActionListener(e -> GameHomePage.createHomePage());
 
-        musicSwitchButton = new JButton("MUSIC OFF");
+        musicSwitchButton = new JButton("MUSIC");
         musicSwitchButton.setBackground(Color.black);
         musicSwitchButton.setForeground(Color.lightGray);
         musicSwitchButton.setFont(Awakening_Font.getSmallTextFont());
         musicSwitchButton.setFocusPainted(false);
-        musicSwitchButton.addActionListener(e -> background_main.stopAudio());
+        musicSwitchButton.addActionListener(e -> {
+            if (GameManager.audioActive) {
+                background_main.stopAudio();
+                GameManager.audioActive = false;
+            } else {
+                background_main.loopAudio();
+                GameManager.audioActive = true;
+            }
+        });
 
         // set a default button that will automatically listen to the Enter key
         window.getRootPane().setDefaultButton(pressEnterToContinueButton);
@@ -86,5 +94,9 @@ public class GameStart {
 
     public static JFrame getWindow() {
         return window;
+    }
+
+    public static Audio getBackground_main() {
+        return background_main;
     }
 }
