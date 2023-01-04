@@ -392,17 +392,9 @@ public class GameManager {
         audioButton.addActionListener(e -> {
             if (audioActive) {
                 GameStart.getBackground_main().stopAudio();
-
-                // TODO: Code for disabling FX
-
-
                 audioActive = false;
             } else {
                 GameStart.getBackground_main().loopAudio();
-
-                // TODO: Code for enabling FX
-
-
                 audioActive = true;
             }
         });
