@@ -114,10 +114,15 @@ public class GameManager {
 
         north.setIcon(scaledIcon);
         north.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("north");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("north");
+                gameClassLoad.executeCommand(command);
+            }
         });
         north.setBackground(Color.black);
         north.setForeground(Color.black);
@@ -135,10 +140,15 @@ public class GameManager {
 
         south.setIcon(scaledIcon);
         south.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("south");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("south");
+                gameClassLoad.executeCommand(command);
+            }
         });
         south.setBackground(Color.black);
         south.setForeground(Color.black);
@@ -156,10 +166,15 @@ public class GameManager {
 
         east.setIcon(scaledIcon);
         east.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("east");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("east");
+                gameClassLoad.executeCommand(command);
+            }
         });
         east.setBackground(Color.black);
         east.setForeground(Color.black);
@@ -177,10 +192,15 @@ public class GameManager {
 
         west.setIcon(scaledIcon);
         west.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("west");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("west");
+                gameClassLoad.executeCommand(command);
+            }
         });
         west.setBackground(Color.black);
         west.setForeground(Color.black);
