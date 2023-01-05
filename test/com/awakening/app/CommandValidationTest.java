@@ -1,6 +1,7 @@
 package com.awakening.app;
 
 import com.apps.util.Prompter;
+import com.awakening.app.game.EvilSpirit;
 import com.awakening.app.game.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,6 @@ public class CommandValidationTest {
 
     @Test
     public void correctPIN_keypadUsed_nextDoorUnlocks() {
-        Player player = new Player();
         Prompter prompter = null;
         try {
             prompter = new Prompter(new Scanner(new File("test-resources/CorrectKeypadResponsesTest.txt")));
@@ -30,16 +30,15 @@ public class CommandValidationTest {
             e.printStackTrace();
         }
 
-        player.setCurrentRoom(gameData.getWorld().getHallway());
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getHallway());
 
-        assertTrue(CommandValidation.use("key-pad", player, prompter, gameData.getWorld()).equalsIgnoreCase("The key-pad chimes and turns green."));
-        player.setCurrentRoom(gameData.getWorld().getRoom(player.getCurrentRoom().getDirections().get("east")));
-        assertFalse(player.getCurrentRoom().isLocked());
+        assertTrue(CommandValidation.use("key-pad", Player.getPlayerInstance(), prompter, gameData.getWorld()).equalsIgnoreCase("The key-pad chimes and turns green."));
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getRoom(Player.getPlayerInstance().getCurrentRoom().getDirections().get("east")));
+        assertFalse(Player.getPlayerInstance().getCurrentRoom().isLocked());
     }
 
     @Test
     public void incorrectPIN_KeypadUsed_nextDoorStaysLocked() {
-        Player player = new Player();
         Prompter prompter = null;
         try {
             prompter = new Prompter(new Scanner(new File("test-resources/IncorrectKeypadResponsesTest.txt")));
@@ -47,94 +46,85 @@ public class CommandValidationTest {
             e.printStackTrace();
         }
 
-        player.setCurrentRoom(gameData.getWorld().getHallway());
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getHallway());
 
-        assertTrue(CommandValidation.use("key-pad", player, prompter, gameData.getWorld()).equalsIgnoreCase("The key-pad buzzes and flashes red."));
-        player.setCurrentRoom(gameData.getWorld().getRoom(player.getCurrentRoom().getDirections().get("east")));
-        assertTrue(player.getCurrentRoom().isLocked());
+        assertTrue(CommandValidation.use("key-pad", Player.getPlayerInstance(), prompter, gameData.getWorld()).equalsIgnoreCase("The key-pad buzzes and flashes red."));
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getRoom(Player.getPlayerInstance().getCurrentRoom().getDirections().get("east")));
+        assertTrue(Player.getPlayerInstance().getCurrentRoom().isLocked());
     }
 
     @Test
     public void correctDirection_moveCommand_movesPlayer() {
-        Player player = new Player();
+        EvilSpirit evilSpirit = new EvilSpirit();
 
-        player.setCurrentRoom(gameData.getWorld().getEmergencyRoom());
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getEmergencyRoom());
 
         //Test North
-        assertTrue(CommandValidation.move("north", player, gameData.getWorld()).equalsIgnoreCase("You have moved: north"));
-        assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getMorgue().getName()));
+        assertTrue(CommandValidation.move("north", Player.getPlayerInstance(), evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: north"));
+        assertTrue(Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getMorgue().getName()));
 
         //Test South
-        assertTrue(CommandValidation.move("south", player, gameData.getWorld()).equalsIgnoreCase("You have moved: south"));
-        assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getEmergencyRoom().getName()));
+        assertTrue(CommandValidation.move("south", Player.getPlayerInstance(),evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: south"));
+        assertTrue(Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getEmergencyRoom().getName()));
 
         //Test East
-        assertTrue(CommandValidation.move("east", player, gameData.getWorld()).equalsIgnoreCase("You have moved: east"));
-        assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getHallway().getName()));
+        assertTrue(CommandValidation.move("east", Player.getPlayerInstance(), evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: east"));
+        assertTrue(Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getHallway().getName()));
 
         //Test West
-        assertTrue(CommandValidation.move("west", player, gameData.getWorld()).equalsIgnoreCase("You have moved: west"));
-        assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getEmergencyRoom().getName()));
+        assertTrue(CommandValidation.move("west", Player.getPlayerInstance(),evilSpirit, gameData.getWorld()).equalsIgnoreCase("You have moved: west"));
+        assertTrue(Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getEmergencyRoom().getName()));
     }
 
     @Test
     public void incorrectDirection_moveCommand_playerDoesNotMove() {
-        Player player = new Player();
 
-        player.setCurrentRoom(gameData.getWorld().getMorgue());
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getMorgue());
 
         //Test East, not available direction from morgue
         //assertTrue(CommandValidation.move("east", player, gameData.getWorld()).equalsIgnoreCase("You can't go that way"));
-        assertTrue(player.getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getMorgue().getName()));
+        assertTrue(Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(gameData.getWorld().getMorgue().getName()));
     }
 
     @Test
     public void ghostPresentCameraEquipped_lookCommand_returnCorrectGhostDescription() {
-        Player player = new Player();
         UI ui = new UI();
 
-        player.setCurrentRoom(gameData.getWorld().getBasement());
-        CommandValidation.pickUp("camera", player);
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getBasement());
+        CommandValidation.pickUp("camera", Player.getPlayerInstance());
 
-        player.setCurrentRoom(gameData.getWorld().getEmergencyRoom());
-        assertTrue(CommandValidation.look("ghost", player, ui, gameData.getNpc(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame(gameData.getNpc().getGhost2().getDescription())));
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getEmergencyRoom());
+        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getEvilSpirit(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame(gameData.getNpc().getGhost2().getDescription())));
     }
 
     @Test
     public void ghostPresentCameraNotEquipped_lookCommand_returnCameraNotEquippedError() {
-        Player player = new Player();
         UI ui = new UI();
-
-        player.setCurrentRoom(gameData.getWorld().getEmergencyRoom());
-        assertTrue(CommandValidation.look("ghost", player, ui, gameData.getNpc(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame("You must have a charged camera to communicate with the ghosts")));
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getEmergencyRoom());
+        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getEvilSpirit(), gameData.getWorld()).equalsIgnoreCase(ui.wrapFrame("You must have a charged camera to communicate with the ghosts")));
     }
 
     @Test
     public void ghostNotPresent_lookCommand_noGhostError() {
-        Player player = new Player();
         UI ui = new UI();
 
-        player.setCurrentRoom(gameData.getWorld().getBasement());
-        assertTrue(CommandValidation.look("ghost", player, ui, gameData.getNpc(), gameData.getWorld()).equalsIgnoreCase("There is no ghost in this room"));
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getBasement());
+        assertTrue(CommandValidation.look("ghost", Player.getPlayerInstance(), ui, gameData.getNpc(), gameData.getEvilSpirit(), gameData.getWorld()).equalsIgnoreCase("There is no ghost in this room"));
     }
 
     @Test
     public void itemPresent_pickupCommand_addedToPlayerInventory() {
-        Player player = new Player();
 
-        player.setCurrentRoom(gameData.getWorld().getBasement());
-        assertTrue(CommandValidation.pickUp("camera", player).equalsIgnoreCase("You have picked up camera"));
-        assertEquals(1, player.getInventory().size());
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getBasement());
+        assertTrue(CommandValidation.pickUp("camera", Player.getPlayerInstance()).equalsIgnoreCase("You have picked up camera"));
+        assertEquals(1, Player.getPlayerInstance().getInventory().size());
     }
 
     @Test
     public void itemNotPresent_pickupCommand_notInRoomError() {
+        Player.getPlayerInstance().setCurrentRoom(gameData.getWorld().getBasement());
 
-        Player player = new Player();
-
-        player.setCurrentRoom(gameData.getWorld().getBasement());
-
-        assertTrue(CommandValidation.pickUp("paper-clip", player).equalsIgnoreCase("paper-clip is not in Basement"));
-        assertEquals(0, player.getInventory().size());
+        assertTrue(CommandValidation.pickUp("paper-clip", Player.getPlayerInstance()).equalsIgnoreCase("paper-clip is not in Basement"));
+        assertEquals(0, Player.getPlayerInstance().getInventory().size());
     }
 }

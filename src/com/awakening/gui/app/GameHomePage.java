@@ -17,28 +17,38 @@ public class GameHomePage {
     private static JTextArea homePageTextArea;
     private static UI ui = new UI();
     private static JButton gameStartButton;
+    private static JScrollPane scrollableTextArea;
 
 
     public static void createHomePage(){
+        GridBagConstraints c = new GridBagConstraints();
+
         GameStart.getSplash_panel().setVisible(false);
         GameStart.getStartButtonPanel().setVisible(false);
 
         homePageTextPanel = new JPanel();
-        homePageTextPanel.setBounds(80, 50, 800, 300);
+        homePageTextPanel.setSize(new Dimension(800, 500));
         homePageTextPanel.setBackground(Color.black);
 
-        homePageTextArea = new JTextArea(ui.splashScreen());
-        homePageTextArea.setBounds(50,0,800,350);
+        homePageTextArea = new JTextArea(ui.splashScreen(), 20, 96);
         homePageTextArea.setBackground(Color.black);
         homePageTextArea.setForeground(Color.green);
-        homePageTextArea.setFont(Awakening_Font.getNormalFont());
+        homePageTextArea.setFont(Awakening_Font.getSpecialFont());
         homePageTextArea.setLineWrap(true);
-        homePageTextPanel.add(homePageTextArea);
 
-        GameStart.getContainer().add(homePageTextPanel);
+        scrollableTextArea = new JScrollPane(homePageTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollableTextArea.setWheelScrollingEnabled(true);
+        scrollableTextArea.setBorder(BorderFactory.createEmptyBorder());
+        homePageTextPanel.add(scrollableTextArea);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridheight = 3;
+        GameStart.getContainer().add(homePageTextPanel, c);
         // button
         gameStartButtonPanel = new JPanel();
-        gameStartButtonPanel.setBounds(250, 500, 400, 200);
+        gameStartButtonPanel.setSize(new Dimension(400, 200));
         gameStartButtonPanel.setBackground(Color.black);
 
 
@@ -50,7 +60,11 @@ public class GameHomePage {
         gameStartButton.addActionListener(e -> GameManager.beginGameManager());
 
         gameStartButtonPanel.add(gameStartButton);
-        GameStart.getContainer().add(gameStartButtonPanel);
+
+        c.gridx = 0;
+        c.gridy = 4;
+        c.gridheight = 1;
+        GameStart.getContainer().add(gameStartButtonPanel, c);
 
     }
 
@@ -58,15 +72,11 @@ public class GameHomePage {
         return homePageTextArea;
     }
 
-    public static JButton getGameStartButton() {
-        return gameStartButton;
+    public static JScrollPane getScrollableTextArea() {
+        return scrollableTextArea;
     }
 
     public static JPanel getGameStartButtonPanel() {
         return gameStartButtonPanel;
-    }
-
-    public static JPanel getHomePageTextPanel() {
-        return homePageTextPanel;
     }
 }

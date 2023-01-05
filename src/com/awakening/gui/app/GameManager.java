@@ -1,8 +1,10 @@
 package com.awakening.gui.app;
 
+import com.apps.util.Console;
 import com.awakening.app.Game;
 import com.awakening.app.TextParser;
 import com.awakening.app.UI;
+import com.awakening.app.game.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,17 +15,23 @@ import java.util.List;
 
 public class GameManager {
 
-    private static JPanel inputTextPanel, helpPanel, directionalPanel;
+    private static JPanel inputTextPanel;
+    private static JPanel directionalPanel;
     private static JTextField inputTextField;
-    private static JButton inputTextSubmitButton, helpToMainButton;
-    private static JLabel helpLabel, imageLabel, mapLabel;
+    private static JButton inputTextSubmitButton;
+    private static final JButton helpButton = new JButton();
+    private static JButton audioButton = new JButton();
+    private static JLabel imageLabel;
+    private static JLabel mapLabel;
     private static JFrame sharedWindow;
     private static LayoutManager layoutManager;
     private static Game gameClassLoad;
     private static boolean helpActive = false;
+    public static boolean combatActive = false;
+    public static boolean audioActive = true;
 
     public static void beginGameManager() {
-
+        GameStart.getContainer().remove(GameHomePage.getGameStartButtonPanel());
         gameClassLoad = new Game();
         layoutManager = new LayoutManager();
         layoutManager.setBackground(Color.black);
@@ -34,7 +42,7 @@ public class GameManager {
         sharedWindow.setContentPane(layoutManager);
         //sharedWindow.setSize(1400, 850);
         //sharedWindow.pack();
-        sharedWindow.setSize(1250, 650);
+        //sharedWindow.setSize(1250, 650);
 
         //create image
         populateImageGrid();
@@ -62,18 +70,24 @@ public class GameManager {
         ImageIcon icon = new ImageIcon("resources/images/titleScreen.PNG");
         imageLabel = new JLabel(icon);
 
-        layoutManager.addGB(imageLabel, 0, 0, 2, 4, .2, .1);
+        layoutManager.addGB(imageLabel, 0, 0, 2, 4, 1, 1);
     }
 
     public static void populateTextGrid() {
         UI ui = new UI();
+        String displayGameInfo;
 
-        String displayGameInfo = ui.displayGameInfo(Game.player);
+        if (combatActive) {
+            displayGameInfo = ui.displayCombatInfo(Player.getPlayerInstance(), gameClassLoad.getEvilSpirit());
+        } else {
+            displayGameInfo = ui.displayGameInfo(Player.getPlayerInstance());
+        }
+
         GameHomePage.getHomePageTextArea().setText(displayGameInfo);
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);
 
-        layoutManager.addGB(GameStart.getContainer(), 0, 3, 4, 4, 0.1, .1);
+        layoutManager.addGB(GameStart.getContainer(), 0, 3, 4, 4, 1, 1);
     }
 
     public static void populateDirectionalGrid() {
@@ -92,6 +106,7 @@ public class GameManager {
         constraints.gridx = 2;
         constraints.gridy = 0;
         JButton north = new JButton();
+        north.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/North.png");
         img = baseIcon.getImage();
@@ -100,10 +115,15 @@ public class GameManager {
 
         north.setIcon(scaledIcon);
         north.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("north");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("north");
+                gameClassLoad.executeCommand(command);
+            }
         });
         north.setBackground(Color.black);
         north.setForeground(Color.black);
@@ -112,6 +132,7 @@ public class GameManager {
         constraints.gridx = 2;
         constraints.gridy = 2;
         JButton south = new JButton();
+        south.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/South.png");
         img = baseIcon.getImage();
@@ -120,10 +141,15 @@ public class GameManager {
 
         south.setIcon(scaledIcon);
         south.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("south");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("south");
+                gameClassLoad.executeCommand(command);
+            }
         });
         south.setBackground(Color.black);
         south.setForeground(Color.black);
@@ -132,6 +158,7 @@ public class GameManager {
         constraints.gridx = 3;
         constraints.gridy = 1;
         JButton east = new JButton();
+        east.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/East.png");
         img = baseIcon.getImage();
@@ -140,10 +167,15 @@ public class GameManager {
 
         east.setIcon(scaledIcon);
         east.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("east");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("east");
+                gameClassLoad.executeCommand(command);
+            }
         });
         east.setBackground(Color.black);
         east.setForeground(Color.black);
@@ -152,6 +184,7 @@ public class GameManager {
         constraints.gridx = 1;
         constraints.gridy = 1;
         JButton west = new JButton();
+        west.setBorder(BorderFactory.createEmptyBorder());
 
         baseIcon = new ImageIcon("resources/images/West.png");
         img = baseIcon.getImage();
@@ -160,10 +193,15 @@ public class GameManager {
 
         west.setIcon(scaledIcon);
         west.addActionListener(e -> {
-            List<String> command = new ArrayList<>();
-            command.add("go");
-            command.add("west");
-            gameClassLoad.executeCommand(command);
+            if (gameClassLoad.evilSpiritCheck()){
+                updateTextField("Invalid command, you must engage with evil spirit\n" +"You can hide or use camera");
+            }
+            else {
+                List<String> command = new ArrayList<>();
+                command.add("go");
+                command.add("west");
+                gameClassLoad.executeCommand(command);
+            }
         });
         west.setBackground(Color.black);
         west.setForeground(Color.black);
@@ -224,18 +262,83 @@ public class GameManager {
         inputTextSubmitButton.setFont(Awakening_Font.buttonSelectionFont());
         inputTextSubmitButton.addActionListener(e -> {
             String input = inputTextField.getText();
-            List<String> command = textParser.parseInput(input);
-            if (!command.get(0).equals("invalid")){
-                if (command.get(0).equalsIgnoreCase("help")) {
-                    //showImagePage("resources/images/help.PNG", "Return");
+            UI ui = new UI();
+
+            // if in combat utilize combat parser
+            if(combatActive) {
+                List<String> command = textParser.combatParser(input);
+                String text;
+
+                if (!command.get(0).equals("invalid")) {
+                    if (command.get(0).equalsIgnoreCase("help")) {
+                        helpButton.doClick();
+                    }
+                    // add quit logic
+                    else if (command.get(0).equalsIgnoreCase("quit")) {
+                        EndGame.endGame(false);
+                    } else if (command.get(0).equalsIgnoreCase("hide")){
+                        if (gameClassLoad.attemptToHide(false)) {
+                            EndGame.endGame(false);
+                        } else {
+                            text = "You successfully hide..." +
+                                    "\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                            updateTextField(text);
+                            combatActive = false;
+                        }
+                    } else {
+                        switch (gameClassLoad.attemptCameraUsage()) {
+                            case 1:
+                                text = "The camera clicks, but you realize the batteries are dead..." +
+                                        "\n" + gameClassLoad.getEvilSpirit().getName() + " begins walking towards you, and you " +
+                                        "instinctively try hiding...";
+                                updateTextField(text);
+                                if (gameClassLoad.attemptToHide(true)) {
+                                    EndGame.endGame(false);
+                                } else {
+                                    text = "You successfully hide..." +
+                                            "\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                                    updateTextField(text);
+                                    combatActive = false;
+                                }
+                                break;
+                            case 2:
+                                text = "You do not have the camera in your inventory..." + "\n" +
+                                        gameClassLoad.getEvilSpirit().getName() + " begins walking towards you, and you " +
+                                        "instinctively try hiding...";
+                                if (gameClassLoad.attemptToHide(true)) {
+                                    EndGame.endGame(false);
+                                } else {
+                                    text += "\nYou successfully hide..." +
+                                            "\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                                    updateTextField(text);
+                                    combatActive = false;
+                                }
+                                break;
+                            case 3:
+                                text = "The camera flashes and you hear an unearthly scream and snarl...\n" +
+                                        gameClassLoad.getEvilSpirit().getName() + " vanishes..." +
+                                        "\n\n" + ui.displayGameInfo(Player.getPlayerInstance());
+                                updateTextField(text);
+                                while (Player.getPlayerInstance().getCurrentRoom().getName().equalsIgnoreCase(
+                                        gameClassLoad.getEvilSpirit().getCurrentRoom().getName())) {
+                                    gameClassLoad.getEvilSpirit().setRandomRoom(gameClassLoad.getWorld());
+                                }
+                                combatActive = false;
+                        }
+                    }
                 }
-                // add quit logic
-                else if (command.get(0).equalsIgnoreCase("quit")) {
-                    // TODO: exit page before exiting the program
-                    System.exit(0);
-                }
-                else{
-                    gameClassLoad.executeCommand(command);
+            } else {
+                List<String> command = textParser.parseInput(input);
+                if (!command.get(0).equals("invalid")) {
+                    if (command.get(0).equalsIgnoreCase("help")) {
+                        helpButton.doClick();
+                    }
+                    // add quit logic
+                    else if (command.get(0).equalsIgnoreCase("quit")) {
+                        EndGame.endGame(false);
+                    } else {
+                        gameClassLoad.executeCommand(command);
+                    }
                 }
             }
             // resets the player's input
@@ -245,8 +348,8 @@ public class GameManager {
         inputTextPanel.add(inputTextField);
         inputTextPanel.add(inputTextSubmitButton);
 
-        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, .8, .3);
-        layoutManager.addGB(inputTextPanel, 4, 6, 1, 2, .5, .5);
+        layoutManager.addGB(directionalPanel, 4, 4, 2, 2, 1, 1);
+        layoutManager.addGB(inputTextPanel, 4, 6, 1, 2, 1, 1);
     }
 
     public static void populateMapButtonsGrid() {
@@ -271,44 +374,62 @@ public class GameManager {
         constraints.gridy = 4;
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
-        JButton help = new JButton();
+        helpButton.setBorder(BorderFactory.createEmptyBorder());
+        helpButton.setOpaque(true);
+        helpButton.setBackground(Color.black);
+        helpButton.setForeground(Color.black);
+        helpButton.setIcon(getHelpIcon());
 
-        help.setIcon(getHelpOffIcon());
-
-        help.addActionListener(e -> {
+        helpButton.addActionListener(e -> {
             if (helpActive) {
                 String currentRoom = "resources/images/"+gameClassLoad.getPlayer().getCurrentRoom().getName()+".PNG";
                 scaleImageAndInsertToLabel(currentRoom, imageLabel);
                 helpActive = false;
-
-                help.setIcon(getHelpOffIcon());
             } else {
                 String helpImage = "resources/images/help.PNG";
                 scaleImageAndInsertToLabel(helpImage, imageLabel);
                 helpActive = true;
-
-                help.setIcon(getHelpOnIcon());
             }
         });
 
-        help.setBackground(Color.black);
-        mapPanel.add(help, constraints);
+        mapPanel.add(helpButton, constraints);
 
-        layoutManager.addGB(mapPanel, 4, 0, 2, 2, .3, .1);
+        constraints.gridx = 1;
+        constraints.gridy = 4;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        audioButton.setBorder(BorderFactory.createEmptyBorder());
+        audioButton.setOpaque(true);
+        audioButton.setBackground(Color.black);
+        audioButton.setForeground(Color.black);
+        audioButton.setIcon(getAudioIcon());
+
+        audioButton.addActionListener(e -> {
+            if (audioActive) {
+                GameStart.getBackground_main().stopAudio();
+                audioActive = false;
+            } else {
+                GameStart.getBackground_main().loopAudio();
+                audioActive = true;
+            }
+        });
+        mapPanel.add(audioButton, constraints);
+
+        layoutManager.addGB(mapPanel, 4, 0, 2, 2, 1, 1);
     }
 
-    public static ImageIcon getHelpOffIcon() {
-        ImageIcon baseIcon = new ImageIcon("resources/images/HelpOff.png");
+    public static ImageIcon getAudioIcon() {
+        ImageIcon baseIcon = new ImageIcon("resources/images/AudioButton.png");
         Image img = baseIcon.getImage();
-        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        img.getScaledInstance(150, 50, Image.SCALE_DEFAULT);
 
         return new ImageIcon(img);
     }
 
-    public static ImageIcon getHelpOnIcon() {
-        ImageIcon baseIcon = new ImageIcon("resources/images/HelpOn.png");
+    public static ImageIcon getHelpIcon() {
+        ImageIcon baseIcon = new ImageIcon("resources/images/HelpButton.png");
         Image img = baseIcon.getImage();
-        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
+        img.getScaledInstance(150, 50, Image.SCALE_DEFAULT);
 
         return new ImageIcon(img);
     }
@@ -329,15 +450,21 @@ public class GameManager {
         label.setIcon(scaledIcon);
     }
 
-    public static JTextField getInputTextField() {
-        return inputTextField;
-    }
-
     public static JLabel getImageLabel() {
         return imageLabel;
     }
 
     public static JLabel getMapLabel() {
         return mapLabel;
+    }
+
+    private static void updateTextField(String text) {
+        GameHomePage.getHomePageTextArea().setText(text);
+        GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
+        GameHomePage.getHomePageTextArea().setForeground(Color.green);
+    }
+
+    public static JFrame getSharedWindow() {
+        return sharedWindow;
     }
 }

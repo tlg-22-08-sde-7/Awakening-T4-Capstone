@@ -30,38 +30,6 @@ public class Room {
         this.name = name;
     }
 
-    public HashMap<String, String> getDirections() {
-        return directions;
-    }
-
-    public void setDirections(HashMap<String, String> directions) {
-        this.directions = directions;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
-    }
-
-    public List<String> getItems() {
-        return items;
-    }
-
-    public void setItems(List<String> items) {
-        this.items = items;
-    }
-
     @Override public String toString()
     {
         return "Room [name=" + name + ", directions=" + directions

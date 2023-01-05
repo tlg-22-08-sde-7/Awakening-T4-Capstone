@@ -1,5 +1,6 @@
 package com.awakening.app;
 
+import com.awakening.app.game.Player;
 import com.awakening.gui.app.GameHomePage;
 
 import java.util.ArrayList;
@@ -26,14 +27,6 @@ public class TextParser {
     // Allowed Commands
     private List<String> allowedCommands = new ArrayList<>(Arrays.asList("go", "get", "look", "quit", "use"));
 
-    public List<String> getAllowedCommands() {
-        return allowedCommands;
-    }
-
-    public List<String> getAllowedNouns() {
-        return allowedNouns;
-    }
-
     // method to print array of nouns to string and in color
     public String displayAllowedNouns() {
         return BLUE+allowedNouns.toString()+RESET;
@@ -48,7 +41,6 @@ public class TextParser {
 
         UI ui = new UI();
         String verb = result.get(0);
-        String noun;
         String message = "";
 
         if (result.size() == 1 && "help".equals(verb)) {
@@ -62,7 +54,7 @@ public class TextParser {
 //                    "\nSecond word must be a noun from the following list: " + displayAllowedNouns());
             message = "Command not recognized. Only two word commands are recognized.\n";
             result.set(0, "invalid");
-            GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Game.player));
+            GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
             return result;
         }
         if (!allowedCommands.contains(verb) || !allowedNouns.contains(result.get(1))) {
@@ -81,8 +73,44 @@ public class TextParser {
             result.set(0, "invalid");
         }
 
-        GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
 
+        return result;
+    }
+
+    public List<String> combatParser(String input) {
+        List<String> result = new ArrayList<>(Arrays.asList(input.toLowerCase().trim().split(" ")));
+
+        UI ui = new UI();
+        String verb = result.get(0);
+        String message = "";
+
+        if (result.size() == 1 && "help".equals(verb)) {
+            return result;
+        }
+        if (result.size() == 1 && "quit".equals(verb)) {
+            return result;
+        }
+        if (result.size() == 1 && "hide".equals(verb)) {
+            return result;
+        } else if (result.size() != 2) {
+            System.out.println(RED + "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n" + RESET);
+            message = "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n";
+            result.set(0, "invalid");
+            GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+            return result;
+        }
+        if (!result.get(0).equalsIgnoreCase("use") || !result.get(1).equalsIgnoreCase("camera")) {
+            System.out.println(RED + "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n" + RESET);
+            message = "Command not recognized. In combat, the only recognized commands are: " +
+                    "[help, quit, hide, use camera].\n";
+            result.set(0, "invalid");
+        }
+
+        GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
         return result;
     }
 }

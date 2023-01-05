@@ -1,5 +1,6 @@
 package com.awakening.app;
 
+import com.awakening.app.game.EvilSpirit;
 import com.awakening.app.game.Item;
 import com.awakening.app.game.Player;
 import com.awakening.app.game.RoomMap;
@@ -55,9 +56,24 @@ public class UI {
         infoText += "Exits : " + player.getCurrentRoom().getDirections().keySet() + ".\n";
         System.out.println(wrapFrame(infoText));
 
-        return infoText;
+        return wrapFrame(infoText);
 
     }
+
+    public String displayCombatInfo(Player player, EvilSpirit evilSpirit) {
+        String infoText = "";
+        infoText += "You are in the " + player.getCurrentRoom().getName() + ".\n";
+
+        Item.ItemsSetup camera = playerInventory(player, "camera");
+        if (player.getInventory().contains(camera)) {
+            infoText += "Your camera's charge is: " + camera.getCharge() + "\n";
+        }
+
+        System.out.println(wrapFrame(infoText));
+
+        return wrapFrame(infoText);
+    }
+
 
     /**
      * This method returns the item in inventory found, so it can be printed
@@ -148,7 +164,7 @@ public class UI {
             for (int i = 0; i < spaces; i++) {
                 line += " ";
             }
-            textBody += "║ " + line + " ║\n";
+            textBody += "   " + line + "\n";
         }
 
         frame = top + textBody + bottom;
@@ -156,33 +172,20 @@ public class UI {
         return frame;
     }
 
+    /**
+     * This method takes the string read from GSON, breaks the string by period, insert a line break for each complete sentence using string builder, then return a more readable string
+     * @param input
+     * @return sb
+     */
     public static String breakIntoLines(String input) {
-        // check if lines are already broken
-        boolean alreadySplit = true;
-        for (String line : input.split("\n")) {
-            if (line.length() > 80) {
-                alreadySplit = false;
-                break;
-            }
+        String[] lines = input.split("\\.");
+        StringBuilder sb = new StringBuilder();
+
+        for (String line:lines) {
+            sb.append(line).append("\n");
         }
 
-        // If the input is already split, return it as-is.
-        if (alreadySplit) {
-            return input;
-        }
-        // If the input is not already split, split it.
-        StringBuilder sb = new StringBuilder();
-        int startIndex = 0;
-        while (startIndex < input.length()) {
-            int endIndex = startIndex + 80;
-            if (endIndex > input.length()) {
-                endIndex = input.length();
-            }
-            sb.append(input.substring(startIndex, endIndex));
-            sb.append("\n");
-            startIndex = endIndex;
-        }
-        return sb.toString();
+        return String.valueOf(sb);
     }
 
 

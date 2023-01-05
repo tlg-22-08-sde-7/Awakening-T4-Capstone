@@ -1,17 +1,14 @@
 package com.awakening.app;
 
 import com.apps.util.Prompter;
-import com.awakening.app.game.Item;
-import com.awakening.app.game.NPC;
-import com.awakening.app.game.Player;
-import com.awakening.app.game.RoomMap;
+import com.awakening.app.game.*;
+import com.awakening.gui.app.EndGame;
 import com.awakening.gui.app.GameHomePage;
 import com.awakening.gui.app.GameManager;
+import com.awakening.gui.util.Audio;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +18,7 @@ import java.util.List;
  */
 public class CommandValidation {
     private static List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "desk", "table"));
-    private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries"));
+    private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries", "paper-clip", "key"));
     public static List<Item.ItemsSetup> roomItems;
     private static UI ui = new UI();
     private static JFrame popup_frame;
@@ -34,29 +31,47 @@ public class CommandValidation {
      * @param world     - RoomMap object used for game data
      * @return String - result of player's command
      */
-    public static String move(String direction, Player player, RoomMap world) {
+    public static String move(String direction, Player player, EvilSpirit evilSpirit, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         RoomMap.RoomLayout nextRoom = world.getRoom(currentRoom.getDirections().get(direction));
+        Audio moveAudio = new Audio("resources/audio/move.wav");
 
         String commandResult;
 
         if (nextRoom == null) {
-//            commandResult = TextParser.RED + "You can't go that way" + TextParser.RESET;
             commandResult = "You can't go that way";
         } else if (nextRoom.isLocked()) {
-//            commandResult = TextParser.RED + "The door is locked" + TextParser.RESET;
             commandResult = "The door is locked";
         } else {
             commandResult = "You have moved: " + direction;
+            if (GameManager.audioActive){
+                moveAudio.playAudio();
+            }
             player.setCurrentRoom(nextRoom);
+
+            // Ensure that spirit only moves after player moves twice.
+            if (evilSpirit.isMoveReady()) {
+                evilSpirit.setRandomRoom(world);
+                evilSpirit.setMoveReady(false);
+            } else {
+                evilSpirit.setMoveReady(true);
+            }
         }
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
 
         String imageLocation = "resources/images/" + player.getCurrentRoom().getName() + ".PNG";
         String mapImage = "resources/images/Map_" + player.getCurrentRoom().getName() + ".png";
 
         GameManager.scaleImageAndInsertToLabel(imageLocation, GameManager.getImageLabel());
         GameManager.scaleImageAndInsertToMap(mapImage, GameManager.getMapLabel());
+
+        if (evilSpirit.getCurrentRoom().getName().equalsIgnoreCase(Player.getPlayerInstance().getCurrentRoom().getName())) {
+            GameHomePage.getHomePageTextArea().setText(evilSpirit.getName() + " is in the room..." + "\n" +
+                    ui.displayCombatInfo(player, evilSpirit));
+            GameManager.combatActive = true;
+        } else {
+            GameManager.combatActive = false;
+        }
 
         return commandResult;
     }
@@ -71,7 +86,7 @@ public class CommandValidation {
      * @param world  - RoomMap object for game world data
      * @return String - result of command
      */
-    public static String look(String noun, Player player, UI ui, NPC npc, RoomMap world) {
+    public static String look(String noun, Player player, UI ui, NPC npc, EvilSpirit evilSpirit, RoomMap world) {
         RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
         String commandResult = "";
 
@@ -87,10 +102,11 @@ public class CommandValidation {
                         hasCamera = true;
                         String ghostDesc = "";
                         String npcGhost = npc.getGhost(npcName);
-                        ghostDesc += npcGhost + "\n";
+                        ghostDesc += npcGhost + "\n.... " + evilSpirit.getName() + " is at the " +
+                                evilSpirit.getCurrentRoom().getName() + "....";
                         item.setCharge(item.getCharge() - 10);
                         commandResult = ui.wrapFrame(ghostDesc);
-                        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+                        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
                         break;
                     }
                 }
@@ -190,7 +206,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
         return commandResult;
     }
 
@@ -214,13 +230,18 @@ public class CommandValidation {
             if (item == null) {
                 commandResult = noun + " is not in " + currentRoom.getName();
             } else if (itemList.contains(noun)) {
-                player.addToInventory(item);
-                for (int i = 0; i < itemList.size(); i++) {
-                    if (noun.equals(itemList.get(i))) {
-                        index = i;
-                        //Remove item from room
-                        player.getCurrentRoom().getItems().remove(index);
-                        commandResult = "You have picked up " + noun;
+                if (noun.equalsIgnoreCase("desk") || noun.equalsIgnoreCase("table")){
+                    commandResult = "You cannot pick up the "+ noun+".";
+                }
+                else{
+                    player.addToInventory(item);
+                    for (int i = 0; i < itemList.size(); i++) {
+                        if (noun.equals(itemList.get(i))) {
+                            index = i;
+                            //Remove item from room
+                            player.getCurrentRoom().getItems().remove(index);
+                            commandResult = "You have picked up " + noun;
+                        }
                     }
                 }
             } else {
@@ -230,7 +251,7 @@ public class CommandValidation {
             commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
         }
 
-        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Game.player));
+        GameHomePage.getHomePageTextArea().setText(commandResult + "\n" + ui.displayGameInfo(Player.getPlayerInstance()));
         return commandResult;
     }
 
@@ -254,8 +275,6 @@ public class CommandValidation {
                 GameManager.scaleImageAndInsertToLabel(imageLocation, GameManager.getImageLabel());
 
                 GameHomePage.getHomePageTextArea().setText("Enter PIN\n >");
-                // String keyEntry = GameManager.getInputTextField().getText();
-                // createWindow();
 
                 if (createWindow().equalsIgnoreCase("9537")) {
                     RoomMap.RoomLayout currentRoom = player.getCurrentRoom();
@@ -263,28 +282,27 @@ public class CommandValidation {
 
                     nextRoom.setLocked(false);
                     commandResult = "The key-pad chimes and turns green.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
 
-                    popup_frame.setVisible(false);
                 } else {
                     commandResult = "The key-pad buzzes and flashes red.";
-                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Game.player));
 
-                    popup_frame.setVisible(false);
                 }
+                GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+                popup_frame.setVisible(false);
             } else if (noun.equalsIgnoreCase("batteries")) {
-                boolean isBatteriesInInventory = false;
-                for (Item.ItemsSetup batteries : player.getInventory()) {
-                    if (batteries.getName().equalsIgnoreCase("batteries")) {
-                        isBatteriesInInventory = true;
-                        String itemToCharge = prompter.prompt("What item do you want to charge?\n > ").toLowerCase();
-                        itemCharge(batteries, itemToCharge, player);
-                        break;
-                    }
-                }
-                if (!isBatteriesInInventory) {
+                Item.ItemsSetup batteries = itemInInventory("batteries");
+
+                if (batteries == null) {
                     commandResult = "You do not have batteries in your inventory";
                 }
+                else {
+                    GameHomePage.getHomePageTextArea().setText("What item do you want to charge?\n > ");
+                    String input = createWindow();
+                    itemCharge(batteries, input, player);
+                    popup_frame.setVisible(false);
+                    commandResult = "Your " + input + " has been charged";
+                }
+                GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
             } else if (noun.equalsIgnoreCase("paper-clip")) {
                 boolean isPaperClipInInventory = false;
                 for (Item.ItemsSetup paperClip : player.getInventory()) {
@@ -295,14 +313,35 @@ public class CommandValidation {
 
                         nextRoom.setLocked(false);
                         commandResult = "You have picked the lock";
+                        GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                     }
                 }
                 if (!isPaperClipInInventory) {
                     commandResult = "You do not have paper-clip in your inventory";
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+                }
+            } else if (noun.equalsIgnoreCase("key")) {
+                boolean keyInInventory = false;
+                for (Item.ItemsSetup key : player.getInventory()) {
+                    if (key.getName().equalsIgnoreCase("key")) {
+                        keyInInventory = true;
+
+                        if (player.getCurrentRoom().getName().equalsIgnoreCase("Front Desk")) {
+                            EndGame.endGame(true);
+                        } else {
+                            commandResult = "The key does not fit any of the locks";
+                            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+                        }
+                    }
+                }
+                if (!keyInInventory) {
+                    commandResult = "You do not have key in your inventory";
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                 }
             }
         } else {
-            commandResult = TextParser.RED + "Invalid command" + TextParser.RESET;
+            commandResult = "Invalid command";
+            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
         }
 
         return commandResult;
@@ -331,6 +370,15 @@ public class CommandValidation {
         for (Item.ItemsSetup roomItem : roomItems) {
             if (noun.equals(roomItem.getName())) {
                 return roomItem;
+            }
+        }
+        return null;
+    }
+
+    private static Item.ItemsSetup itemInInventory(String noun) {
+        for (Item.ItemsSetup itemInInventory : Player.player.getInventory()) {
+            if (itemInInventory.getName().equalsIgnoreCase(noun)) {
+                return itemInInventory;
             }
         }
         return null;

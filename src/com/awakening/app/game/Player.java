@@ -8,6 +8,19 @@ public class Player {
     private RoomMap.RoomLayout currentRoom;
     private List<Item.ItemsSetup> inventory = new ArrayList<>();
 
+    public static final Player player = new Player();
+
+    Player(){
+
+    }
+
+    public static Player getPlayerInstance(){
+        return player;
+    }
+
+    public void resetPlayer() {
+        inventory.clear();
+    }
 
     public void addToInventory(Item.ItemsSetup item) {
         inventory.add(item);
@@ -25,10 +38,6 @@ public class Player {
         return inventory;
     }
 
-    public void setInventory(List<Item> inventory) {
-        inventory = inventory;
-    }
-
     // This will allow for the player inventory to be printed to the console/terminal
     public String printInventory() {
         String inventory = "";
@@ -38,5 +47,13 @@ public class Player {
         }
 
         return inventory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
