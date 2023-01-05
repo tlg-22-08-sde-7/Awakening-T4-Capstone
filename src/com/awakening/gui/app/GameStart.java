@@ -1,5 +1,6 @@
 package com.awakening.gui.app;
 
+import com.awakening.app.game.Player;
 import com.awakening.gui.util.Audio;
 
 import javax.swing.*;
@@ -10,14 +11,18 @@ public class GameStart {
     private static Container container;
     private static JPanel splash_panel;
     private static JPanel buttonPanel_start_screen;
-    private JLabel splash_label;
+    private static JLabel splash_label;
     private static Audio background_main = new Audio("resources/audio/background-main.wav");
 
-    private JButton pressEnterToContinueButton, musicSwitchButton;
+    private static JButton pressEnterToContinueButton, musicSwitchButton;
 
     public GameStart(){
-        GridBagConstraints c = new GridBagConstraints();
         window = new JFrame();
+        beginGame();
+    }
+
+    public static void beginGame() {
+        GridBagConstraints c = new GridBagConstraints();
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.BLACK);
@@ -78,6 +83,14 @@ public class GameStart {
         c.gridx = 0;
         c.gridy = 2;
         container.add(buttonPanel_start_screen, c);
+        window.getContentPane().repaint();
+    }
+
+    public static void restartGame() {
+        window.getContentPane().removeAll();
+        window.getContentPane().repaint();
+        Player.getPlayerInstance().resetPlayer();
+        beginGame();
     }
 
     public static JPanel getSplash_panel() {
