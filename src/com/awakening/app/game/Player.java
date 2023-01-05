@@ -18,6 +18,10 @@ public class Player {
         return player;
     }
 
+    public void resetPlayer() {
+        inventory.clear();
+    }
+
     public void addToInventory(Item.ItemsSetup item) {
         inventory.add(item);
     }

@@ -1,5 +1,6 @@
 package com.awakening.gui.app;
 
+import com.apps.util.Console;
 import com.awakening.app.Game;
 import com.awakening.app.TextParser;
 import com.awakening.app.UI;
@@ -274,12 +275,10 @@ public class GameManager {
                     }
                     // add quit logic
                     else if (command.get(0).equalsIgnoreCase("quit")) {
-                        // TODO: exit page before exiting the program
-                        System.exit(0);
+                        EndGame.endGame(false);
                     } else if (command.get(0).equalsIgnoreCase("hide")){
                         if (gameClassLoad.attemptToHide(false)) {
-                            // TODO: Player died, exit game
-                            System.exit(0);
+                            EndGame.endGame(false);
                         } else {
                             text = "You successfully hide..." +
                                     "\n" + ui.displayGameInfo(Player.getPlayerInstance());
@@ -294,8 +293,7 @@ public class GameManager {
                                         "instinctively try hiding...";
                                 updateTextField(text);
                                 if (gameClassLoad.attemptToHide(true)) {
-                                    // TODO: Player died, exit game
-                                    System.exit(0);
+                                    EndGame.endGame(false);
                                 } else {
                                     text = "You successfully hide..." +
                                             "\n" + ui.displayGameInfo(Player.getPlayerInstance());
@@ -309,8 +307,7 @@ public class GameManager {
                                         "instinctively try hiding...";
                                 updateTextField(text);
                                 if (gameClassLoad.attemptToHide(true)) {
-                                    // TODO: Player died, exit game
-                                    System.exit(0);
+                                    EndGame.endGame(false);
                                 } else {
                                     text = "You successfully hide..." +
                                             "\n" + ui.displayGameInfo(Player.getPlayerInstance());
@@ -339,8 +336,7 @@ public class GameManager {
                     }
                     // add quit logic
                     else if (command.get(0).equalsIgnoreCase("quit")) {
-                        // TODO: exit page before exiting the program
-                        System.exit(0);
+                        EndGame.endGame(false);
                     } else {
                         gameClassLoad.executeCommand(command);
                     }
@@ -423,14 +419,6 @@ public class GameManager {
         layoutManager.addGB(mapPanel, 4, 0, 2, 2, 1, 1);
     }
 
-    public static ImageIcon getAudioOnIcon() {
-        ImageIcon baseIcon = new ImageIcon("resources/images/AudioOn.png");
-        Image img = baseIcon.getImage();
-        img.getScaledInstance(150, 100, Image.SCALE_DEFAULT);
-
-        return new ImageIcon(img);
-    }
-
     public static ImageIcon getAudioIcon() {
         ImageIcon baseIcon = new ImageIcon("resources/images/AudioButton.png");
         Image img = baseIcon.getImage();
@@ -475,5 +463,9 @@ public class GameManager {
         GameHomePage.getHomePageTextArea().setText(text);
         GameHomePage.getHomePageTextArea().setFont(Awakening_Font.getSmallTextFont());
         GameHomePage.getHomePageTextArea().setForeground(Color.green);
+    }
+
+    public static JFrame getSharedWindow() {
+        return sharedWindow;
     }
 }

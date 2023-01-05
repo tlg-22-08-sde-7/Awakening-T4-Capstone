@@ -102,7 +102,7 @@ public class TextParser {
             GameHomePage.getHomePageTextArea().setText(message+"\n\n"+ui.displayGameInfo(Player.getPlayerInstance()));
             return result;
         }
-        if (!result.get(0).equalsIgnoreCase("use") && !result.get(1).equalsIgnoreCase("camera")) {
+        if (!result.get(0).equalsIgnoreCase("use") || !result.get(1).equalsIgnoreCase("camera")) {
             System.out.println(RED + "Command not recognized. In combat, the only recognized commands are: " +
                     "[help, quit, hide, use camera].\n" + RESET);
             message = "Command not recognized. In combat, the only recognized commands are: " +

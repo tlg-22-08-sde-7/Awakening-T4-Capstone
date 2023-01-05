@@ -2,6 +2,7 @@ package com.awakening.app;
 
 import com.apps.util.Prompter;
 import com.awakening.app.game.*;
+import com.awakening.gui.app.EndGame;
 import com.awakening.gui.app.GameHomePage;
 import com.awakening.gui.app.GameManager;
 import com.awakening.gui.util.Audio;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class CommandValidation {
     private static List<String> approvedItems = new ArrayList<>(Arrays.asList("camera", "cellphone", "key", "journal", "batteries", "file", "bandages", "bandages", "paper-clip", "press-pass", "desk", "table"));
-    private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries", "paper-clip"));
+    private static List<String> usableItems = new ArrayList<>(List.of("key-pad", "batteries", "paper-clip", "key"));
     public static List<Item.ItemsSetup> roomItems;
     private static UI ui = new UI();
     private static JFrame popup_frame;
@@ -317,6 +318,24 @@ public class CommandValidation {
                 }
                 if (!isPaperClipInInventory) {
                     commandResult = "You do not have paper-clip in your inventory";
+                    GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+                }
+            } else if (noun.equalsIgnoreCase("key")) {
+                boolean keyInInventory = false;
+                for (Item.ItemsSetup key : player.getInventory()) {
+                    if (key.getName().equalsIgnoreCase("key")) {
+                        keyInInventory = true;
+
+                        if (player.getCurrentRoom().getName().equalsIgnoreCase("Front Desk")) {
+                            EndGame.endGame(true);
+                        } else {
+                            commandResult = "The key does not fit any of the locks";
+                            GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
+                        }
+                    }
+                }
+                if (!keyInInventory) {
+                    commandResult = "You do not have key in your inventory";
                     GameHomePage.getHomePageTextArea().setText(commandResult+"\n"+ui.displayGameInfo(Player.getPlayerInstance()));
                 }
             }
