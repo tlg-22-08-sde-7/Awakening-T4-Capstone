@@ -28,7 +28,6 @@ public class GameStart {
         window.getContentPane().setBackground(Color.BLACK);
 
         window.setLayout(null);
-        window.setVisible(true);
         container = window.getContentPane();
         container.setLayout(new GridBagLayout());
 
@@ -84,6 +83,9 @@ public class GameStart {
         c.gridy = 2;
         container.add(buttonPanel_start_screen, c);
         window.getContentPane().repaint();
+
+        window.setVisible(true);
+        window.revalidate();
     }
 
     public static void restartGame() {

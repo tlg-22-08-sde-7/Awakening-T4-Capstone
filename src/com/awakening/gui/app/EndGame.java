@@ -39,7 +39,7 @@ public class EndGame {
         restartButton.setForeground(Color.lightGray);
         restartButton.setFont(Awakening_Font.getSmallTextFont());
         restartButton.setFocusPainted(false);
-        //restartButton.addActionListener( e -> GameStart.restartGame());
+        restartButton.addActionListener( e -> GameStart.restartGame());
 
         // Add image
         c.gridx = 1;
