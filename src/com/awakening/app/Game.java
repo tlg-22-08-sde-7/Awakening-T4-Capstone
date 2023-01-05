@@ -211,9 +211,9 @@ public class Game {
                     inventory.setCharge(inventory.getCharge() - 10);
                 }
             }
-            if (!hasCamera) {
-                scenarioCase = 2;
-            }
+        }
+        if (!hasCamera) {
+            scenarioCase = 2;
         }
 
         return  scenarioCase;
