@@ -305,11 +305,10 @@ public class GameManager {
                                 text = "You do not have the camera in your inventory..." + "\n" +
                                         gameClassLoad.getEvilSpirit().getName() + " begins walking towards you, and you " +
                                         "instinctively try hiding...";
-                                updateTextField(text);
                                 if (gameClassLoad.attemptToHide(true)) {
                                     EndGame.endGame(false);
                                 } else {
-                                    text = "You successfully hide..." +
+                                    text += "\nYou successfully hide..." +
                                             "\n" + ui.displayGameInfo(Player.getPlayerInstance());
                                     updateTextField(text);
                                     combatActive = false;
