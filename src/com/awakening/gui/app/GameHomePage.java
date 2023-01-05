@@ -33,7 +33,7 @@ public class GameHomePage {
         homePageTextArea = new JTextArea(ui.splashScreen(), 20, 96);
         homePageTextArea.setBackground(Color.black);
         homePageTextArea.setForeground(Color.green);
-        homePageTextArea.setFont(Awakening_Font.getNormalFont());
+        homePageTextArea.setFont(Awakening_Font.getSpecialFont());
         homePageTextArea.setLineWrap(true);
 
         scrollableTextArea = new JScrollPane(homePageTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
